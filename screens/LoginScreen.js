@@ -11,9 +11,18 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { WebBrowser } from 'expo';
+import utf8 from 'utf8';
+import base64 from 'base-64';
+import t from 'tcomb-form-native';
 
-import { MonoText } from '../components/StyledText';
+//import { WebBrowser } from 'expo';
+//import { MonoText } from '../components/StyledText';
+
+const Form = t.form.Form;
+const Login = t.struct({
+    username: t.String,
+    password: t.String
+});
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -33,32 +42,10 @@ export default class HomeScreen extends React.Component {
               style={styles.welcomeImage}
             />
           </View>
-          
-          <Text>{"\n"}Username:</Text>
-          <TextInput 
-            style={styles.textInput}
-            placeholder="Enter username"
-            onChangeText={(text) => this.setState({text})}/>
-          <Text>{"\n"}Password:</Text>
-          <TextInput
-            secureTextEntry={true}
-            style={styles.textInput}
-            placeholder="Enter password"
-            onChangeText={(text) => this.setState({text})}
-          />
-          <Text>{"\n"}{"\n"}{"\n"}</Text> 
-          <Button
-          styles = {{button:styles.alignRight,label:styles.label}}
-          onPress={() => {
-            Alert.alert('You tapped the log me in button!');
-          }}
-          //http://192.168.0.120:5000/
-          title="Log Me In!"
-          color="#979797"
-          />
-          <View
-            style={styles.span}
-          />
+          <View>
+              <Form type={Login}/>
+              <Button title="LOG ME IN!" onPress={this.handleSubmit} />
+          </View>
           <Button
           styles = {{button:styles.alignRight,label:styles.label}}
           onPress={() => {
@@ -115,3 +102,39 @@ const styles = StyleSheet.create({
     margin: 10
   },
 });
+
+/*
+          <Text>{"\n"}Username:</Text>
+          <TextInput 
+            style={styles.textInput}
+            placeholder="Enter username"
+            onChangeText={(text) => this.setState({text})}/>
+          <Text>{"\n"}Password:</Text>
+          <TextInput
+            secureTextEntry={true}
+            style={styles.textInput}
+            placeholder="Enter password"
+            onChangeText={(text) => this.setState({text})}
+          />
+          <Text>{"\n"}{"\n"}{"\n"}</Text> 
+          <Button
+          styles = {{button:styles.alignRight,label:styles.label}}
+          onPress={() => {
+              var authN = 
+              fetch('http://192.168.0.120:5000/api/tokens', {
+                  method: 'POST',
+                  headers: {
+                    Authorization: 
+                  }
+              })
+            Alert.alert('You tapped the log me in button!');
+          }}
+          //http://192.168.0.120:5000/
+          title="Log Me In!"
+          color="#979797"
+          />
+          <View
+            style={styles.span}
+          />
+
+*/

@@ -11,9 +11,23 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { WebBrowser } from 'expo';
 
-import { MonoText } from '../components/StyledText';
+import base64 from 'react-native-base64';
+
+import t from 'tcomb-form-native';
+const Form = t.form.Form;
+const Login = t.struct({
+    username: t.String,
+    password: t.String
+});
+
+const formOptions = {
+    fields: {
+        password: {
+            secureTextEntry: true
+        }
+    }
+}
 
 export default class HomeScreen extends React.Component {
   constructor (props) {
@@ -21,6 +35,23 @@ export default class HomeScreen extends React.Component {
     this.state = {
       page_id: 1
     };
+  }
+
+  handleSubmit = () => {
+      const value = this.loginForm.getValue();
+      let encodedCredentials = base64.encode(value.username + ":" + value.password);
+      console.log('value: ', value);
+      console.log(encodedCredentials);
+      fetch('http://192.168.0.112:5000/api/tokens', { // TODO: Abstract this to an app config variable!
+        method: 'POST',
+        headers: {
+            Authorization: "Basic " + encodedCredentials
+        }
+      })
+      .then((response) => { console.log(response); })
+      .catch((error) => {
+          console.error(error);
+      })
   }
 
   static navigationOptions = {
@@ -42,41 +73,10 @@ export default class HomeScreen extends React.Component {
                 style={styles.welcomeImage}
               />
             </View>
-            <Text style={styles.textStyle}>{"\n"}Username:</Text>
-            <TextInput 
-              style={styles.textInput}
-              placeholder="Enter username"
-              onChangeText={(text) => this.setState({text})}/>
-            <Text style={styles.textStyle}>{"\n"}Password:</Text>
-            <TextInput
-              secureTextEntry={true}
-              style={styles.textInput}
-              placeholder="Enter password"
-              onChangeText={(text) => this.setState({text})}
-            />
-            <Text>{"\n"}{"\n"}{"\n"}</Text> 
-            <Button
-            styles = {{button:styles.alignRight,label:styles.label}}
-            onPress={() => {
-              this.setState({
-                page_id: 2
-              });
-            }}
-            //http://192.168.0.120:5000/
-            title="Log Me In!"
-            color="#979797"
-            />
-            <View
-              style={styles.span}
-            />
-            <Button
-            styles = {{button:styles.alignRight,label:styles.label}}
-            onPress={() => {
-              Alert.alert('You tapped the forgot password button!');
-            }}
-            title="Forgot Login/Password?"
-            color="#979797"
-            />
+            <View>
+                <Form ref={c => this.loginForm = c} type={Login} options={formOptions} />
+                <Button title="LOG ME IN!" onPress={this.handleSubmit} />
+            </View>
             <View
             style={styles.span}
             />
@@ -262,3 +262,46 @@ const styles = StyleSheet.create({
     fontSize: 15,
   }
 });
+
+/*
+//import { WebBrowser } from 'expo';
+//import { MonoText } from '../components/StyledText';
+
+            <Text style={styles.textStyle}>{"\n"}Username:</Text>
+            <TextInput 
+              style={styles.textInput}
+              placeholder="Enter username"
+              onChangeText={(text) => this.setState({text})}/>
+            <Text style={styles.textStyle}>{"\n"}Password:</Text>
+            <TextInput
+              secureTextEntry={true}
+              style={styles.textInput}
+              placeholder="Enter password"
+              onChangeText={(text) => this.setState({text})}
+            />
+            <Text>{"\n"}{"\n"}{"\n"}</Text> 
+            <Button
+            styles = {{button:styles.alignRight,label:styles.label}}
+            onPress={() => {
+              this.setState({
+                page_id: 2
+              });
+            }}
+            //http://192.168.0.120:5000/
+            title="Log Me In!"
+            color="#979797"
+            />
+            <View
+              style={styles.span}
+            />
+            <Button
+            styles = {{button:styles.alignRight,label:styles.label}}
+            onPress={() => {
+              Alert.alert('You tapped the forgot password button!');
+            }}
+            title="Forgot Login/Password?"
+            color="#979797"
+            />
+
+
+*/
