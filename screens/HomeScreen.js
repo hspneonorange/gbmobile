@@ -15,6 +15,7 @@ import {
 import base64 from 'react-native-base64';
 
 import t from 'tcomb-form-native';
+import { stringify } from 'qs';
 const Form = t.form.Form;
 const Login = t.struct({
     username: t.String,
@@ -38,20 +39,23 @@ export default class HomeScreen extends React.Component {
   }
 
   handleSubmit = () => {
-      const value = this.loginForm.getValue();
-      let encodedCredentials = base64.encode(value.username + ":" + value.password);
-      console.log('value: ', value);
-      console.log(encodedCredentials);
-      fetch('http://192.168.0.112:5000/api/tokens', { // TODO: Abstract this to an app config variable!
+    const value = this.loginForm.getValue();
+    let encodedCredentials = base64.encode(value.username + ":" + value.password);
+    console.log('value: ', value);
+    console.log(encodedCredentials);
+    fetch('http://192.168.0.114:5000/api/tokens', { // TODO: Abstract this to an app config variable!
         method: 'POST',
         headers: {
             Authorization: "Basic " + encodedCredentials
         }
-      })
-      .then((response) => { console.log(response); })
-      .catch((error) => {
-          console.error(error);
-      })
+    })
+    .then((response) => response.json())
+    .then((responseJson) => {
+        console.log("Token: " + stringify(responseJson));
+    })
+    .catch((error) => {
+        console.error(error);
+    })
   }
 
   static navigationOptions = {
@@ -60,30 +64,7 @@ export default class HomeScreen extends React.Component {
 
   render() {
     switch (this.state.page_id) {
-      case 1: //login page
-        return (
-          <ScrollView style={styles.scroll}>
-            <View style={styles.welcomeContainer}>
-              <Image
-                source={
-                  __DEV__
-                    ? require('../assets/images/gb.png')
-                    : require('../assets/images/robot-prod.png')
-                }
-                style={styles.welcomeImage}
-              />
-            </View>
-            <View>
-                <Form ref={c => this.loginForm = c} type={Login} options={formOptions} />
-                <Button title="LOG ME IN!" onPress={this.handleSubmit} />
-            </View>
-            <View
-            style={styles.span}
-            />
-          </ScrollView>
-        );
-        break;
-      case 2: //select/change event
+      case 1: //select/change event
         return (
           <ScrollView style={styles.scroll}>
             <Text style={styles.textStyle}>Please select the event you are attending.</Text>
@@ -94,7 +75,7 @@ export default class HomeScreen extends React.Component {
               <Button
               onPress={() => {
                 this.setState({
-                  page_id: 3
+                  page_id: 2
                 });
               }}
               title="Event1"
@@ -106,7 +87,7 @@ export default class HomeScreen extends React.Component {
               <Button
               onPress={() => {
                 this.setState({
-                  page_id: 3
+                  page_id: 2
                 });
               }}
               title="Event2"
@@ -119,19 +100,10 @@ export default class HomeScreen extends React.Component {
             <View
               style={styles.shortSpan}
             />
-            <Button
-              onPress={() => {
-                this.setState({
-                  page_id: 1
-                });
-              }}
-              title="Take Me Back!"
-              color="#979797"
-            />
           </ScrollView>
         );
         break;
-      case 3: //the actual "home" screen
+      case 2: //the actual "home" screen
         return (
           <ScrollView style={styles.scroll}>
             <View style={styles.welcomeContainer}>
@@ -147,7 +119,7 @@ export default class HomeScreen extends React.Component {
             <Button
               onPress={() => {
                 this.setState({
-                  page_id: 4
+                  page_id: 3
                 });
               }}
               title="Low-Stock Items"
@@ -159,7 +131,7 @@ export default class HomeScreen extends React.Component {
             <Button
               onPress={() => {
                 this.setState({
-                  page_id: 5
+                  page_id: 4
                 });
               }}
               title="Best Sellers"
@@ -183,7 +155,7 @@ export default class HomeScreen extends React.Component {
             <Button
                 onPress={() => {
                   this.setState({
-                    page_id: 2
+                    page_id: 1
                   });
                 }}
                 title="Change Event"

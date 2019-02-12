@@ -11,53 +11,83 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import utf8 from 'utf8';
-import base64 from 'base-64';
+
+import base64 from 'react-native-base64';
+
 import t from 'tcomb-form-native';
-
-//import { WebBrowser } from 'expo';
-//import { MonoText } from '../components/StyledText';
-
+import { stringify } from 'qs';
 const Form = t.form.Form;
 const Login = t.struct({
     username: t.String,
     password: t.String
 });
 
-export default class HomeScreen extends React.Component {
+const formOptions = {
+    fields: {
+        password: {
+            secureTextEntry: true
+        }
+    }
+}
+
+export default class LoginScreen extends React.Component {
+  constructor (props) {
+    super(props);
+    this.state = {
+      page_id: 1
+    };
+  }
+
+  static navigationOptions = {
+      title: 'Please sign in',
+  };
+
+  handleSubmit = () => {
+    const value = this.loginForm.getValue();
+    let encodedCredentials = base64.encode(value.username + ":" + value.password);
+    console.log('value: ', value);
+    console.log(encodedCredentials);
+    fetch('http://192.168.0.118:5000/api/tokens', { // TODO: Abstract this to an app config variable!
+        method: 'POST',
+        headers: {
+            Authorization: "Basic " + encodedCredentials
+        }
+    })
+    .then((response) => response.json())
+    .then((responseJson) => {
+        //await AsyncStorage.setItem('userToken', responseJson[token]);
+        this.props.navigation.navigate('App');
+    })
+    .catch((error) => {
+        console.error(error);
+    })
+  }
+
   static navigationOptions = {
     header: null,
   };
 
   render() {
     return (
-      <ScrollView style={styles.scroll}>
-          <View style={styles.welcomeContainer}>
+        <ScrollView style={styles.scroll}>
+        <View style={styles.welcomeContainer}>
             <Image
-              source={
+            source={
                 __DEV__
-                  ? require('../assets/images/gb.png')
-                  : require('../assets/images/robot-prod.png')
-              }
-              style={styles.welcomeImage}
+                ? require('../assets/images/gb.png')
+                : require('../assets/images/robot-prod.png')
+            }
+            style={styles.welcomeImage}
             />
-          </View>
-          <View>
-              <Form type={Login}/>
-              <Button title="LOG ME IN!" onPress={this.handleSubmit} />
-          </View>
-          <Button
-          styles = {{button:styles.alignRight,label:styles.label}}
-          onPress={() => {
-            Alert.alert('You tapped the forgot password button!');
-          }}
-          title="Forgot Login/Password?"
-          color="#979797"
-          />
-          <View
-          style={styles.span}
-          />
-      </ScrollView>
+        </View>
+        <View>
+            <Form ref={c => this.loginForm = c} type={Login} options={formOptions} />
+            <Button title="LOG ME IN!" onPress={this.handleSubmit} />
+        </View>
+        <View
+        style={styles.span}
+        />
+        </ScrollView>
     );
   }
 }
@@ -101,40 +131,13 @@ const styles = StyleSheet.create({
   span: {
     margin: 10
   },
+  shortSpan: {
+    margin: 5
+  },
+  eventList: {
+    backgroundColor: '#e0eeef'
+  },
+  textStyle: {
+    fontSize: 15,
+  }
 });
-
-/*
-          <Text>{"\n"}Username:</Text>
-          <TextInput 
-            style={styles.textInput}
-            placeholder="Enter username"
-            onChangeText={(text) => this.setState({text})}/>
-          <Text>{"\n"}Password:</Text>
-          <TextInput
-            secureTextEntry={true}
-            style={styles.textInput}
-            placeholder="Enter password"
-            onChangeText={(text) => this.setState({text})}
-          />
-          <Text>{"\n"}{"\n"}{"\n"}</Text> 
-          <Button
-          styles = {{button:styles.alignRight,label:styles.label}}
-          onPress={() => {
-              var authN = 
-              fetch('http://192.168.0.120:5000/api/tokens', {
-                  method: 'POST',
-                  headers: {
-                    Authorization: 
-                  }
-              })
-            Alert.alert('You tapped the log me in button!');
-          }}
-          //http://192.168.0.120:5000/
-          title="Log Me In!"
-          color="#979797"
-          />
-          <View
-            style={styles.span}
-          />
-
-*/
