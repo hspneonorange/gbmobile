@@ -7,42 +7,62 @@ import {
 export class Commission extends Component {
     render() {
         return (
-            <ScrollView style={styles.welcomeContainer}>
-                <TextInput
-                  style={styles.textInput}
-                  placeholder="Enter commissioner name"
-                  onChangeText={(text) => this.setState({text})}
-                />
-                <TextInput
-                  style={styles.textInput}
-                  placeholder="Enter commissioner email"
-                  onChangeText={(text) => this.setState({text})}
-                />
-                <TextInput
-                  style={styles.textInput}
-                  placeholder="Enter commissioner phone number"
-                  onChangeText={(text) => this.setState({text})}
-                />
-                <TextInput
-                  style={styles.textInput}
-                  placeholder="Enter street address"
-                  onChangeText={(text) => this.setState({text})}
-                />
-                <TextInput
-                  style={styles.textInput}
-                  placeholder="Enter city"
-                  onChangeText={(text) => this.setState({text})}
-                />
-                <TextInput
-                  style={styles.textInput}
-                  placeholder="Enter state abbreviation"
-                  onChangeText={(text) => this.setState({text})}
-                />
-                <TextInput
-                  style={styles.textInput}
-                  placeholder="Enter ZIP code"
-                  onChangeText={(text) => this.setState({text})}
-                />
+            <ScrollView style={styles.scroll}>
+                <View style={styles.welcomeContainer}>
+                    <TextInput
+                    style={styles.textInput}
+                    placeholder="Enter commissioner name"
+                    onChangeText={(text) => this.setState({text})}
+                    />
+                    <View
+                    style={styles.span}
+                    />
+                    <TextInput
+                    style={styles.textInput}
+                    placeholder="Enter commissioner email"
+                    onChangeText={(text) => this.setState({text})}
+                    />
+                    <View
+                    style={styles.span}
+                    />
+                    <TextInput
+                    style={styles.textInput}
+                    placeholder="Enter commissioner phone number"
+                    onChangeText={(text) => this.setState({text})}
+                    />
+                    <View
+                    style={styles.span}
+                    />
+                    <TextInput
+                    style={styles.textInput}
+                    placeholder="Enter street address"
+                    onChangeText={(text) => this.setState({text})}
+                    />
+                    <View
+                    style={styles.span}
+                    />
+                    <TextInput
+                    style={styles.textInput}
+                    placeholder="Enter city"
+                    onChangeText={(text) => this.setState({text})}
+                    />
+                    <View
+                    style={styles.span}
+                    />
+                    <TextInput
+                    style={styles.textInput}
+                    placeholder="Enter state abbreviation"
+                    onChangeText={(text) => this.setState({text})}
+                    />
+                    <View
+                    style={styles.span}
+                    />
+                    <TextInput
+                    style={styles.textInput}
+                    placeholder="Enter ZIP code"
+                    onChangeText={(text) => this.setState({text})}
+                    />
+                </View>
             </ScrollView>
         );
     }
@@ -61,11 +81,9 @@ export const CommissionStack = createStackNavigator({
 
 const styles = StyleSheet.create({
     welcomeContainer: {
-      alignItems: 'center',
       marginTop: 10,
       marginBottom: 20,
       flex: 1,
-      justifyContent:'center'
     },
     welcomeImage: {
       width: 100,
