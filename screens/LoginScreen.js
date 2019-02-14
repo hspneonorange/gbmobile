@@ -69,28 +69,32 @@ export default class LoginScreen extends React.Component {
 
   render() {
     return (
-        <ScrollView style={styles.scroll}>
+      <ScrollView style={styles.scroll}>
         <View style={styles.welcomeContainer}>
-            <Image
-            source={
-                __DEV__
-                ? require('../assets/images/gb.png')
-                : require('../assets/images/robot-prod.png')
-            }
-            style={styles.welcomeImage}
-            />
+          <Image
+          source={
+              __DEV__
+              ? require('../assets/images/gb.png')
+              : require('../assets/images/robot-prod.png')
+          }
+          style={styles.welcomeImage}
+          />
         </View>
         <View>
-            <Form ref={c => this.loginForm = c} type={Login} options={formOptions} />
-            <Button title="LOG ME IN!" onPress={this.handleSubmit} />
+          <Form ref={c => this.loginForm = c} type={Login} options={formOptions} />
+          <Button title="LOG ME IN!" onPress={this.handleSubmit} />
+          <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
+            <Button title='To Sales (idk how to make a button do 2 things lol)' onPress={()=>this.props.navigation.navigate('Sales')}/>
+          </View>
         </View>
         <View
         style={styles.span}
         />
-        </ScrollView>
+      </ScrollView>
     );
   }
 }
+      
 
 const styles = StyleSheet.create({
   welcomeContainer: {

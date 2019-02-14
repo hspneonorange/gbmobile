@@ -1,7 +1,19 @@
-import React from 'react';
-import { Platform, StatusBar, StyleSheet, View } from 'react-native';
+import React, { Component } from 'react';
+import { Platform, StatusBar, StyleSheet, View, } from 'react-native';
 import { AppLoading, Asset, Font, Icon } from 'expo';
-import AppNavigator from './navigation/AppNavigator';
+import {
+  createSwitchNavigator,
+  createAppContainer,
+  createDrawerNavigator,
+  createBottomTabNavigator,
+  createStackNavigator,
+} from 'react-navigation';
+//import statements for screens go here
+import LoginScreen from './screens/LoginScreen';
+import {SearchStack,Search} from './screens/Search';
+import {CommissionStack,Commission} from './screens/Commission';
+import {SalesStack,Sales} from './screens/Sales';
+import {SettingsStack,Settings} from './screens/Settings';
 
 export default class App extends React.Component {
   state = {
@@ -10,22 +22,12 @@ export default class App extends React.Component {
   };
 
   render() {
-    if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
-      return (
-        <AppLoading
-          startAsync={this._loadResourcesAsync}
-          onError={this._handleLoadingError}
-          onFinish={this._handleFinishLoading}
-        />
-      );
-    } else {
-      return (
-        <View style={styles.container}>
-          {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-          <AppNavigator/>
-        </View>
-      );
-    }
+    return (
+      <View style={styles.container}>
+        {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+        <AppContainer/>
+      </View>
+    );
   }
 
   _loadResourcesAsync = async () => {
@@ -54,6 +56,38 @@ export default class App extends React.Component {
     this.setState({ isLoadingComplete: true });
   };
 }
+
+const SalesTabNavigator = createBottomTabNavigator({
+  Search:SearchStack,
+  Sales:SalesStack,
+  Commission:CommissionStack,
+  Settings:SettingsStack
+},{
+  navigationOptions:({navigation})=>{
+    const {routeName} = navigation.state.routes[navigation.state.index];
+    return {
+      header: null,
+      headerTitle: routeName
+    }
+  }
+})
+
+const SalesStackNavigator = createStackNavigator({
+  SalesTabNavigator:SalesTabNavigator
+})
+
+const AppDrawerNavigator = createDrawerNavigator({
+  Sales:{
+    screen:SalesStackNavigator
+  }
+})
+
+const AppSwitchNavigator = createSwitchNavigator({
+  Login: { screen:LoginScreen },
+  Sales: { screen:AppDrawerNavigator }
+})
+
+const AppContainer = createAppContainer(AppSwitchNavigator);
 
 const styles = StyleSheet.create({
   container: {
