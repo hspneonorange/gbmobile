@@ -30,7 +30,7 @@ export default class App extends React.Component {
             <View style={styles.container}>
                 {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
                 <Provider store={store}>
-                    <AppContainer ref={navigatorRef => {NavigationService.setTopLevelNavigator(navigatorRef);}}/>
+                    <AppContainer ref={(navigatorRef) => {NavigationService.setTopLevelNavigator(navigatorRef);}}/>
                 </Provider>
             </View>
         );

@@ -5,12 +5,11 @@ import {
   ScrollView,
   StyleSheet,
   View,
+  Text,
+  AsyncStorage, // token persistence
 } from 'react-native';
-// Redux
 import {connect} from 'react-redux';
-// react-navigation
 import NavigationService from '../components/NavigationService';
-// Login support
 import base64 from 'react-native-base64';
 import t from 'tcomb-form-native';
 
@@ -28,7 +27,38 @@ const formOptions = {
     }
 }
 
+const retrieveAndTestExistingSession = async () => {
+    console.log('Looking up in AsyncStorage');
+    await AsyncStorage.getItem('@Authentication:access-token')
+    .then(async (sessionToken) => {
+        if (sessionToken !== null) {
+            console.log("Retrieved value: ", sessionToken);
+            await fetch('http://192.168.0.128:5000/api/tokens', {
+                method: 'GET',
+                headers: {
+                    Authorization: "Bearer " + sessionToken
+                }
+            })
+            .then((response) => {
+                console.log("isSessionTokenStillValid       :: Valid: ", response.ok);
+                if (response.ok) {
+                    console.log('Session token still valid; redirecting')
+                    NavigationService.navigate('Sales');                
+                } else {
+                    console.log('Session token expired or invalid');
+                }
+            })
+            .catch((error) => {
+                console.error(isSessionTokenStillValid, error);
+            })
+        } else {
+            console.log('Session token not found in AsyncStorage');
+        }
+    });
+}
+
 const LoginScreen = (props) => {
+    retrieveAndTestExistingSession();
     return (
         <ScrollView style={styles.scroll}>
             <View style={styles.welcomeContainer}>
@@ -57,21 +87,22 @@ const mapDispatchToProps = (dispatch) => {
             const value = this.loginForm.getValue();
             let encodedCredentials = base64.encode(value.username + ":" + value.password);
             // TODO: Abstract this to an app config variable!
-            fetch('http://192.168.0.112:5000/api/tokens', {
+            fetch('http://192.168.0.128:5000/api/tokens', {
                 method: 'POST',
                 headers: {
                     Authorization: "Basic " + encodedCredentials
                 }
             })
             .then((response) => response.json())
-            .then((responseJson) => {
-                /* Response looks like this:
-                {
-                    "token": "GMoErE4JIwZv7QkZuhzn1MD7hPGOm3tt"
-                }
-                */
+            .then(async (responseJson) => {
+                // Valid response looks like this: {"token": "GMoErE4JIwZv7QkZuhzn1MD7hPGOm3tt"}
                 const sessionToken = responseJson.token;
                 if (sessionToken) {
+                    try {
+                        await AsyncStorage.setItem('@Authentication:access-token', sessionToken);
+                    } catch (error) {
+                        console.log('AsyncStorage failed: ', error);
+                    }
                     dispatch({type: 'HANDLE_AUTHN', token: sessionToken});
                     NavigationService.navigate('Sales');
                     //this.props.navigation.navigate('Sales');
