@@ -5,7 +5,6 @@ import {
   ScrollView,
   StyleSheet,
   View,
-  Text,
   AsyncStorage, // token persistence
 } from 'react-native';
 import {connect} from 'react-redux';
@@ -27,7 +26,7 @@ const formOptions = {
     }
 }
 
-const retrieveAndTestExistingSession = async () => {
+const retrieveAndTestExistingSession = async (props) => {
     console.log('Looking up in AsyncStorage');
     await AsyncStorage.getItem('@Authentication:access-token')
     .then(async (sessionToken) => {
@@ -40,16 +39,17 @@ const retrieveAndTestExistingSession = async () => {
                 }
             })
             .then((response) => {
-                console.log("isSessionTokenStillValid       :: Valid: ", response.ok);
+                console.log("Token valid: ", response.ok);
                 if (response.ok) {
                     console.log('Session token still valid; redirecting')
+                    props.updateSessionToken(sessionToken);
                     NavigationService.navigate('Sales');                
                 } else {
                     console.log('Session token expired or invalid');
                 }
             })
             .catch((error) => {
-                console.error(isSessionTokenStillValid, error);
+                console.error(error);
             })
         } else {
             console.log('Session token not found in AsyncStorage');
@@ -58,7 +58,7 @@ const retrieveAndTestExistingSession = async () => {
 }
 
 const LoginScreen = (props) => {
-    retrieveAndTestExistingSession();
+    retrieveAndTestExistingSession(props);
     return (
         <ScrollView style={styles.scroll}>
             <View style={styles.welcomeContainer}>
@@ -113,6 +113,9 @@ const mapDispatchToProps = (dispatch) => {
             .catch((error) => {
                 console.error(error);
             });
+        },
+        updateSessionToken: (sessionToken) => {
+            dispatch({type: 'HANDLE_AUTHN', token: sessionToken});
         }
     };
 };
