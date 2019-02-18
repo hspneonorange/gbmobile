@@ -58,4 +58,8 @@ export default styles = StyleSheet.create({
     lineItem: {
       textAlign: 'right',
     },
+    productName: {
+      fontSize: 20,
+      fontWeight: 'bold',
+    }
 });
