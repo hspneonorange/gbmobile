@@ -3,7 +3,7 @@ import {ScrollView, View, TextInput, Button, FlatList} from 'react-native';
 import styles from '../styles.js';
 import {connect} from 'react-redux';
 import NavigationService from '../components/NavigationService';
-import ListItem from '@components/ListItem';
+import ProductListItem from '@components/ProductListItem';
 
 const Keyword = (props) => {
   console.log(props.searchItems);  
@@ -17,7 +17,7 @@ const Keyword = (props) => {
               <FlatList 
                 data = {props.searchItems}
                 keyExtractor = {item => 'list-item-$'+item.id}
-                renderItem = {({item}) => <ListItem item={item} />}
+                renderItem = {({item}) => <ProductListItem item={item} />}
               />
             </ScrollView>
         </ScrollView>
@@ -41,7 +41,7 @@ const mapDispatchToProps = (dispatch) => {
             // TODO: Abstract this to an app config variable!
             console.log('searchPressed');
             console.log('Bearer ', sessionToken);
-            fetch('http://192.168.0.119:5000/api/products?search=' + searchText, {
+            fetch('http://192.168.0.100:5000/api/products?search=' + searchText, {
                 method: 'GET',
                 headers: {
                     Authorization: "Bearer " + sessionToken

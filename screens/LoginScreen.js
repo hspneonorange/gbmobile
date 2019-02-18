@@ -32,7 +32,7 @@ const retrieveAndTestExistingSession = async (props) => {
     .then(async (sessionToken) => {
         if (sessionToken !== null) {
             console.log("Retrieved value: ", sessionToken);
-            await fetch('http://192.168.0.119:5000/api/tokens', {
+            await fetch('http://192.168.0.100:5000/api/tokens', {
                 method: 'GET',
                 headers: {
                     Authorization: "Bearer " + sessionToken
@@ -43,7 +43,7 @@ const retrieveAndTestExistingSession = async (props) => {
                 if (response.ok) {
                     console.log('Session token still valid; redirecting')
                     props.updateSessionToken(sessionToken);
-                    NavigationService.navigate('Sales');                
+                    NavigationService.navigate('Sales');
                 } else {
                     console.log('Session token expired or invalid');
                 }
@@ -87,7 +87,7 @@ const mapDispatchToProps = (dispatch) => {
             const value = this.loginForm.getValue();
             let encodedCredentials = base64.encode(value.username + ":" + value.password);
             // TODO: Abstract this to an app config variable!
-            fetch('http://192.168.0.119:5000/api/tokens', {
+            fetch('http://192.168.0.100:5000/api/tokens', {
                 method: 'POST',
                 headers: {
                     Authorization: "Basic " + encodedCredentials
@@ -104,7 +104,7 @@ const mapDispatchToProps = (dispatch) => {
                         console.log('AsyncStorage failed: ', error);
                     }
                     dispatch({type: 'HANDLE_AUTHN', token: sessionToken});
-                    NavigationService.navigate('Sales');
+                    NavigationService.navigate('Event');
                     //this.props.navigation.navigate('Sales');
                 } else {
                     alert('Login failed');

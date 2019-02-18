@@ -9,16 +9,16 @@ import {
     createBottomTabNavigator,
     createStackNavigator,
 } from 'react-navigation';
-import LoginScreen from './screens/LoginScreen';
-import {SearchStack, Search} from './screens/Search';
-import {CommissionStack, Commission} from './screens/Commission';
-import {SalesStack, Sales} from './screens/Sales';
-import {SettingsStack, Settings} from './screens/Settings';
-import NavigationService from './components/NavigationService';
+import LoginScreen from '@screens/LoginScreen';
+import SelectEventScreen from '@screens/SelectEventScreen';
+import {SearchStack, Search} from '@screens/Search';
+import {CommissionStack, Commission} from '@screens/Commission';
+import {SalesStack, Sales} from '@screens/Sales';
+import {SettingsStack, Settings} from '@screens/Settings';
+import NavigationService from '@components/NavigationService';
 // redux/react-redux
 import store from './store/';
 import {Provider} from 'react-redux';
-
 
 export default class App extends React.Component {
     state = {
@@ -85,7 +85,8 @@ const AppDrawerNavigator = createDrawerNavigator({
 
 const AppSwitchNavigator = createSwitchNavigator({
   Login: { screen:LoginScreen },
-  Sales: { screen:AppDrawerNavigator }
+  Sales: { screen:AppDrawerNavigator },
+  Event: { screen:SelectEventScreen },
 });
 
 const AppContainer = createAppContainer(AppSwitchNavigator);
