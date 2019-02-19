@@ -6,7 +6,7 @@ import NavigationService from '../components/NavigationService';
 import ProductListItem from '@components/ProductListItem';
 
 const Keyword = (props) => {
-  console.log(props.searchItems);
+//  console.log(props.searchItems);
   return (
         <ScrollView style={styles.scroll} removeClippedSubviews={true} scrollEventThrottle={16}>
             <View>
