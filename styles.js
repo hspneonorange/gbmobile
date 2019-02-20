@@ -77,6 +77,7 @@ export default styles = StyleSheet.create({
       flexDirection: 'column',
       flexWrap: 'wrap',
       justifyContent: 'center',
+      paddingTop: 5,
       paddingBottom: 5,
       paddingLeft: 5,
       flexGrow: 1,
