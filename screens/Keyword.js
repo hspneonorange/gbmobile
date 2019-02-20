@@ -13,13 +13,13 @@ const Keyword = (props) => {
                 <TextInput style={styles.textInput} placeholder="Enter search term"  onChangeText={(text) => {props.textChanged(text)}}/>
             </View>
             <Button title="Search" color="#979797" onPress={() => {props.searchPressed(props.sessionToken, props.searchText)}}/>
-            <ScrollView>
+            <View style={styles.searchResults}>
               <FlatList 
                 data = {props.searchItems}
                 keyExtractor = {item => 'list-item-$'+item.id}
                 renderItem = {({item}) => <ProductListItem item={item} />}
               />
-            </ScrollView>
+            </View>
         </ScrollView>
     );
 }

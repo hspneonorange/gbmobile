@@ -6,7 +6,7 @@ export default styles = StyleSheet.create({
       marginTop: 10,
       marginBottom: 20,
       flex: 1,
-      justifyContent:'center'
+      justifyContent:'center',
     },
     welcomeImage: {
       width: 100,
@@ -18,6 +18,7 @@ export default styles = StyleSheet.create({
     scroll: {
         backgroundColor: '#c8e0e4',
         padding:30,
+        flexGrow: 1
         //flexDirection: 'column',
     },
     optionBar: {
@@ -49,7 +50,7 @@ export default styles = StyleSheet.create({
       margin: 2
     },
     searchResults: {
-      backgroundColor: '#e0eeef'
+      paddingBottom: 40,
     },
     sectionText: {
       fontWeight: 'bold',
@@ -65,9 +66,8 @@ export default styles = StyleSheet.create({
     listItemBox: {
       backgroundColor: '#bcbcbc',
       marginTop: 10,
-      flex: 1,
+      flexGrow: 1,
       flexDirection: 'row',
-      alignItems: 'flex-end',
     },
     listItemImage: {
       height:40,
@@ -76,9 +76,21 @@ export default styles = StyleSheet.create({
     listItemText: {
       flexDirection: 'column',
       flexWrap: 'wrap',
+      justifyContent: 'center',
+      paddingBottom: 5,
+      paddingLeft: 5,
+      flexGrow: 1,
     },
     additionalInfo: {
       flexDirection: 'row',
-      justifyContent: 'space-between',
-    }
+      flexGrow: 1,
+    },
+    productSeries: {
+      flex: 3,
+      alignContent: 'flex-end',
+    },
+    productPrice: {
+      flex: 1,
+      alignContent: 'flex-start'
+    },
 });

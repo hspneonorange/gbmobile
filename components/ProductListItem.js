@@ -10,9 +10,7 @@ import 'intl';
 import 'intl/locale-data/jsonp/en';
 
 export default ListItem = (props) => {
-    //TODO: format prices to display properly ex: show as $2.00 instead of $2 (maybe react-native-globalize?)
-    //also: pull appropriate product series based on props.item.product_series_id from product series
-    //display price and product series with a good space between them
+    //TODO: pull appropriate product series based on props.item.product_series_id from product series
     const currencyFormatter = new Intl.NumberFormat('en-US', {
         style: 'currency',
         currency: 'USD',
@@ -42,8 +40,8 @@ export default ListItem = (props) => {
             <View style={styles.listItemText}>
                 <Text style={styles.nameDisplay}>{props.item.name}</Text>
                 <View style={styles.additionalInfo}>
-                    <Text>{props.item.product_series_id}</Text>
-                    <Text>{currencyFormatter.format(props.item.price)}</Text>
+                    <Text style={styles.productPrice}>{currencyFormatter.format(props.item.price)}</Text>
+                    <Text style={styles.productSeries}>{props.item.product_series_id}</Text>
                 </View>
             </View>
         </View>
