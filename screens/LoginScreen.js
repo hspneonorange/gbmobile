@@ -32,7 +32,7 @@ const retrieveAndTestExistingSession = async (props) => {
     .then(async (sessionToken) => {
         if (sessionToken !== null) {
             console.log("Retrieved value: ", sessionToken);
-            await fetch('http://192.168.0.107:5000/api/tokens', {
+            await fetch('http://192.168.0.114:5000/api/tokens', {
                 method: 'GET',
                 headers: {
                     Authorization: "Bearer " + sessionToken
@@ -87,7 +87,7 @@ const mapDispatchToProps = (dispatch) => {
             const value = this.loginForm.getValue();
             let encodedCredentials = base64.encode(value.username + ":" + value.password);
             // TODO: Abstract this to an app config variable!
-            fetch('http://192.168.0.107:5000/api/tokens', {
+            fetch('http://192.168.0.114:5000/api/tokens', {
                 method: 'POST',
                 headers: {
                     Authorization: "Basic " + encodedCredentials

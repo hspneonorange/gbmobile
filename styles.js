@@ -78,6 +78,7 @@ export default styles = StyleSheet.create({
       flexWrap: 'wrap',
     },
     additionalInfo: {
-      flexDirection: 'row'
+      flexDirection: 'row',
+      justifyContent: 'space-between',
     }
 });

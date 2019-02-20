@@ -18,18 +18,32 @@ export default ListItem = (props) => {
         currency: 'USD',
         minimumFractionDigits: 2
     })
+    
+    if (props.item.image_link) {
+        DisplayImage =
+        <Image
+            style={{width: 60, height: 60}}
+            source={{uri:(""+props.item.image_link).replace('https://drive.google.com/open?id=', 'http://drive.google.com/uc?export=view&id=')}}
+            resizeMethod="auto"
+        />
+    } else { //only display this if there is no given product picture for an item
+        //https://drive.google.com/file/d/1Faj2B7ftTti8QzMxN--GveGuAtfaou58/view?usp=sharing
+        DisplayImage = 
+        <Image
+            style={{width: 60, height: 60}}
+            source={{uri:'http://drive.google.com/uc?export=view&id=1Faj2B7ftTti8QzMxN--GveGuAtfaou58'}} //link to "image not available"
+            resizeMethod="auto"
+        />
+    }
+
     return (
         <View style={styles.listItemBox}>
-            <Image
-                style={{width: 60, height: 60}}
-                source={{uri:(""+props.item.image_link).replace('https://drive.google.com/open?id=', 'http://drive.google.com/uc?export=view&id=')}}
-                resizeMethod="auto"
-            />
+            {DisplayImage}
             <View style={styles.listItemText}>
                 <Text style={styles.nameDisplay}>{props.item.name}</Text>
                 <View style={styles.additionalInfo}>
-                    <Text style={alignContent='flex-start'}>{props.item.product_series_id}  </Text>
-                    <Text style={alignContent='flex-end'}>{currencyFormatter.format(props.item.price)}</Text>
+                    <Text>{props.item.product_series_id}</Text>
+                    <Text>{currencyFormatter.format(props.item.price)}</Text>
                 </View>
             </View>
         </View>

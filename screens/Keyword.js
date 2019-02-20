@@ -41,7 +41,7 @@ const mapDispatchToProps = (dispatch) => {
             // TODO: Abstract this to an app config variable!
             console.log('searchPressed');
             console.log('Bearer ', sessionToken);
-            fetch('http://192.168.0.107:5000/api/products?search=' + searchText, {
+            fetch('http://192.168.0.114:5000/api/products?search=' + searchText, {
                 method: 'GET',
                 headers: {
                     Authorization: "Bearer " + sessionToken
