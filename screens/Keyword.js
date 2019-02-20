@@ -6,9 +6,9 @@ import NavigationService from '../components/NavigationService';
 import ProductListItem from '@components/ProductListItem';
 
 const Keyword = (props) => {
-  console.log(props.searchItems);  
+  console.log(props.searchItems);
   return (
-        <ScrollView style={styles.scroll}>
+        <ScrollView style={styles.scroll} removeClippedSubviews={true} scrollEventThrottle={16}>
             <View>
                 <TextInput style={styles.textInput} placeholder="Enter search term"  onChangeText={(text) => {props.textChanged(text)}}/>
             </View>
@@ -41,7 +41,7 @@ const mapDispatchToProps = (dispatch) => {
             // TODO: Abstract this to an app config variable!
             console.log('searchPressed');
             console.log('Bearer ', sessionToken);
-            fetch('http://192.168.0.100:5000/api/products?search=' + searchText, {
+            fetch('http://192.168.0.107:5000/api/products?search=' + searchText, {
                 method: 'GET',
                 headers: {
                     Authorization: "Bearer " + sessionToken

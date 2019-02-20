@@ -5,6 +5,7 @@ const initialState = {
     searchText: '',
     searchItems: [],
     events: [],
+    productCart: [],
 }
 
 const reducer = (state = initialState, action) => {

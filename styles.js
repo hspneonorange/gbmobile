@@ -58,8 +58,26 @@ export default styles = StyleSheet.create({
     lineItem: {
       textAlign: 'right',
     },
-    productName: {
+    nameDisplay: {
       fontSize: 20,
       fontWeight: 'bold',
+    },
+    listItemBox: {
+      backgroundColor: '#bcbcbc',
+      marginTop: 10,
+      flex: 1,
+      flexDirection: 'row',
+      alignItems: 'flex-end',
+    },
+    listItemImage: {
+      height:40,
+      width:40,
+    },
+    listItemText: {
+      flexDirection: 'column',
+      flexWrap: 'wrap',
+    },
+    additionalInfo: {
+      flexDirection: 'row'
     }
 });
