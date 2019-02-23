@@ -12,7 +12,7 @@ const Keyword = (props) => {
             <View>
                 <TextInput style={styles.textInput} placeholder="Enter search term"  onChangeText={(text) => {props.textChanged(text)}}/>
             </View>
-            <Button title="Search" color="#979797" onPress={() => {props.searchPressed(props.sessionToken, props.searchText)}}/>
+            <Button title="Search" color="#979797" onPress={() => {props.searchPressed(props.sessionToken, props.searchText, props.appConfig.hostAddress)}}/>
             <View style={styles.searchResults}>
               <FlatList 
                 data = {props.searchItems}
@@ -29,6 +29,7 @@ const mapStateToProps = (state) => {
         sessionToken: state.sessionToken,
         searchText: state.searchText,
         searchItems: state.searchItems,
+        appConfig: state.appConfig,
     };
 }
 
@@ -37,11 +38,12 @@ const mapDispatchToProps = (dispatch) => {
         textChanged: (text) => {
             dispatch({type: 'SEARCH_TEXT_CHANGED', text: text});
         },
-        searchPressed: (sessionToken, searchText) => {
+        searchPressed: (sessionToken, searchText, hostAddress) => {
             // TODO: Abstract this to an app config variable!
             console.log('searchPressed');
             console.log('Bearer ', sessionToken);
-            fetch('http://192.168.0.114:5000/api/products?search=' + searchText, {
+            //fetch('http://192.168.0.112:5000/api/products?search=' + searchText, {
+            fetch(hostAddress + '/products?search=' + searchText, {
                 method: 'GET',
                 headers: {
                     Authorization: "Bearer " + sessionToken

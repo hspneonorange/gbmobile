@@ -17,7 +17,7 @@ export default styles = StyleSheet.create({
     },
     scroll: {
         backgroundColor: '#c8e0e4',
-        padding:30,
+        padding:20,
         flexGrow: 1
         //flexDirection: 'column',
     },

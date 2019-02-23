@@ -1,4 +1,5 @@
 import {createStore} from 'redux';
+import appConfig from '../appconfig.json';
 
 const initialState = {
     sessionToken: '',
@@ -6,6 +7,9 @@ const initialState = {
     searchItems: [],
     events: [],
     productCart: [],
+    appConfig: appConfig,
+    username: '',
+    password: '',
 }
 
 const reducer = (state = initialState, action) => {
@@ -22,6 +26,10 @@ const reducer = (state = initialState, action) => {
             return Object.assign({}, state, {searchItems: action.searchItems});
         case 'RETURN_EVENTS':
             return Object.assign({}, state, {events: action.events});
+        case 'USERNAME_TEXT_CHANGED':
+            return Object.assign({}, state, {username: action.text});
+        case 'PASSWORD_TEXT_CHANGED':
+            return Object.assign({}, state, {password: action.text});
         default:
             return state;
     }

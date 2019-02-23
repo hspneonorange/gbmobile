@@ -6,6 +6,8 @@ import {
   StyleSheet,
   View,
   AsyncStorage, // token persistence
+  Text,
+  TextInput,
 } from 'react-native';
 import {connect} from 'react-redux';
 import NavigationService from '../components/NavigationService';
@@ -13,18 +15,18 @@ import base64 from 'react-native-base64';
 import t from 'tcomb-form-native';
 
 // Form setup
-const Form = t.form.Form;
-const Login = t.struct({
-    username: t.String,
-    password: t.String
-});
-const formOptions = {
-    fields: {
-        password: {
-            secureTextEntry: true
-        }
-    }
-}
+// const Form = t.form.Form;
+// const Login = t.struct({
+//     username: t.String,
+//     password: t.String
+// });
+// const formOptions = {
+//     fields: {
+//         password: {
+//             secureTextEntry: true
+//         }
+//     }
+// }
 
 const retrieveAndTestExistingSession = async (props) => {
     console.log('Looking up in AsyncStorage');
@@ -32,7 +34,9 @@ const retrieveAndTestExistingSession = async (props) => {
     .then(async (sessionToken) => {
         if (sessionToken !== null) {
             console.log("Retrieved value: ", sessionToken);
-            await fetch('http://192.168.0.114:5000/api/tokens', {
+            //await fetch('http://192.168.0.112:5000/api/tokens', {
+            console.log("hostAddress: ",props.appConfig.hostAddress);
+            await fetch(props.appConfig.hostAddress + '/tokens', {
                 method: 'GET',
                 headers: {
                     Authorization: "Bearer " + sessionToken
@@ -68,8 +72,13 @@ const LoginScreen = (props) => {
                 />
             </View>
             <View>
-                <Form ref={c => this.loginForm = c} type={Login} options={formOptions} />
-                <Button title="Log In" onPress={props.loginPressed} />
+                <Text>Username:</Text>
+                <TextInput style={styles.textInput} placeholder="Username" onChangeText={(text) => {props.usernameTextChanged(text)}}/>
+                <Text>Password:</Text>
+                <View style={styles.span} />
+                <TextInput style={styles.textInput} placeholder="Password" secureTextEntry={true} onChangeText={(text) => {props.passwordTextChanged(text)}}/>
+                <View style={styles.span} />
+                <Button title="Log Me In! :^)" color="#979797" onPress={() => {props.loginPressed(props.username, props.password, props.appConfig.hostAddress)}}/>
             </View>
             <View style={styles.span}/>
         </ScrollView>
@@ -78,16 +87,26 @@ const LoginScreen = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-    }; // no state to pass down just yet
+        appConfig: state.appConfig,
+        username: state.username,
+        password: state.password,
+    };
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        loginPressed: () => {
-            const value = this.loginForm.getValue();
-            let encodedCredentials = base64.encode(value.username + ":" + value.password);
+        usernameTextChanged: (text) => {
+            dispatch({type: 'USERNAME_TEXT_CHANGED', text: text});
+        },
+        passwordTextChanged: (text) => {
+            dispatch({type: 'PASSWORD_TEXT_CHANGED', text: text});
+        },
+        loginPressed: (username, password, hostAddress) => {
+            //const value = this.loginForm.getValue();
+            let encodedCredentials = base64.encode(username + ":" + password);
             // TODO: Abstract this to an app config variable!
-            fetch('http://192.168.0.114:5000/api/tokens', {
+            //fetch('http://192.168.0.112:5000/api/tokens', {
+            fetch(hostAddress + '/tokens' ,{
                 method: 'POST',
                 headers: {
                     Authorization: "Basic " + encodedCredentials
