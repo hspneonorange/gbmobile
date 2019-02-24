@@ -50,6 +50,9 @@ const ListItem = (props) => {
                     <Text style={styles.productSeries}>{props.item.product_series_id}</Text>
                 </View>
             </View>
+            <TouchableOpacity style={styles.addToCart}>
+                <Text style={styles.addProductText}>+</Text>
+            </TouchableOpacity>
         </TouchableOpacity>
     );
 }
@@ -66,38 +69,7 @@ const mapDispatchToProps = (dispatch) => {
                 item: item
             });
         }
-        // textChanged: (text) => {
-        //     dispatch({type: 'SEARCH_TEXT_CHANGED', text: text});
-        // },
-        // searchPressed: (sessionToken, searchText, hostAddress) => {
-        //     // TODO: Abstract this to an app config variable!
-        //     console.log('searchPressed');
-        //     console.log('Bearer ', sessionToken);
-        //     //fetch('http://192.168.0.112:5000/api/products?search=' + searchText, {
-        //     fetch(hostAddress + '/products?search=' + searchText, {
-        //         method: 'GET',
-        //         headers: {
-        //             Authorization: "Bearer " + sessionToken
-        //         }
-        //     })
-        //     .then((response) => response.json())
-        //     .then(async (responseJson) => {
-        //         console.log(responseJson);
-        //         dispatch({type: 'RETURN_SEARCH_ITEMS', searchItems: responseJson.items})
-        //     })
-        //     .catch((error) => {
-        //         console.error(error);
-        //     });
-        // }
     };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ListItem);
-
-/*return <ListItem
-    name = {name}
-    price = {price}
-    image_link = {image_link}
-    id = {id}
-    click ={() => this.addItemToCart(index)}
-/>*/

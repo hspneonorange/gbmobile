@@ -94,4 +94,15 @@ export default styles = StyleSheet.create({
       flex: 1,
       alignContent: 'flex-start'
     },
+    addToCart: {
+      fontWeight: 'bold',
+      width: 50,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: '#979797',
+    },
+    addProductText: {
+      fontSize: 40,
+      fontWeight: 'bold',
+    },
 });
