@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, StatusBar, StyleSheet, View, } from 'react-native';
+import { Platform, StatusBar, StyleSheet, View, Button} from 'react-native';
 import { Asset, Font, Icon } from 'expo';
 // react-navigation
 import {
@@ -15,6 +15,7 @@ import {SearchStack, Search} from '@screens/Search';
 import {CommissionStack, Commission} from '@screens/Commission';
 import {SalesStack, Sales} from '@screens/Sales';
 import {SettingsStack, Settings} from '@screens/Settings';
+import {ShoppingCartScreen} from '@screens/ShoppingCartScreen';
 import NavigationService from '@components/NavigationService';
 // redux/react-redux
 import store from './store/';
@@ -68,7 +69,10 @@ const SalesTabNavigator = createBottomTabNavigator({
         const {routeName} = navigation.state.routes[navigation.state.index];
         return {
             header: null,
-            headerTitle: routeName
+            headerTitle: routeName,
+            headerRight: (
+                <Button onPress={() => NavigationService.navigate('Cart')}/>
+            )
         }
     }
 });

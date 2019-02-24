@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import {
   Image,
   Button,
@@ -13,61 +13,66 @@ import {connect} from 'react-redux';
 import NavigationService from '../components/NavigationService';
 import base64 from 'react-native-base64';
 
-const retrieveAndTestExistingSession = async (props) => {
-    console.log('Looking up in AsyncStorage');
-    await AsyncStorage.getItem('@Authentication:access-token')
-    .then(async (sessionToken) => {
-        if (sessionToken !== null) {
-            console.log("Retrieved value: ", sessionToken);
-            //await fetch('http://192.168.0.112:5000/api/tokens', {
-            console.log("hostAddress: ",props.appConfig.hostAddress);
-            await fetch(props.appConfig.hostAddress + '/tokens', {
-                method: 'GET',
-                headers: {
-                    Authorization: "Bearer " + sessionToken
-                }
-            })
-            .then((response) => {
-                console.log("Token valid: ", response.ok);
-                if (response.ok) {
-                    console.log('Session token still valid; redirecting')
-                    props.updateSessionToken(sessionToken);
-                    NavigationService.navigate('Sales');
-                } else {
-                    console.log('Session token expired or invalid');
-                }
-            })
-            .catch((error) => {
-                console.error(error);
-            })
-        } else {
-            console.log('Session token not found in AsyncStorage');
-        }
-    });
-}
+class LoginScreen extends Component {
+    componentDidMount = () => {
+        this.retrieveAndTestExistingSession();
+    }
 
-const LoginScreen = (props) => {
-    retrieveAndTestExistingSession(props);
-    return (
-        <ScrollView style={styles.scroll}>
-            <View style={styles.welcomeContainer}>
-                <Image
-                    source={__DEV__ ? require('../assets/images/gb.png') : require('../assets/images/robot-prod.png')}
-                    style={styles.welcomeImage}
-                />
-            </View>
-            <View>
-                <Text>Username:</Text>
-                <TextInput style={styles.textInput} placeholder="Username" onChangeText={(text) => {props.usernameTextChanged(text)}}/>
-                <Text>Password:</Text>
-                <View style={styles.span} />
-                <TextInput style={styles.textInput} placeholder="Password" secureTextEntry={true} onChangeText={(text) => {props.passwordTextChanged(text)}}/>
-                <View style={styles.span} />
-                <Button title="Log Me In! :^)" color="#979797" onPress={() => {props.loginPressed(props.username, props.password, props.appConfig.hostAddress)}}/>
-            </View>
-            <View style={styles.span}/>
-        </ScrollView>
-    );
+    retrieveAndTestExistingSession = async () => {
+        console.log('Looking up in AsyncStorage');
+        await AsyncStorage.getItem('@Authentication:access-token')
+        .then(async (sessionToken) => {
+            if (sessionToken !== null) {
+                console.log("Retrieved value: ", sessionToken);
+                //await fetch('http://192.168.0.112:5000/api/tokens', {
+                console.log("hostAddress: ", this.props.appConfig.hostAddress);
+                await fetch(this.props.appConfig.hostAddress + '/tokens', {
+                    method: 'GET',
+                    headers: {
+                        Authorization: "Bearer " + sessionToken
+                    }
+                })
+                .then((response) => {
+                    console.log("Token valid: ", response.ok);
+                    if (response.ok) {
+                        console.log('Session token still valid; redirecting')
+                        this.props.updateSessionToken(sessionToken);
+                        NavigationService.navigate('Sales');
+                    } else {
+                        console.log('Session token expired or invalid');
+                    }
+                })
+                .catch((error) => {
+                    console.error(error);
+                })
+            } else {
+                console.log('Session token not found in AsyncStorage');
+            }
+        });
+    }
+    
+    render() {
+        return (
+            <ScrollView style={styles.scroll}>
+                <View style={styles.welcomeContainer}>
+                    <Image
+                        source={__DEV__ ? require('../assets/images/gb.png') : require('../assets/images/robot-prod.png')}
+                        style={styles.welcomeImage}
+                    />
+                </View>
+                <View>
+                    <Text>Username:</Text>
+                    <TextInput style={styles.textInput} placeholder="Username" onChangeText={(text) => {this.props.usernameTextChanged(text)}}/>
+                    <Text>Password:</Text>
+                    <View style={styles.span} />
+                    <TextInput style={styles.textInput} placeholder="Password" secureTextEntry={true} onChangeText={(text) => {this.props.passwordTextChanged(text)}}/>
+                    <View style={styles.span} />
+                    <Button title="Log Me In! :^)" color="#979797" onPress={() => {this.props.loginPressed(this.props.username, this.props.password, this.props.appConfig.hostAddress)}}/>
+                </View>
+                <View style={styles.span}/>
+            </ScrollView>
+        );
+    }
 }
 
 const mapStateToProps = (state) => {
