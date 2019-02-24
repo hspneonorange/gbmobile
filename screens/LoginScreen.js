@@ -12,21 +12,6 @@ import {
 import {connect} from 'react-redux';
 import NavigationService from '../components/NavigationService';
 import base64 from 'react-native-base64';
-import t from 'tcomb-form-native';
-
-// Form setup
-// const Form = t.form.Form;
-// const Login = t.struct({
-//     username: t.String,
-//     password: t.String
-// });
-// const formOptions = {
-//     fields: {
-//         password: {
-//             secureTextEntry: true
-//         }
-//     }
-// }
 
 const retrieveAndTestExistingSession = async (props) => {
     console.log('Looking up in AsyncStorage');

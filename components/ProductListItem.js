@@ -12,9 +12,6 @@ import 'intl/locale-data/jsonp/en';
 import NavigationService from '../components/NavigationService';
 import {connect} from 'react-redux';
 
-const onPressListItem = (props) => {
-}
-
 const ListItem = (props) => {
     //TODO: pull appropriate product series based on props.item.product_series_id from product series
     const currencyFormatter = new Intl.NumberFormat('en-US', {

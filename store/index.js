@@ -10,6 +10,7 @@ const initialState = {
     appConfig: appConfig,
     username: '',
     password: '',
+    event: '',
 }
 
 const reducer = (state = initialState, action) => {
@@ -30,6 +31,8 @@ const reducer = (state = initialState, action) => {
             return Object.assign({}, state, {username: action.text});
         case 'PASSWORD_TEXT_CHANGED':
             return Object.assign({}, state, {password: action.text});
+        case 'SET_EVENT':
+            return Object.assign({}, state, {event:action.event}); //finish this lmao
         default:
             return state;
     }

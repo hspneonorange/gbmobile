@@ -1,25 +1,30 @@
 import React, {Component} from 'react';
 import {
     Text,
-    Button,
-    Alert,
     View,
-    Image,
-    TouchableOpacity
+    ScrollView,
 } from 'react-native';
 import NavigationService from '../components/NavigationService';
 import {connect} from 'react-redux';
+import 'intl';
+import 'intl/locale-data/jsonp/en';
 
 const ProductInfoScreen = (props) => {
-    console.log(props);
-    //TODO: add an "add to cart button" at the bottom owo
+    const currencyFormatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 2
+    })
+
+    //TODO: add an "add to cart button" at the bottom òwó
     return (
-        <View>
-            <Text>Item Id: {props.item.id}</Text>
-            <Text>Item Name: {props.item.name}</Text>
-            <Text>Item Keywords: {props.item.keywords}</Text>
-            <Text>Item Price: {props.item.price}</Text>
-        </View>
+        <ScrollView style={styles.scroll}>
+            <View style={styles.welcomeContainer}>
+                <Text style={styles.nameDisplay}>{props.item.id} | {props.item.name}</Text>
+                <Text>Keywords: {props.item.keywords}</Text>
+                <Text>Price: {currencyFormatter.format(props.item.price)}</Text>
+            </View>
+        </ScrollView>
     )
 }
 
