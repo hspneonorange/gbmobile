@@ -70,9 +70,6 @@ const SalesTabNavigator = createBottomTabNavigator({
         return {
             header: null,
             headerTitle: routeName,
-            headerRight: (
-                <Button onPress={() => NavigationService.navigate('Cart')}/>
-            )
         }
     }
 });

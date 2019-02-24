@@ -12,7 +12,7 @@ export class Sales extends Component {
             </View>
         );
     }
-}
+};
 
 export const SalesStack = createStackNavigator({
     Sales: {
@@ -23,4 +23,4 @@ export const SalesStack = createStackNavigator({
             }
         }
     }
-})
+});
