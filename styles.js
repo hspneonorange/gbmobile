@@ -100,6 +100,9 @@ export default styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: '#979797',
+      borderStyle: 'solid',
+      borderWidth: 1,
+      borderColor: 'black',
     },
     addProductText: {
       fontSize: 40,

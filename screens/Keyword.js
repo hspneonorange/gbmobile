@@ -3,21 +3,21 @@ import {ScrollView, View, TextInput, Button, FlatList} from 'react-native';
 import styles from '../styles.js';
 import {connect} from 'react-redux';
 import NavigationService from '../components/NavigationService';
-import ProductListItem from '@components/ProductListItem';
+import SearchProductListItem from '@components/SearchProductListItem';
 
 const Keyword = (props) => {
 //  console.log(props.searchItems);
   return (
         <ScrollView style={styles.scroll} removeClippedSubviews={true}>
             <View>
-                <TextInput style={styles.textInput} placeholder="Enter search term"  onChangeText={(text) => {props.textChanged(text)}}/>
+                <TextInput selectTextOnFocus={true} onSubmitEditing={() => {props.searchPressed(props.sessionToken, props.searchText, props.appConfig.hostAddress)}} style={styles.textInput} placeholder="Enter search term"  onChangeText={(text) => {props.textChanged(text)}}/>
             </View>
             <Button title="Search" color="#979797" onPress={() => {props.searchPressed(props.sessionToken, props.searchText, props.appConfig.hostAddress)}}/>
             <View style={styles.searchResults}>
               <FlatList 
                 data = {props.searchItems}
                 keyExtractor = {item => 'list-item-$'+item.id}
-                renderItem = {({item}) => <ProductListItem item={item} />}
+                renderItem = {({item}) => <SearchProductListItem item={item} />}
               />
             </View>
         </ScrollView>

@@ -11,6 +11,7 @@ import 'intl';
 import 'intl/locale-data/jsonp/en';
 import NavigationService from '../components/NavigationService';
 import {connect} from 'react-redux';
+import style from '../styles';
 
 const ListItem = (props) => {
     //TODO: pull appropriate product series based on props.item.product_series_id from product series
@@ -38,10 +39,7 @@ const ListItem = (props) => {
     }
 
     return (
-        <TouchableOpacity
-            style={styles.listItemBox}
-            onPress={()=>props.onPressListItem(props.item)}
-        >
+        <View style={style.listItemBox}>
             {DisplayImage}
             <View style={styles.listItemText}>
                 <Text style={styles.nameDisplay}>{props.item.name}</Text>
@@ -50,10 +48,7 @@ const ListItem = (props) => {
                     <Text style={styles.productSeries}>{props.item.product_series_id}</Text>
                 </View>
             </View>
-            <TouchableOpacity style={styles.addToCart}>
-                <Text style={styles.addProductText}>+</Text>
-            </TouchableOpacity>
-        </TouchableOpacity>
+        </View>
     );
 }
 

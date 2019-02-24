@@ -33,6 +33,12 @@ const reducer = (state = initialState, action) => {
             return Object.assign({}, state, {password: action.text});
         case 'SET_EVENT':
             return Object.assign({}, state, {event:action.event}); //finish this lmao
+        case 'ADD_TO_CART':
+//            newCart = state.productCart.push(action.item);
+            console.log(state.productCart);
+            return Object.assign({}, state, {
+                productCart: state.productCart.concat(action.item)
+            }); // hopefully this works?
         default:
             return state;
     }

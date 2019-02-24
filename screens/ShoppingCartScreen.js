@@ -5,6 +5,7 @@ import {
     View,
 } from 'react-native';
 import {connect} from 'react-redux';
+import CartProductListItem from '@components/CartProductListItem';
 
 /*
     Shopping cart
@@ -17,12 +18,13 @@ import {connect} from 'react-redux';
 */
 
 const ShoppingCartScreen = (props) => {
+    console.log('ShoppingCart::', props.productCart);
     return (
         <View>
             <FlatList
                 data = {props.productCart}
                 keyExtractor = {item => 'list-item-$'+item.id}
-                renderItem = {({item}) => <ProductListItem item={item} />}
+                renderItem = {({item}) => <CartProductListItem item={item} />}
             />
             <View style={{flex: 1, flexDirection: 'row'}}>
                 <Button title="Empty Cart" onPress={() => props.emptyCart()}/><Button title="Checkout" onPress={() => props.checkout()}/>
@@ -33,7 +35,7 @@ const ShoppingCartScreen = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        cart: state.cart,
+        productCart: state.productCart,
     };
 }
 
