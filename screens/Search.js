@@ -8,6 +8,7 @@ import Keyword from '@screens/Keyword';
 import Scan from '@screens/Scan';
 import Category from '@screens/Category';
 import TopSellers from '@screens/TopSellers';
+import ProductInfoScreen from '@components/ProductInfoScreen';
 
 export const SearchTabNavigator = createBottomTabNavigator({
     Keyword,
@@ -32,5 +33,7 @@ export const SearchStack = createStackNavigator({
           headerTitle: 'Search'
         }
       }
-    }
+    },
+    ProductInfo: { screen:ProductInfoScreen },
+
 })

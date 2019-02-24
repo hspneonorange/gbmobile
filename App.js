@@ -86,7 +86,7 @@ const AppDrawerNavigator = createDrawerNavigator({
 const AppSwitchNavigator = createSwitchNavigator({
   Login: { screen:LoginScreen },
   Sales: { screen:AppDrawerNavigator },
-  Event: { screen:SelectEventScreen }
+  Event: { screen:SelectEventScreen },
 });
 
 const AppContainer = createAppContainer(AppSwitchNavigator);

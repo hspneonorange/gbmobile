@@ -2,6 +2,8 @@ import {NavigationActions} from 'react-navigation';
 
 let _navigator;
 
+//TODO: remove this and properly pass navigation prop thru to components via mapStateToProps (state, ownProps)
+
 function setTopLevelNavigator(navigatorRef) {
     _navigator = navigatorRef;
 }

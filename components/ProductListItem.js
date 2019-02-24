@@ -5,11 +5,17 @@ import {
     Alert,
     View,
     Image,
+    TouchableOpacity
 } from 'react-native';
 import 'intl';
 import 'intl/locale-data/jsonp/en';
+import NavigationService from '../components/NavigationService';
+import {connect} from 'react-redux';
 
-export default ListItem = (props) => {
+const onPressListItem = (props) => {
+}
+
+const ListItem = (props) => {
     //TODO: pull appropriate product series based on props.item.product_series_id from product series
     const currencyFormatter = new Intl.NumberFormat('en-US', {
         style: 'currency',
@@ -35,7 +41,10 @@ export default ListItem = (props) => {
     }
 
     return (
-        <View style={styles.listItemBox}>
+        <TouchableOpacity
+            style={styles.listItemBox}
+            onPress={()=>props.onPressListItem(props.item)}
+        >
             {DisplayImage}
             <View style={styles.listItemText}>
                 <Text style={styles.nameDisplay}>{props.item.name}</Text>
@@ -44,9 +53,49 @@ export default ListItem = (props) => {
                     <Text style={styles.productSeries}>{props.item.product_series_id}</Text>
                 </View>
             </View>
-        </View>
+        </TouchableOpacity>
     );
 }
+
+const mapStateToProps = (state) => {
+    return {
+    }; //none yet ôwô
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onPressListItem: (item) => {
+            NavigationService.navigate('ProductInfo', {
+                item: item
+            });
+        }
+        // textChanged: (text) => {
+        //     dispatch({type: 'SEARCH_TEXT_CHANGED', text: text});
+        // },
+        // searchPressed: (sessionToken, searchText, hostAddress) => {
+        //     // TODO: Abstract this to an app config variable!
+        //     console.log('searchPressed');
+        //     console.log('Bearer ', sessionToken);
+        //     //fetch('http://192.168.0.112:5000/api/products?search=' + searchText, {
+        //     fetch(hostAddress + '/products?search=' + searchText, {
+        //         method: 'GET',
+        //         headers: {
+        //             Authorization: "Bearer " + sessionToken
+        //         }
+        //     })
+        //     .then((response) => response.json())
+        //     .then(async (responseJson) => {
+        //         console.log(responseJson);
+        //         dispatch({type: 'RETURN_SEARCH_ITEMS', searchItems: responseJson.items})
+        //     })
+        //     .catch((error) => {
+        //         console.error(error);
+        //     });
+        // }
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ListItem);
 
 /*return <ListItem
     name = {name}

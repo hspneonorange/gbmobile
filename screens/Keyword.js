@@ -8,7 +8,7 @@ import ProductListItem from '@components/ProductListItem';
 const Keyword = (props) => {
 //  console.log(props.searchItems);
   return (
-        <ScrollView style={styles.scroll} removeClippedSubviews={true} scrollEventThrottle={16}>
+        <ScrollView style={styles.scroll} removeClippedSubviews={true}>
             <View>
                 <TextInput style={styles.textInput} placeholder="Enter search term"  onChangeText={(text) => {props.textChanged(text)}}/>
             </View>
