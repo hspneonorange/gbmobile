@@ -81,6 +81,7 @@ export default styles = StyleSheet.create({
       paddingBottom: 5,
       paddingLeft: 5,
       flexGrow: 1,
+      flex: 1,
     },
     additionalInfo: {
       flexDirection: 'row',
@@ -108,5 +109,5 @@ export default styles = StyleSheet.create({
       fontSize: 40,
       fontWeight: 'bold',
     },
-    
+
 });
