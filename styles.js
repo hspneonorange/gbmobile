@@ -65,7 +65,7 @@ export default styles = StyleSheet.create({
     },
     listItemBox: {
       backgroundColor: '#bcbcbc',
-      marginTop: 10,
+      margin: 2,
       flexGrow: 1,
       flexDirection: 'row',
     },
@@ -108,4 +108,5 @@ export default styles = StyleSheet.create({
       fontSize: 40,
       fontWeight: 'bold',
     },
+    
 });

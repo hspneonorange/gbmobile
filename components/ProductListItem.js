@@ -24,7 +24,7 @@ const ListItem = (props) => {
     if (props.item.image_link) {
         DisplayImage =
         <Image
-            style={{width: 60, height: 60}}
+            style={{width: 60, height: 60, alignContent: 'center'}}
             source={{uri:(""+props.item.image_link).replace('https://drive.google.com/open?id=', 'http://drive.google.com/uc?export=view&id=')}}
             resizeMethod="auto"
         />
@@ -32,7 +32,7 @@ const ListItem = (props) => {
         //https://drive.google.com/file/d/1Faj2B7ftTti8QzMxN--GveGuAtfaou58/view?usp=sharing
         DisplayImage = 
         <Image
-            style={{width: 60, height: 60}}
+            style={{width: 60, height: 60, alignContent: 'center'}}
             source={{uri:'http://drive.google.com/uc?export=view&id=1Faj2B7ftTti8QzMxN--GveGuAtfaou58'}} //link to "image not available"
             resizeMethod="auto"
         />
@@ -40,14 +40,19 @@ const ListItem = (props) => {
 
     return (
         <View style={style.listItemBox}>
-            {DisplayImage}
-            <View style={styles.listItemText}>
-                <Text style={styles.nameDisplay}>{props.item.name}</Text>
-                <View style={styles.additionalInfo}>
-                    <Text style={styles.productPrice}>{currencyFormatter.format(props.item.price)}</Text>
-                    <Text style={styles.productSeries}>{props.item.product_series_id}</Text>
+            <TouchableOpacity
+	            style={styles.listItemBox}
+	            onPress={()=>props.onPressListItem(props.item)}
+	        >
+                {DisplayImage}
+                <View style={styles.listItemText}>
+                    <Text style={styles.nameDisplay}>{props.item.name}</Text>
+                    <View style={styles.additionalInfo}>
+                        <Text style={styles.productPrice}>{currencyFormatter.format(props.item.price)}</Text>
+                        <Text style={styles.productSeries}>{props.item.product_series_id}</Text>
+                    </View>
                 </View>
-            </View>
+            </TouchableOpacity>
         </View>
     );
 }
