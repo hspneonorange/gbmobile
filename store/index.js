@@ -32,13 +32,46 @@ const reducer = (state = initialState, action) => {
         case 'PASSWORD_TEXT_CHANGED':
             return Object.assign({}, state, {password: action.text});
         case 'SET_EVENT':
-            return Object.assign({}, state, {event:action.event}); //finish this lmao
+            return Object.assign({}, state, {event:action.event});
         case 'ADD_TO_CART':
-//            newCart = state.productCart.push(action.item);
-            console.log(state.productCart);
+            // TODO: Logic to increment/decrement quantity instead of just adding new line items
+            let existingItem = state.productCart.find(i => i.id == action.item.id);
+            console.log("existingItem", existingItem);
+            if (existingItem) {
+                console.log("existing item; increment quantity")
+                existingItem.quantity += 1;
+                return Object.assign({}, state, {
+                    productCart: state.productCart.slice()
+                })
+            } else {
+                console.log("non-existing item; set quantity to 1")
+                action.item.quantity = 1;
+                return Object.assign({}, state, {
+                    productCart: state.productCart.concat(action.item)
+                });
+            }
+        case 'DECREMENT_FROM_CART':
+            existingItem = state.productCart.find(i => i.id == action.item.id);
+            if (existingItem) {
+                existingItem.quantity -= 1;
+                if (existingItem.quantity > 0) {
+                    return Object.assign({}, state, {
+                        productCart: state.productCart.slice()
+                    })
+                } else {
+                    state.productCart.splice(state.productCart.findIndex(i => i.id == action.item.id), 1);
+                    return Object.assign({}, state, {
+                        productCart: state.productCart.slice()
+                    })
+                }
+            } else {
+                // How can this happen?
+            }
+        case 'REMOVE_FROM_CART':
+            state.productCart.splice(state.productCart.findIndex(i => i.id == action.item.id), 1);
             return Object.assign({}, state, {
-                productCart: state.productCart.concat(action.item)
-            }); // hopefully this works?
+                productCart: state.productCart.slice()
+            })
         default:
             return state;
     }

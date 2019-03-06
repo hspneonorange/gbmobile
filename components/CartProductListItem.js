@@ -2,17 +2,22 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {TouchableOpacity, Text} from 'react-native';
 import ProductListItem from '@components/ProductListItem';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 const CartProductListItem = (props) => {
     // TODO: Show quantity that are in the cart
     return (
         <TouchableOpacity style={styles.listItemBox}>
             <ProductListItem item={props.item}/>
+            <TouchableOpacity style={styles.addToCart} onPress={() => props.decrementCart(props.item)}>
+                <Text style={styles.addProductText}>-</Text>
+            </TouchableOpacity>
+            <Text style={styles.addProductText}>{props.item.quantity}</Text>
             <TouchableOpacity style={styles.addToCart} onPress={() => props.incrementCart(props.item)}>
                 <Text style={styles.addProductText}>+</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.addToCart} onPress={() => props.decrementCart(props.item)}>
-                <Text style={styles.addProductText}>-</Text>
+            <TouchableOpacity style={styles.addToCart} onPress={() => props.removeFromCart(props.item)}>
+                <Ionicons name="md-trash" size={32}/>
             </TouchableOpacity>
         </TouchableOpacity>
     )
@@ -20,20 +25,20 @@ const CartProductListItem = (props) => {
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        item: ownProps.item,
+        item: ownProps.item
     };
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
         incrementCart: (item) => {
-            
+            dispatch({type: 'ADD_TO_CART', item: item})
         },
         decrementCart: (item) => {
-
+            dispatch({type: 'DECREMENT_FROM_CART', item: item})
         },
         removeFromCart: (item) => {
-
+            dispatch({type: 'REMOVE_FROM_CART', item: item})
         }
     };
 };

@@ -40,6 +40,7 @@ const ListItem = (props) => {
 
     return (
         <View style={style.listItemBox}>
+<<<<<<< Updated upstream
             <TouchableOpacity
 	            style={styles.listItemBox}
 	            onPress={()=>props.onPressListItem(props.item)}
@@ -51,6 +52,14 @@ const ListItem = (props) => {
                         <Text style={styles.productPrice}>{currencyFormatter.format(props.item.price)}</Text>
                         <Text style={styles.productSeries}>{props.item.product_series_id}</Text>
                     </View>
+=======
+            {DisplayImage}
+            <View style={styles.listItemText}>
+                <Text style={styles.nameDisplay}>{props.item.name}</Text>
+                <View style={styles.additionalInfo}>
+                    <Text style={styles.productPrice}>{currencyFormatter.format(props.item.price)}</Text>
+                    <Text style={style.productSeries}>{props.item.quantity}</Text>
+>>>>>>> Stashed changes
                 </View>
             </TouchableOpacity>
         </View>
