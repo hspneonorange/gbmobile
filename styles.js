@@ -62,9 +62,10 @@ export default styles = StyleSheet.create({
     nameDisplay: {
       fontSize: 20,
       fontWeight: 'bold',
+      flexShrink: 1
     },
     listItemBox: {
-      backgroundColor: '#bcbcbc',
+      backgroundColor: '#d1d1d1',
       margin: 2,
       flexGrow: 1,
       flexDirection: 'row',
@@ -92,7 +93,7 @@ export default styles = StyleSheet.create({
       alignContent: 'flex-end',
     },
     productPrice: {
-      flex: 1,
+      flex: 2,
       alignContent: 'flex-start'
     },
     addToCart: {
@@ -109,5 +110,22 @@ export default styles = StyleSheet.create({
       fontSize: 40,
       fontWeight: 'bold',
     },
-
+    quantityBox: {
+      flex: .25,
+      backgroundColor: 'white',
+      justifyContent: 'center',
+    },
+    quantityDisplayText: {
+      fontSize: 20,
+      textAlign: 'center',
+    },
+    trashBox: {
+      width: 38,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: '#979797',
+      borderStyle: 'solid',
+      borderWidth: 1,
+      borderColor: 'black',
+    }
 });

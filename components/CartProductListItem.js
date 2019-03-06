@@ -1,23 +1,26 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {TouchableOpacity, Text} from 'react-native';
+import {TouchableOpacity, Text, View} from 'react-native';
 import ProductListItem from '@components/ProductListItem';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 const CartProductListItem = (props) => {
     // TODO: Show quantity that are in the cart
+    console.log(props.productCart);
     return (
         <TouchableOpacity style={styles.listItemBox}>
             <ProductListItem item={props.item}/>
             <TouchableOpacity style={styles.addToCart} onPress={() => props.decrementCart(props.item)}>
                 <Text style={styles.addProductText}>-</Text>
             </TouchableOpacity>
-            <Text style={styles.addProductText}>{props.item.quantity}</Text>
+            <View style={styles.quantityBox}>
+                <Text style={styles.quantityDisplayText}>{props.item.quantity}</Text>
+            </View>
             <TouchableOpacity style={styles.addToCart} onPress={() => props.incrementCart(props.item)}>
                 <Text style={styles.addProductText}>+</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.addToCart} onPress={() => props.removeFromCart(props.item)}>
-                <Ionicons name="md-trash" size={32}/>
+            <TouchableOpacity style={styles.trashBox} onPress={() => props.removeFromCart(props.item)}>
+                <Ionicons name="md-trash" size={20}/>
             </TouchableOpacity>
         </TouchableOpacity>
     )

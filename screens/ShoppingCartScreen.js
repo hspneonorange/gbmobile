@@ -2,7 +2,8 @@ import React from 'react';
 import {
     Button,
     FlatList,
-    View,
+    ScrollView,
+    View
 } from 'react-native';
 import {connect} from 'react-redux';
 import CartProductListItem from '@components/CartProductListItem';
@@ -20,16 +21,13 @@ import CartProductListItem from '@components/CartProductListItem';
 const ShoppingCartScreen = (props) => {
     console.log('ShoppingCart::', props.productCart);
     return (
-        <View>
+        <ScrollView style={{backgroundColor:'#c8e0e4', flexGrow:1, padding:5}}>
             <FlatList
                 data = {props.productCart}
                 keyExtractor = {item => 'list-item-$'+item.id}
                 renderItem = {({item}) => <CartProductListItem item={item} />}
             />
-            <View style={{flex: 1, flexDirection: 'row'}}>
-                <Button title="Empty Cart" onPress={() => props.emptyCart()}/><Button title="Checkout" onPress={() => props.checkout()}/>
-            </View>
-        </View>
+        </ScrollView>
     );
 };
 
