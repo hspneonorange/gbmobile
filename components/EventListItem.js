@@ -2,17 +2,19 @@ import React from 'react';
 import {
     Text,
     View,
-    TouchableOpacity
+    TouchableOpacity,
+    AsyncStorage,
 } from 'react-native';
 import Moment from 'moment';
 import {connect} from 'react-redux';
 import NavigationService from '../components/NavigationService';
+import actionType from '@constants/actionType';
 
 const EventListItem = (props) => {
     return (
         <TouchableOpacity
             style={styles.listItemBox}
-            onPress={()=>props.onPressEvent(props.item)}
+            onPress={()=>props.onPressEvent(props.item, props.sessionToken, props.userId)}
         >
             <View style={styles.listItemText}>
                 <Text style={styles.nameDisplay}>{props.item.name}</Text>
@@ -24,14 +26,24 @@ const EventListItem = (props) => {
 
 const mapStateToProps = (state) => {
     return {
+        sessionToken: state.sessionToken,
+        userId: state.userId,
     }; //none yet? ówò
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onPressEvent: (item) => {
-            dispatch({type: 'SET_EVENT', event: item.id});
-            console.log('Selected: ', item.id, '|', item.name);
+        onPressEvent: (item, sessionToken, userId) => {
+            console.log('item, sessionToken, userId:', item, sessionToken, userId);
+            dispatch({type: actionType.SET_EVENT, eventId: item.id});
+            try {
+                AsyncStorage.setItem('@Authentication:access-token', sessionToken);
+                AsyncStorage.setItem('@Authentication:userId', userId.toString());
+                AsyncStorage.setItem('@Event:eventId', item.id.toString());
+                // TODO: Add userId as another AsyncStorage item
+            } catch (error) {
+                console.log('AsyncStorage failed: ', error);
+            }
             NavigationService.navigate('Sales');
         }
     };

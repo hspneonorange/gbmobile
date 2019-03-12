@@ -1,6 +1,6 @@
 import React from 'react';
-import { Platform, StatusBar, StyleSheet, View, Button} from 'react-native';
-import { Asset, Font, Icon } from 'expo';
+import {Platform, StatusBar, StyleSheet, View} from 'react-native';
+import {Asset} from 'expo';
 // react-navigation
 import {
     createSwitchNavigator,
@@ -11,11 +11,10 @@ import {
 } from 'react-navigation';
 import LoginScreen from '@screens/LoginScreen';
 import SelectEventScreen from '@screens/SelectEventScreen';
-import {SearchStack, Search} from '@screens/Search';
-import {CommissionStack, Commission} from '@screens/Commission';
-import {SalesStack, Sales} from '@screens/Sales';
-import {SettingsStack, Settings} from '@screens/Settings';
-import {ShoppingCartScreen} from '@screens/ShoppingCartScreen';
+import {SearchStack} from '@screens/Search';
+import {CommissionStack} from '@screens/Commission';
+import {SalesStack} from '@screens/Sales';
+import {SettingsStack} from '@screens/Settings';
 import NavigationService from '@components/NavigationService';
 // redux/react-redux
 import store from './store/';
@@ -40,13 +39,9 @@ export default class App extends React.Component {
     _loadResourcesAsync = async () => {
         return Promise.all([
             Asset.loadAsync([
-                require('./assets/images/robot-dev.png'),
-                require('./assets/images/robot-prod.png'),
+                require('./assets/images/gb.png'),
+                require('./assets/images/splash.png'),
             ]),
-            Font.loadAsync({
-                ...Icon.Ionicons.font,
-                'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
-            }),
         ]);
     };
 

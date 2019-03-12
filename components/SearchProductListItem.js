@@ -6,6 +6,7 @@ import {
 import ProductInfoListItem from '@components/ProductListItem';
 import {connect} from 'react-redux';
 import styles from '../styles';
+import actionType from '@constants/actionType';
 
 const SearchProductListItem = (props) => {
     // TODO: May want to add some indication whether this item is already in the cart (and how many)
@@ -28,7 +29,7 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         addToCart: (item) => {
-            dispatch({type: 'ADD_TO_CART', item: item})
+            dispatch({type: actionType.ADD_TO_CART, item: item})
         }
     };
 };

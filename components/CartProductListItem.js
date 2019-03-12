@@ -3,10 +3,10 @@ import {connect} from 'react-redux';
 import {TouchableOpacity, Text, View} from 'react-native';
 import ProductListItem from '@components/ProductListItem';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import actionType from '@constants/actionType';
 
 const CartProductListItem = (props) => {
     // TODO: Show quantity that are in the cart
-    console.log(props.productCart);
     return (
         <TouchableOpacity style={styles.listItemBox}>
             <ProductListItem item={props.item}/>
@@ -35,13 +35,13 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         incrementCart: (item) => {
-            dispatch({type: 'ADD_TO_CART', item: item})
+            dispatch({type: actionType.ADD_TO_CART, item: item})
         },
         decrementCart: (item) => {
-            dispatch({type: 'DECREMENT_FROM_CART', item: item})
+            dispatch({type: actionType.DECREMENT_FROM_CART, item: item})
         },
         removeFromCart: (item) => {
-            dispatch({type: 'REMOVE_FROM_CART', item: item})
+            dispatch({type: actionType.REMOVE_FROM_CART, item: item})
         }
     };
 };

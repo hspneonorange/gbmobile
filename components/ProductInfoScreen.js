@@ -44,10 +44,11 @@ const ProductInfoScreen = (props) => {
                 <View style={styles.span} />
                 <View style={styles.span} />
                 <Text style={styles.nameDisplay}>{props.item.id} | {props.item.name}</Text>
-                <Text>Series: {props.item.product_series_id}</Text>
-                <Text>Product Type: {props.item.product_type_id}</Text>
+                <Text>Series: {props.item.product_series}</Text>
+                <Text>Product Type: {props.item.product_type}</Text>
                 <Text>Keywords: {props.item.keywords}</Text>
                 <Text>Price: {currencyFormatter.format(props.item.price)}</Text>
+                <Text>Stock: {props.item.stock}</Text>
             </View>
         </ScrollView>
     )

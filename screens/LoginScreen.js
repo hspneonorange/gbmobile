@@ -12,20 +12,32 @@ import {
 import {connect} from 'react-redux';
 import NavigationService from '../components/NavigationService';
 import base64 from 'react-native-base64';
+import actionType from '@constants/actionType';
 
 class LoginScreen extends Component {
     componentDidMount = () => {
-        this.retrieveAndTestExistingSession();
+        if (this.props.navigation.getParam("logout")) {
+            // Log out at server (most important part)
+            fetch(this.props.appConfig.hostAddress + '/tokens', {
+                method: 'DELETE',
+                headers: {
+                    Authorization: "Bearer " + this.props.sessionToken
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+            // Wipe Redux state
+            this.props.clearStateOnLogout();
+        } else {
+            this.retrieveAndTestExistingSession();
+        }
     }
 
     retrieveAndTestExistingSession = async () => {
-        console.log('Looking up in AsyncStorage');
         await AsyncStorage.getItem('@Authentication:access-token')
         .then(async (sessionToken) => {
             if (sessionToken !== null) {
-                console.log("Retrieved value: ", sessionToken);
-                //await fetch('http://192.168.0.112:5000/api/tokens', {
-                console.log("hostAddress: ", this.props.appConfig.hostAddress);
                 await fetch(this.props.appConfig.hostAddress + '/tokens', {
                     method: 'GET',
                     headers: {
@@ -33,9 +45,17 @@ class LoginScreen extends Component {
                     }
                 })
                 .then((response) => {
-                    console.log("Token valid: ", response.ok);
                     if (response.ok) {
-                        console.log('Session token still valid; redirecting')
+                        AsyncStorage.getItem('@Authentication:userId')
+                        .then(async(userId) => {
+                            this.props.updateUserId(userId);
+                        })
+                        .catch((error) => {/* TODO: error handling? */});
+                        AsyncStorage.getItem('@Event:eventId')
+                        .then(async(eventId) => {
+                            this.props.updateEventId(eventId);
+                        })
+                        .catch((error) => {/* TODO: error handling? */});
                         this.props.updateSessionToken(sessionToken);
                         NavigationService.navigate('Sales');
                     } else {
@@ -56,16 +76,16 @@ class LoginScreen extends Component {
             <ScrollView style={styles.scroll}>
                 <View style={styles.welcomeContainer}>
                     <Image
-                        source={__DEV__ ? require('../assets/images/gb.png') : require('../assets/images/robot-prod.png')}
+                        source={__DEV__ ? require('../assets/images/gb.png') : require('../assets/images/gb.png')}
                         style={styles.welcomeImage}
                     />
                 </View>
                 <View>
                     <Text>Username:</Text>
-                    <TextInput style={styles.textInput} placeholder="Username" onChangeText={(text) => {this.props.usernameTextChanged(text)}}/>
-                    <Text>Password:</Text>
+                    <TextInput style={styles.textInput} placeholder="Username" onSubmitEditing={() => this.passwordField.focus()} onChangeText={(text) => {this.props.usernameTextChanged(text)}}/>
                     <View style={styles.span} />
-                    <TextInput style={styles.textInput} placeholder="Password" secureTextEntry={true} onChangeText={(text) => {this.props.passwordTextChanged(text)}}/>
+                    <Text>Password:</Text>
+                    <TextInput ref={(input) => {this.passwordField = input}} style={styles.textInput} placeholder="Password" secureTextEntry={true} onChangeText={(text) => {this.props.passwordTextChanged(text)}} onSubmitEditing={() => {this.props.loginPressed(this.props.username, this.props.password, this.props.appConfig.hostAddress)}}/>
                     <View style={styles.span} />
                     <Button title="Log Me In! :^)" color="#979797" onPress={() => {this.props.loginPressed(this.props.username, this.props.password, this.props.appConfig.hostAddress)}}/>
                 </View>
@@ -75,27 +95,26 @@ class LoginScreen extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
     return {
         appConfig: state.appConfig,
         username: state.username,
         password: state.password,
+        sessionToken: state.sessionToken,
     };
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
         usernameTextChanged: (text) => {
-            dispatch({type: 'USERNAME_TEXT_CHANGED', text: text});
+            dispatch({type: actionType.USERNAME_TEXT_CHANGED, text: text});
         },
         passwordTextChanged: (text) => {
-            dispatch({type: 'PASSWORD_TEXT_CHANGED', text: text});
+            dispatch({type: actionType.PASSWORD_TEXT_CHANGED, text: text});
         },
         loginPressed: (username, password, hostAddress) => {
             //const value = this.loginForm.getValue();
             let encodedCredentials = base64.encode(username + ":" + password);
-            // TODO: Abstract this to an app config variable!
-            //fetch('http://192.168.0.112:5000/api/tokens', {
             fetch(hostAddress + '/tokens' ,{
                 method: 'POST',
                 headers: {
@@ -106,15 +125,10 @@ const mapDispatchToProps = (dispatch) => {
             .then(async (responseJson) => {
                 // Valid response looks like this: {"token": "GMoErE4JIwZv7QkZuhzn1MD7hPGOm3tt"}
                 const sessionToken = responseJson.token;
+                const userId = responseJson.id;
                 if (sessionToken) {
-                    try {
-                        await AsyncStorage.setItem('@Authentication:access-token', sessionToken);
-                    } catch (error) {
-                        console.log('AsyncStorage failed: ', error);
-                    }
-                    dispatch({type: 'HANDLE_AUTHN', token: sessionToken});
+                    dispatch({type: actionType.HANDLE_AUTHN, token: sessionToken, userId: userId});
                     NavigationService.navigate('Event');
-                    //this.props.navigation.navigate('Sales');
                 } else {
                     alert('Login failed');
                 }
@@ -124,7 +138,16 @@ const mapDispatchToProps = (dispatch) => {
             });
         },
         updateSessionToken: (sessionToken) => {
-            dispatch({type: 'HANDLE_AUTHN', token: sessionToken});
+            dispatch({type: actionType.HANDLE_AUTHN, token: sessionToken});
+        },
+        updateUserId: (userId) => {
+            dispatch({type: actionType.UPDATE_USERID, userId: userId});
+        },
+        updateEventId: (eventId) => {
+            dispatch({type: actionType.SET_EVENT, eventId: eventId});
+        },
+        clearStateOnLogout: () => {
+            dispatch({type: actionType.CLEAR_STATE_ON_LOGOUT});
         }
     };
 };

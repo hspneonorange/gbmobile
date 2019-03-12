@@ -3,30 +3,28 @@ import {
     Button,
     FlatList,
     ScrollView,
-    View
+    Text,
+    View,
+    TextInput,
 } from 'react-native';
 import {connect} from 'react-redux';
 import CartProductListItem from '@components/CartProductListItem';
-
-/*
-    Shopping cart
-    FlastList with ProductListItems for each (just like Keyword search page)
-    Also, each item will have a "delete" button and a "quantity" (-[qty]+) spinner
-    And the cart will have a "Checkout" button at the top
-    Maybe also an "empty cart" button?
-
-    ProductListItem should be wrapped in "SearchProductListItem" and "CartProductListItem" controls
-*/
+import actionType from '@constants/actionType';
 
 const ShoppingCartScreen = (props) => {
-    console.log('ShoppingCart::', props.productCart);
     return (
         <ScrollView style={{backgroundColor:'#c8e0e4', flexGrow:1, padding:5}}>
+            <View style={{flex: 1, flexDirection: 'row'}}>
+                <Text>Discount</Text><TextInput onChangeText={(text) => props.discountKeyPress(text)} keyboardType='decimal-pad' style={{backgroundColor: 'white'}}/>
+            </View>
             <FlatList
                 data = {props.productCart}
                 keyExtractor = {item => 'list-item-$'+item.id}
                 renderItem = {({item}) => <CartProductListItem item={item} />}
             />
+            <View style={{flex: 1, flexDirection: 'row'}}>
+                <Button title="Empty Cart" onPress={() => props.emptyCart()}/><Text> </Text><Button title="Checkout" onPress={() => props.checkout(props.productCart)}/>
+            </View>
         </ScrollView>
     );
 };
@@ -39,14 +37,18 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        emptyCart: () => {
-            dispatch({type: 'EMPTY_CART'});
+        discountKeyPress: (text) => {
+            dispatch({type: actionType.DISCOUNT_KEY_PRESS, discount: text})
         },
-        checkout: () => {
-            // Modal with totals
-            // "Complete sale" button
-            // Make service calls to create sale
-            // dispatch({type: 'EMPTY_CART'});
+        emptyCart: () => {
+            dispatch({type: actionType.EMPTY_CART});
+        },
+        checkout: (productCart) => {
+            if (productCart.length > 0) {
+                dispatch({type: actionType.CHECKOUT});
+            } else {
+                // toast: Cart is empty
+            }
         }
     };
 };

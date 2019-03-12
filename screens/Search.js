@@ -1,9 +1,6 @@
-import React, { Component } from 'react';
-import {TouchableOpacity} from 'react-native';
-import {
-  createBottomTabNavigator,
-  createStackNavigator,
-} from 'react-navigation';
+import React, {Component} from 'react';
+import {TouchableOpacity, View} from 'react-native';
+import {createBottomTabNavigator, createStackNavigator} from 'react-navigation';
 import Keyword from '@screens/Keyword';
 import Scan from '@screens/Scan';
 import Category from '@screens/Category';
@@ -12,6 +9,7 @@ import ShoppingCartScreen from '@screens/ShoppingCartScreen';
 import ProductInfoScreen from '@components/ProductInfoScreen';
 import NavigationService from '@components/NavigationService';
 import {Ionicons} from '@expo/vector-icons';
+import SalesQueueSynch from '@components/SalesQueueSynch';
 
 export const SearchTabNavigator = createBottomTabNavigator({
     Keyword,
@@ -35,9 +33,15 @@ export const SearchStack = createStackNavigator({
             return {
                 headerTitle: 'Search',
                 headerRight: (
-                    <TouchableOpacity onPress={() => NavigationService.navigate('Cart')}>
-                        <Ionicons style={{margin: 10}} name="md-cart" size={32}/>
-                    </TouchableOpacity>
+                    <View style={{flexDirection: 'row', flex: 1}}>
+                        <SalesQueueSynch/>
+                        <TouchableOpacity onPress={() => NavigationService.navigate('Cart')}>
+                            <Ionicons style={{margin: 10}} name="md-cart" size={32}/>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => NavigationService.navigate('Login', {logout: true})}>
+                            <Ionicons style={{margin: 10}} name="md-close-circle-outline" size={32}/>
+                        </TouchableOpacity>
+                    </View>
                 )
             }
         }
@@ -58,4 +62,6 @@ export const SearchStack = createStackNavigator({
             }
         }
     },
+
 })
+

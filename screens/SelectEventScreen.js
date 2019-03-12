@@ -1,16 +1,15 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {
     ScrollView,
     FlatList,
-    Button,
     View,
 } from 'react-native';
 import {connect} from 'react-redux';
-import NavigationService from '../components/NavigationService';
 import EventListItem from '@components/EventListItem';
+import actionType from '@constants/actionType';
 
 const SelectEventScreen = (props) => {
-    if (props.events.length == 0) props.queryEvents(props.sessionToken,props.appConfig.hostAddress);
+    if (props.events.length == 0) props.queryEvents(props.sessionToken, props.appConfig.hostAddress);
     return (
         <ScrollView style={styles.scroll}>
             <View style={styles.searchResults}>
@@ -20,7 +19,6 @@ const SelectEventScreen = (props) => {
                 renderItem = {({item}) => <EventListItem item={item} />}
               />
               <View style={styles.span} />
-              <Button title='Logout' onPress={() => props.logoutClick(props.sessionToken)} />
             </View>
         </ScrollView>
     );
@@ -37,7 +35,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         queryEvents: (sessionToken,hostAddress) => {
-            //fetch('http://192.168.0.114:5000/api/events', {
             fetch(hostAddress + '/events', {
                 method: 'GET',
                 headers: {
@@ -46,27 +43,14 @@ const mapDispatchToProps = (dispatch) => {
             })
             .then((response) => response.json())
             .then(async (responseJson) => {
-                console.log(responseJson);
-                dispatch({type: 'RETURN_EVENTS', events: responseJson.items})
+                dispatch({type: actionType.RETURN_EVENTS, events: responseJson.items})
             })
-            .catch((error) => {
-                console.error(error);
-            });
-        },
-        logoutClick: async (sessionToken) => {
-            await fetch('http://192.168.0.100:5000/api/tokens', {
-                method: 'DELETE',
-                headers: {
-                    Authorization: "Bearer " + sessionToken
-                }
-            })
-            .then(() => NavigationService.navigate('Login'))
             .catch((error) => {
                 console.error(error);
             });
         },
         updateSessionToken: (sessionToken) => {
-            dispatch({type: 'HANDLE_AUTHN', token: sessionToken});
+            dispatch({type: actionType.HANDLE_AUTHN, token: sessionToken});
         }
     };
 };

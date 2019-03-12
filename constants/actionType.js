@@ -15,4 +15,6 @@ export default actionType = {
     CHECKOUT: 'checkout',
     DISCOUNT_KEY_PRESS: 'discount_key_press',
     CLEAR_STATE_ON_LOGOUT: 'clear_state_on_logout',
+    UPDATE_SALESQUEUE_ORDER_WITH_ID: 'update_order_with_id',
+    REMOVE_FIRST_ITEM_FROM_SALES_QUEUE: 'remove_item_from_sales_queue',
 };

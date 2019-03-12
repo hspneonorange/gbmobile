@@ -2,11 +2,10 @@ import React, {Component} from 'react';
 import {ScrollView, View, TextInput, Button, FlatList} from 'react-native';
 import styles from '../styles.js';
 import {connect} from 'react-redux';
-import NavigationService from '../components/NavigationService';
 import SearchProductListItem from '@components/SearchProductListItem';
+import actionType from '@constants/actionType';
 
 const Keyword = (props) => {
-//  console.log(props.searchItems);
   return (
         <ScrollView style={styles.scroll} removeClippedSubviews={true}>
             <View>
@@ -36,13 +35,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         textChanged: (text) => {
-            dispatch({type: 'SEARCH_TEXT_CHANGED', text: text});
+            dispatch({type: actionType.SEARCH_TEXT_CHANGED, text: text});
         },
         searchPressed: (sessionToken, searchText, hostAddress) => {
-            // TODO: Abstract this to an app config variable!
-            console.log('searchPressed');
-            console.log('Bearer ', sessionToken);
-            //fetch('http://192.168.0.112:5000/api/products?search=' + searchText, {
             fetch(hostAddress + '/products?search=' + searchText, {
                 method: 'GET',
                 headers: {
@@ -51,8 +46,7 @@ const mapDispatchToProps = (dispatch) => {
             })
             .then((response) => response.json())
             .then(async (responseJson) => {
-                console.log(responseJson);
-                dispatch({type: 'RETURN_SEARCH_ITEMS', searchItems: responseJson.items})
+                dispatch({type: actionType.RETURN_SEARCH_ITEMS, searchItems: responseJson.items})
             })
             .catch((error) => {
                 console.error(error);
