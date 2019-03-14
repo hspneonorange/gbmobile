@@ -15,6 +15,17 @@ const initialState = {
     username: '',
     password: '',
     eventId: '',
+    commissionerName: '',
+    commissionerEmail: '',
+    commissionerPhone: '',
+    commissionerStreetAddress: '',
+    commissionerCity: '',
+    commissionerStateAbbr: '',
+    commissionerZip: '',
+    commissionDetails: '',
+    commissionPrice: 0,
+    commissionPaymentStatus: '', //'1' for true '0' for false
+    commissionCompletionStatus: '', //'1' for true '0' for false
 }
 
 const reducer = (state = initialState, action) => {
@@ -119,6 +130,28 @@ const reducer = (state = initialState, action) => {
             return Object.assign({}, state, {
                 salesQueue: state.salesQueue.concat(updateOrder).slice(),
             })
+        case actionType.COMMISSIONER_NAME_TEXT_CHANGED:
+            return Object.assign({}, state, {commissionerName: action.commissionerName});
+        case actionType.COMMISSIONER_EMAIL_TEXT_CHANGED:
+            return Object.assign({}, state, {commissionerEmail: action.commissionerEmail});
+        case actionType.COMMISSIONER_PHONE_TEXT_CHANGED:
+            return Object.assign({}, state, {commissionerPhone: action.commissionerPhone});
+        case actionType.COMMISSIONER_STREET_ADDRESS_TEXT_CHANGED:
+            return Object.assign({}, state, {commissionerStreetAddress: action.streetAddress});
+        case actionType.COMMISSIONER_CITY_TEXT_CHANGED:
+            return Object.assign({}, state, {commissionerCity: action.city});
+        case actionType.COMMISSIONER_STATE_ABBR_CHANGED:
+            return Object.assign({}, state, {commissionerStateAbbr: action.stateAbbr});
+        case actionType.COMMISSIONER_ZIP_TEXT_CHANGED:
+            return Object.assign({}, state, {commissionerZip: action.zipCode});
+        case actionType.COMMISSION_DETAILS_TEXT_CHANGED:
+            return Object.assign({}, state, {commissionDetails: action.commissionDetails});
+        case actionType.COMMISSION_PRICE_KEY_PRESS:
+            return Object.assign({}, state, {commissionPrice: action.commissionPrice});
+        case actionType.COMMISSION_COMPLETION_STATUS_CHANGED:
+            return Object.assign({}, state, {commissionCompletionStatus: action.completionStatus});
+        case actionType.COMMISSION_PAYMENT_STATUS_CHANGED:
+            return Object.assign({}, state, {commissionPaymentStatus: action.paymentStatus});
         default:
             console.log('Reducer reached default: -- misspelled action.type?');
             return state;

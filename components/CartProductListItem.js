@@ -8,7 +8,7 @@ import actionType from '@constants/actionType';
 const CartProductListItem = (props) => {
     // TODO: Show quantity that are in the cart
     return (
-        <TouchableOpacity style={styles.listItemBox}>
+        <TouchableOpacity style={styles.listItemBorderBox}>
             <ProductListItem item={props.item}/>
             <TouchableOpacity style={styles.addToCart} onPress={() => props.decrementCart(props.item)}>
                 <Text style={styles.addProductText}>-</Text>

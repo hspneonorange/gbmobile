@@ -3,34 +3,12 @@ import { Platform, StatusBar, StyleSheet, View, Button, Text, ScrollView, TextIn
 import {
   createStackNavigator,
 } from 'react-navigation';
+import CommissionPage from "@components/CommissionPage";
 
 export class Commission extends Component {
     render() {
         return (
-            <ScrollView style={styles.scroll}>
-                <View style={styles.welcomeContainer}>
-                    <Text></Text>
-                    <TextInput style={styles.textInput} placeholder="Enter commissioner name" onChangeText={(text) => this.setState({text})} />
-                    <View style={styles.span} />
-                    <Text></Text>
-                    <TextInput style={styles.textInput} placeholder="Enter commissioner email" onChangeText={(text) => this.setState({text})} />
-                    <View style={styles.span} />
-                    <Text></Text>
-                    <TextInput style={styles.textInput} placeholder="Enter commissioner phone number" onChangeText={(text) => this.setState({text})} />
-                    <View style={styles.span} />
-                    <Text></Text>
-                    <TextInput style={styles.textInput} placeholder="Enter street address" onChangeText={(text) => this.setState({text})} />
-                    <View style={styles.span} />
-                    <Text></Text>
-                    <TextInput style={styles.textInput} placeholder="Enter city" onChangeText={(text) => this.setState({text})} />
-                    <View style={styles.span} />
-                    <Text></Text>
-                    <TextInput style={styles.textInput} placeholder="Enter state abbreviation" onChangeText={(text) => this.setState({text})} />
-                    <View style={styles.span} />
-                    <Text></Text>
-                    <TextInput style={styles.textInput} placeholder="Enter ZIP code" onChangeText={(text) => this.setState({text})} />
-                </View>
-            </ScrollView>
+            <CommissionPage/>
         );
     }
 }
@@ -45,61 +23,3 @@ export const CommissionStack = createStackNavigator({
         }
     }
 })
-
-const styles = StyleSheet.create({
-    welcomeContainer: {
-      marginTop: 10,
-      marginBottom: 20,
-      flex: 1,
-    },
-    welcomeImage: {
-      width: 100,
-      height: 80,
-      resizeMode: 'contain',
-      marginTop: 3,
-      marginLeft: -10,
-    },
-    scroll: {
-        backgroundColor: '#c8e0e4',
-        padding:30,
-        //flexDirection: 'column',
-    },
-    optionBar: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-around',
-        paddingBottom: 10,
-        flex: 1
-    },
-    searchModes: {
-        flexDirection: 'row',
-    },
-    textInput: {
-        height: 40,
-        fontSize: 20,
-        flex: 1,
-        backgroundColor: '#FFF',
-    },
-    sectionHeader: {
-        paddingTop: 2,
-        paddingLeft: 10,
-        paddingRight: 10,
-        paddingBottom: 2,
-        fontSize: 14,
-        fontWeight: 'bold',
-        backgroundColor: '#cce5ff',
-    },
-    span: {
-      margin: 2
-    },
-    searchResults: {
-      backgroundColor: '#e0eeef'
-    },
-    sectionText: {
-      fontWeight: 'bold',
-      fontSize:14,
-    },
-    lineItem: {
-      textAlign: 'right',
-    },
-});

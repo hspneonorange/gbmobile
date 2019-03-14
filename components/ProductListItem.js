@@ -49,7 +49,7 @@ const ListItem = (props) => {
                     <Text numberOfLines={1} style={styles.nameDisplay}>{props.item.name}</Text>
                     <View style={styles.additionalInfo}>
                         <Text style={styles.productPrice}>{currencyFormatter.format(props.item.price)}</Text>
-                        <Text numberofLines={1} style={styles.productSeries}>{props.item.product_series_id}</Text>
+                        <Text numberofLines={1} style={styles.productSeries}>{props.item.product_series}</Text>
                     </View>
                 </View>
             </TouchableOpacity>

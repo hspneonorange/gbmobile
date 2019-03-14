@@ -11,7 +11,7 @@ import actionType from '@constants/actionType';
 const SearchProductListItem = (props) => {
     // TODO: May want to add some indication whether this item is already in the cart (and how many)
     return (
-        <TouchableOpacity style={styles.listItemBox}>
+        <TouchableOpacity style={styles.listItemBorderBox}>
             <ProductInfoListItem item={props.item}/>
             <TouchableOpacity style={styles.addToCart} onPress={() => props.addToCart(props.item)}>
                 <Text style={styles.addProductText}>+</Text>

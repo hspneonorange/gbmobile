@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {TouchableOpacity, View} from 'react-native';
 import {createBottomTabNavigator, createStackNavigator} from 'react-navigation';
 import Keyword from '@screens/Keyword';
-import Scan from '@screens/Scan';
+import IdSearch from '@screens/IdSearch';
 import Category from '@screens/Category';
 import TopSellers from '@screens/TopSellers';
 import ShoppingCartScreen from '@screens/ShoppingCartScreen';
@@ -13,7 +13,7 @@ import SalesQueueSynch from '@components/SalesQueueSynch';
 
 export const SearchTabNavigator = createBottomTabNavigator({
     Keyword,
-    Scan,
+    IdSearch,
     Category,
     TopSellers
   },{

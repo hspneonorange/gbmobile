@@ -89,11 +89,11 @@ export default styles = StyleSheet.create({
       flexGrow: 1,
     },
     productSeries: {
-      flex: 3,
+      flex: 3.75,
       alignContent: 'flex-end',
     },
     productPrice: {
-      flex: 2,
+      flex: 1.25,
       alignContent: 'flex-start'
     },
     addToCart: {
@@ -127,5 +127,20 @@ export default styles = StyleSheet.create({
       borderStyle: 'solid',
       borderWidth: 1,
       borderColor: 'black',
-    }
+    },
+    listItemBorderBox: {
+      flexGrow: 1,
+      flexDirection: 'row',
+      backgroundColor: '#d1d1d1',
+      margin: 2,
+      borderStyle: 'solid',
+      borderWidth: 1,
+      borderColor: 'black',
+    },
+    multilineTextInput: { //finish editing this for bigger text box
+      height: 40,
+      fontSize: 20,
+      flex: 1,
+      backgroundColor: '#FFF',
+    },
 });
