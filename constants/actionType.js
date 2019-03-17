@@ -17,6 +17,7 @@ export default actionType = {
     CLEAR_STATE_ON_LOGOUT: 'clear_state_on_logout',
     UPDATE_SALESQUEUE_ORDER_WITH_ID: 'update_order_with_id',
     REMOVE_FIRST_ITEM_FROM_SALES_QUEUE: 'remove_item_from_sales_queue',
+<<<<<<< HEAD
     COMMISSIONER_NAME_TEXT_CHANGED: 'commissioner_name_text_changed',
     COMMISSIONER_EMAIL_TEXT_CHANGED: 'commissioner_email_text_changed',
     COMMISSIONER_PHONE_TEXT_CHANGED: 'commissioner_phone_text_changed',
@@ -28,4 +29,8 @@ export default actionType = {
     COMMISSION_PRICE_KEY_PRESS: 'price_key_press',
     COMMISSION_COMPLETION_STATUS_CHANGED: 'commission_completion_status_changed',
     COMMISSION_PAYMENT_STATUS_CHANGED: 'commission_payment_status_changed',
+=======
+    SET_SYNCH_FLAG: 'set_synch_flag',
+    CLEAR_SYNCH_FLAG: 'clear_synch_flag',
+>>>>>>> Implemented shopping cart synchronization on a 1-second timer w/ a button in the toolbar as well
 };

@@ -116,7 +116,6 @@ const reducer = (state = initialState, action) => {
             });
         case actionType.UPDATE_SALESQUEUE_ORDER_WITH_ID:
             updateOrder = state.salesQueue.splice(state.salesQueue.findIndex(o => o.timeStamp == action.order.timeStamp), 1)[0];
-            console.log('UPDATE_SALESQUEUE_ORDER_WITH_ID::updateOrder', updateOrder);
             updateOrder.id = action.id;
             updateOrder.items.map((i) => {
                 i.sale_id = action.id;
@@ -125,9 +124,22 @@ const reducer = (state = initialState, action) => {
                 salesQueue: state.salesQueue.concat(updateOrder).slice(),
             });
         case actionType.REMOVE_FIRST_ITEM_FROM_SALES_QUEUE:
-            updateOrder = state.salesQueue.splice(state.salesQueue.findIndex(o => o.timeStamp == action.order.timeStamp), 1);
-            updateOrder.splice(0, 1);
+            updateOrder = state.salesQueue.splice(state.salesQueue.findIndex(o => o.timeStamp == action.order.timeStamp), 1)[0];
+            if (updateOrder.items.length == 1) {
+                // If we've just synched the last item in the order, delete the entire order from the queue
+                return Object.assign({}, state, {
+                    salesQueue: state.salesQueue.slice(),
+                })
+            } else {
+                // Otherwise, just delete the just-synched item from the order
+                updateOrder.items.splice(0, 1);
+                return Object.assign({}, state, {
+                    salesQueue: state.salesQueue.concat(updateOrder).slice(),
+                })
+            }
+        case actionType.SET_SYNCH_FLAG:
             return Object.assign({}, state, {
+<<<<<<< HEAD
                 salesQueue: state.salesQueue.concat(updateOrder).slice(),
             })
         case actionType.COMMISSIONER_NAME_TEXT_CHANGED:
@@ -152,6 +164,14 @@ const reducer = (state = initialState, action) => {
             return Object.assign({}, state, {commissionCompletionStatus: action.completionStatus});
         case actionType.COMMISSION_PAYMENT_STATUS_CHANGED:
             return Object.assign({}, state, {commissionPaymentStatus: action.paymentStatus});
+=======
+                synchFlag: true,
+            });
+        case actionType.CLEAR_SYNCH_FLAG:
+            return Object.assign({}, state, {
+                synchFlag: false,
+            });
+>>>>>>> Implemented shopping cart synchronization on a 1-second timer w/ a button in the toolbar as well
         default:
             console.log('Reducer reached default: -- misspelled action.type?');
             return state;

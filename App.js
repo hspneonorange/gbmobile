@@ -1,7 +1,6 @@
 import React from 'react';
 import {Platform, StatusBar, StyleSheet, View} from 'react-native';
 import {Asset} from 'expo';
-// react-navigation
 import {
     createSwitchNavigator,
     createAppContainer,
@@ -16,7 +15,6 @@ import {CommissionStack} from '@screens/Commission';
 import {SalesStack} from '@screens/Sales';
 import {SettingsStack} from '@screens/Settings';
 import NavigationService from '@components/NavigationService';
-// redux/react-redux
 import store from './store/';
 import {Provider} from 'react-redux';
 

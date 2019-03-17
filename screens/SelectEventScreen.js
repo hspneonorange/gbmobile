@@ -35,7 +35,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         queryEvents: (sessionToken,hostAddress) => {
-            fetch(hostAddress + '/events', {
+            fetch(hostAddress + '/api/events', {
                 method: 'GET',
                 headers: {
                     Authorization: "Bearer " + sessionToken

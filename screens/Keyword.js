@@ -38,7 +38,7 @@ const mapDispatchToProps = (dispatch) => {
             dispatch({type: actionType.SEARCH_TEXT_CHANGED, text: text});
         },
         searchPressed: (sessionToken, searchText, hostAddress) => {
-            fetch(hostAddress + '/products?search=' + searchText, {
+            fetch(hostAddress + '/api/products?search=' + searchText, {
                 method: 'GET',
                 headers: {
                     Authorization: "Bearer " + sessionToken

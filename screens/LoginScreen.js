@@ -18,7 +18,7 @@ class LoginScreen extends Component {
     componentDidMount = () => {
         if (this.props.navigation.getParam("logout")) {
             // Log out at server (most important part)
-            fetch(this.props.appConfig.hostAddress + '/tokens', {
+            fetch(this.props.appConfig.hostAddress + '/api/tokens', {
                 method: 'DELETE',
                 headers: {
                     Authorization: "Bearer " + this.props.sessionToken
@@ -38,7 +38,7 @@ class LoginScreen extends Component {
         await AsyncStorage.getItem('@Authentication:access-token')
         .then(async (sessionToken) => {
             if (sessionToken !== null) {
-                await fetch(this.props.appConfig.hostAddress + '/tokens', {
+                await fetch(this.props.appConfig.hostAddress + '/api/tokens', {
                     method: 'GET',
                     headers: {
                         Authorization: "Bearer " + sessionToken
@@ -115,7 +115,7 @@ const mapDispatchToProps = (dispatch) => {
         loginPressed: (username, password, hostAddress) => {
             //const value = this.loginForm.getValue();
             let encodedCredentials = base64.encode(username + ":" + password);
-            fetch(hostAddress + '/tokens' ,{
+            fetch(hostAddress + '/api/tokens' ,{
                 method: 'POST',
                 headers: {
                     Authorization: "Basic " + encodedCredentials

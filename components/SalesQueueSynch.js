@@ -19,68 +19,84 @@ class SalesQueueSynch extends Component{
         );
     }
 
-    async run() {
+    run() {
+//        console.log('Entering SalesQueueSynch.js');
         // We take small single bites at the salesQueue; each API call is a single
         // bite and autonomous piece of work, with state updated in the salesQueue.
         // The salesQueue is immutably updated via Redux, so we can't count on
         // it to persist after a single bite of work is completed; we have to return
         // afresh another bite.
-        try {
-            console.log('SalesQueueSynch::this.props', this.props);
-            while (this.props.salesQueue.length > 0) {
-                if (!this.props.salesQueue[0].id) {
-                    console.log('id is 0, so creating sale!');
-                    // Create sale
-                    await fetch(this.props.appConfig.hostAddress + '/sales', {
-                        method: 'POST',
-                        headers: {
-                            Authorization: "Bearer " + this.props.sessionToken,
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            event_id: this.props.salesQueue[0].eventId,
-                            user_id: this.props.salesQueue[0].userId,
-                            date: Moment(this.props.salesQueue[0].time).format('YYYY-MM-DD HH:MM:SS'),
-                            discount: this.props.salesQueue[0].discount,
-                        })
-                    })
-                    .then((response) => response.json())
-                    .then((responseJson) => {
-                    // Update sale & all items w/ returned ID (via Redux)
-                    console.log('pre-updateSaleId responseJson', responseJson);
-                    this.props.updateSaleId(this.props.salesQueue[0], responseJson.id);
-                        console.log('post-updateSaleId order', this.props.salesQueue[0]);
-                    })
-                    .catch((error) => {
-                        throw error; 
-                    });
-                } else {
-                    console.log('id is non-zero, so creating sale line item!');
-                    // Sale already created; create SaleLineItems
-                    fetch(this.props.appConfig.hostAddress + '/sale_line_items', {
-                        method: 'POST',
-                        headers: {
-                            Authorization: "Bearer " + this.props.sessionToken
-                        },
-                        body: {
-                            sale_id: this.props.salesQueue[0].id,
-                            product_id: this.props.salesQueue[0].items[0].id,
-                            num_sold: this.props.salesQueue[0].items[0].quantity,
-                            sale_price: this.props.salesQueue[0].items[0].price,
+
+        if (!this.synchFlag) {
+            if (this.props.salesQueue.length) {
+                console.log('another go-round');
+                fetch(this.props.appConfig.hostAddress)
+                .then((response) => {
+                    if (response.status === 200) {
+                        console.log('synch is not blocking');
+                        this.synchFlag = true;
+                        if (!this.props.salesQueue[0].id) {
+                            // Create order, update order.id
+                            console.log('no order.id; create order');
+                            let responseBody = fetch(this.props.appConfig.hostAddress + '/api/sales', {
+                                method: 'POST',
+                                headers: {
+                                    Authorization: "Bearer " + this.props.sessionToken,
+                                    'Content-Type': 'application/json',
+                                    'Accept': 'application/json',
+                                },
+                                body: JSON.stringify({
+                                    event_id: this.props.salesQueue[0].eventId,
+                                    user_id: this.props.salesQueue[0].userId,
+                                    date: Moment(this.props.salesQueue[0].time).format('YYYY-MM-DD HH:mm:ss'),
+                                    discount: this.props.salesQueue[0].discount,
+                                })
+                            })
+                            .then((responseBody) => responseBody.json())
+                            .then((responseJson) => {
+                                console.log(responseJson.id);
+                                this.props.updateSaleId(this.props.salesQueue[0], responseJson.id);
+                            })
+                            .then(() => {
+                                this.synchFlag = false;
+                            })
+                        } else {
+                            // Create item, remove item from order
+                            console.log('order.id exists; create item');
+                            responseBody = fetch(this.props.appConfig.hostAddress + '/api/sale_line_items', {
+                                method: 'POST',
+                                headers: {
+                                    Authorization: "Bearer " + this.props.sessionToken,
+                                    'Content-Type': 'application/json',
+                                    'Accept': 'application/json',
+                                },
+                                body: JSON.stringify({
+                                    sale_id: this.props.salesQueue[0].id,
+                                    product_id: this.props.salesQueue[0].items[0].id,
+                                    num_sold: this.props.salesQueue[0].items[0].quantity,
+                                    sale_price: this.props.salesQueue[0].items[0].price,
+                                })
+                            })
+                            .then((responseBody) => responseBody.json())
+                            .then((responseJson) => {
+                                this.props.removeItemFromOrder(this.props.salesQueue[0]);
+                            })
+                            .then(() => {
+                                this.synchFlag = false;
+                            })
                         }
-                    })
-                    .then((response) => response.json())
-                    .then(async (responseJson) => {
-                        // Remove order from salesQueue (via Redux)
-                        this.props.removeItemFromOrder(this.props.salesQueue[0]);
-                        console.log('post-updateSaleId order', this.props.salesQueue[0]);
-                    })
-                }
-                // TODO: API should decrement stock as line items are added!
+                    } else {
+                        console.log('Cannot connect to gbweeby');
+                    }
+                })
+                .catch((error) => {
+                    console.log('network error: ' + error);
+                })
+            } else { // This acts like a "heartbeat" in the console to let us know synch is alive
+                console.log('Sales queue is empty.');
             }
-        } catch(e) {
-            console.log('Error encountered during synch process; ending until next iteration:', e);
+        } else {
+            console.log('synch flag is blocking');
         }
     }
 }
@@ -90,17 +106,18 @@ const mapStateToProps = (state) => {
         sessionToken: state.sessionToken,
         salesQueue: state.salesQueue,
         appConfig: state.appConfig,
+        synchFlag: state.synchFlag,
     };
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        updateSaleId: (order, saleId) => {
-            dispatch({type: actionType.UPDATE_SALESQUEUE_ORDER_WITH_ID, order: order, id: saleId});
+        updateSaleId: (order, id) => {
+            dispatch({type: actionType.UPDATE_SALESQUEUE_ORDER_WITH_ID, order: order, id: id});
         },
         removeItemFromOrder: (order) => {
-            dispatch({type: actionType.REMOVE_FIRST_ITEM_FROM_SALES_QUEUE, order: order})
-        }
+            dispatch({type: actionType.REMOVE_FIRST_ITEM_FROM_SALES_QUEUE, order: order});
+        },
     };
 };
 
