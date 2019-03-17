@@ -128,35 +128,35 @@ const CommissionPage = (props) => {
                 <Text style={styles.nameDisplay}>Commission Information</Text>
                 <View style={styles.span} />
                 
-                <Text>Commission Details</Text>
+                <Text>Commission Details (Required):</Text>
                 <TextInput style={styles.textInput} multiline={true} minHeight={200} placeholder="Please be as detailed as possible" onChangeText={(text) => props.commissionDetailsChanged(text)} />
                 <View style={styles.span} />
                 
-                <Text>Price</Text>
+                <Text>Price (Required):</Text>
                 <TextInput style={styles.textInput} keyboardType='decimal-pad' placeholder="Enter price" onChangeText={(text) => props.commissionPriceKeyPressed(text)} />
                 <View style={styles.span} />
                 
-                <Text>Paid?</Text>
+                <Text>Paid? (Required):</Text>
                 <Picker
                     selectedValue={props.commissionPaymentStatus}
                     onValueChange={(paymentValue, paymentIndex) =>
                         props.commissionPaymentStatusChanged(paymentValue)
                     }>
                     <Picker.Item label="Select one" value='' />
-                    <Picker.Item label="No" value="0" />
-                    <Picker.Item label="Yes" value="1" />
+                    <Picker.Item label="No" value={false} />
+                    <Picker.Item label="Yes" value={true} />
                 </Picker>
                 <View style={styles.span} />
                 
-                <Text>Completed?</Text>
+                <Text>Completed? (Required):</Text>
                 <Picker
                     selectedValue={props.commissionCompletionStatus}
                     onValueChange={(completionValue, completionIndex) =>
                         props.commissionCompletionStatusChanged(completionValue)
                     }>
                     <Picker.Item label="Select one" value='' />
-                    <Picker.Item label="No" value="0" />
-                    <Picker.Item label="Yes" value="1" />
+                    <Picker.Item label="No" value={false} />
+                    <Picker.Item label="Yes" value={true} />
                 </Picker>
                 <View style={styles.span} />
                 <View style={styles.span} />
@@ -239,55 +239,55 @@ const mapDispatchToProps = (dispatch) => {
             dispatch({type: actionType.COMMISSION_COMPLETION_STATUS_CHANGED, completionStatus: completionValue});
         },
 
-        // submitPressed: (
-        //     commissionerName,
-        //     commissionerEmail,
-        //     commissionerPhone,
-        //     commissionerStreetAddress,
-        //     commissionerCity,
-        //     commissionerStateAbbr,
-        //     commissionerZip,
-        //     hostAddress,
-        //     sessionToken,
-        //     eventId,
-        //     userId,
-            // props.commissionDetails,
-            // props.commissionPrice,
-            // props.commissionPaymentStatus,
-            // props.commissionCompletionStatus,
-        // ) => {
-        //     fetch(hostAddress + '/commissions', {
-        //         method: 'POST',
-        //         headers: {
-        //             Authorization: "Bearer " + sessionToken,
-        //             'Content-Type': 'application/json',
-        //             'Accept': 'application/json',
-        //         },
-        //         body: JSON.stringify ({
-        //             event_id: eventId,
-        //             user_id: userId,
-        //             datetime_recorded: Moment(new Date()).format('YYYY-MM-DD HH:MM:SS'),
-        //             commissioner_name: commissionerName,
-        //             commissioner_email: commissionerEmail,
-        //             commissioner_phone: commissionerPhone.replace('-','').replace('(','').replace(')',''), //should strip out unnecessary characters in phone #
-        //             street_address: commissionerStreetAddress,
-        //             address_city: commissionerCity,
-        //             address_state_abbr: commissionerStateAbbr,
-        //             address_zip: commissionerZip,
-        //             commission_details: /*commission details variable*/,
-        //             price: /*price variable*/,
-        //             paid: /*paid bool variable*/,
-        //             completed: /*completed bool variable*/,
-        //         })
-        //     })
-        //     .then((response) => response.json())
-        //     .then(async (responseJson) => {
-        //         dispatch({type: actionType.RETURN_SEARCH_ITEMS, searchItems: responseJson.items})
-        //     })
-        //     .catch((error) => {
-        //         console.error(error);
-        //     });
-        // },
+        submitPressed: (
+            commissionerName,
+            commissionerEmail,
+            commissionerPhone,
+            commissionerStreetAddress,
+            commissionerCity,
+            commissionerStateAbbr,
+            commissionerZip,
+            hostAddress,
+            sessionToken,
+            eventId,
+            userId,
+            commissionDetails,
+            commissionPrice,
+            commissionPaymentStatus,
+            commissionCompletionStatus,
+        ) => {
+            fetch(hostAddress + '/commissions', {
+                method: 'POST',
+                headers: {
+                    Authorization: "Bearer " + sessionToken,
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify ({
+                    event_id: eventId,
+                    user_id: userId,
+                    datetime_recorded: Moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
+                    commissioner_name: commissionerName,
+                    commissioner_email: commissionerEmail,
+                    commissioner_phone: commissionerPhone.replace('-','').replace('(','').replace(')',''), //should strip out unnecessary characters in phone #
+                    street_address: commissionerStreetAddress,
+                    address_city: commissionerCity,
+                    address_state_abbr: commissionerStateAbbr,
+                    address_zip: commissionerZip,
+                    commission_details: commissionDetails,
+                    price: commissionPrice,
+                    paid: commissionPaymentStatus,
+                    completed: commissionCompletionStatus,
+                })
+            })
+            .then((response) => response.json())
+            .then(async (responseJson) => {
+                dispatch({type: actionType.RETURN_SEARCH_ITEMS, searchItems: responseJson.items})
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+        },
     };
 };
 

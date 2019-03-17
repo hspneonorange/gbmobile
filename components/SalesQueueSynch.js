@@ -3,13 +3,18 @@ import {connect} from 'react-redux';
 import {TouchableOpacity} from 'react-native';
 import {Ionicons} from '@expo/vector-icons';
 import Moment from 'moment';
+import {withBadge, Icon} from 'react-native-elements';
 
 class SalesQueueSynch extends Component{
-
     render() {
+        if (this.props.salesQueue.length) {
+            BadgedIcon = withBadge(this.props.salesQueue.length)(Icon)
+        } else {
+            BadgedIcon = Icon
+        }
         return (
-            <TouchableOpacity onPress={() => this.run()}>
-                <Ionicons style={{margin: 10}} name="md-sync" size={32}/>
+            <TouchableOpacity style={{margin: 10}}onPress={() => this.run()}>
+                <BadgedIcon type='ionicon' name="md-sync" size={32}/>
             </TouchableOpacity>
         );
     }

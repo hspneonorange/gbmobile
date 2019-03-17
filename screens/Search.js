@@ -26,6 +26,7 @@ export const SearchTabNavigator = createBottomTabNavigator({
     }
 })
 
+
 export const SearchStack = createStackNavigator({
     Search: {
         screen: SearchTabNavigator,
