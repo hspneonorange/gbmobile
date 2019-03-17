@@ -1,7 +1,3 @@
 {
-<<<<<<< HEAD
-    "hostAddress": "http://192.168.0.119:5000/api"
-=======
     "hostAddress": "http://192.168.0.106:5000"
->>>>>>> Implemented shopping cart synchronization on a 1-second timer w/ a button in the toolbar as well
 }

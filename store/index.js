@@ -15,17 +15,6 @@ const initialState = {
     username: '',
     password: '',
     eventId: '',
-    commissionerName: '',
-    commissionerEmail: '',
-    commissionerPhone: '',
-    commissionerStreetAddress: '',
-    commissionerCity: '',
-    commissionerStateAbbr: '',
-    commissionerZip: '',
-    commissionDetails: '',
-    commissionPrice: 0,
-    commissionPaymentStatus: '', //'1' for true '0' for false
-    commissionCompletionStatus: '', //'1' for true '0' for false
 }
 
 const reducer = (state = initialState, action) => {
@@ -139,7 +128,6 @@ const reducer = (state = initialState, action) => {
             }
         case actionType.SET_SYNCH_FLAG:
             return Object.assign({}, state, {
-<<<<<<< HEAD
                 salesQueue: state.salesQueue.concat(updateOrder).slice(),
             })
         case actionType.COMMISSIONER_NAME_TEXT_CHANGED:
@@ -164,14 +152,6 @@ const reducer = (state = initialState, action) => {
             return Object.assign({}, state, {commissionCompletionStatus: action.completionStatus});
         case actionType.COMMISSION_PAYMENT_STATUS_CHANGED:
             return Object.assign({}, state, {commissionPaymentStatus: action.paymentStatus});
-=======
-                synchFlag: true,
-            });
-        case actionType.CLEAR_SYNCH_FLAG:
-            return Object.assign({}, state, {
-                synchFlag: false,
-            });
->>>>>>> Implemented shopping cart synchronization on a 1-second timer w/ a button in the toolbar as well
         default:
             console.log('Reducer reached default: -- misspelled action.type?');
             return state;

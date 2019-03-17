@@ -6,6 +6,14 @@ import Moment from 'moment';
 import {withBadge, Icon} from 'react-native-elements';
 
 class SalesQueueSynch extends Component{
+    componentDidMount() {
+        this.synchTimer = setInterval(() => this.run(), 1000);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.synchTimer);
+    }
+
     render() {
         if (this.props.salesQueue.length) {
             BadgedIcon = withBadge(this.props.salesQueue.length)(Icon)
@@ -20,7 +28,6 @@ class SalesQueueSynch extends Component{
     }
 
     run() {
-//        console.log('Entering SalesQueueSynch.js');
         // We take small single bites at the salesQueue; each API call is a single
         // bite and autonomous piece of work, with state updated in the salesQueue.
         // The salesQueue is immutably updated via Redux, so we can't count on
@@ -92,8 +99,8 @@ class SalesQueueSynch extends Component{
                 .catch((error) => {
                     console.log('network error: ' + error);
                 })
-            } else { // This acts like a "heartbeat" in the console to let us know synch is alive
-                console.log('Sales queue is empty.');
+            // } else { // This acts like a "heartbeat" in the console to let us know synch is alive
+            //     console.log('Sales queue is empty.');
             }
         } else {
             console.log('synch flag is blocking');
