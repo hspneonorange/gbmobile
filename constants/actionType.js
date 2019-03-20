@@ -3,7 +3,9 @@ export default actionType = {
     LOGOUT: 'logout',
     SEARCH_TEXT_CHANGED: 'search_text_changed',
     RETURN_SEARCH_ITEMS: 'return_search_items',
+    RETURN_ID_SEARCH_ITEMS: 'return_id_search_items',
     RETURN_EVENTS: 'return_events',
+    RETURN_LOW_STOCK_PRODUCTS: 'return_low_stock_products',
     USERNAME_TEXT_CHANGED: 'username_text_changed',
     PASSWORD_TEXT_CHANGED: 'password_text_changed',
     SET_EVENT: 'set_event',
@@ -17,4 +19,6 @@ export default actionType = {
     CLEAR_STATE_ON_LOGOUT: 'clear_state_on_logout',
     UPDATE_SALESQUEUE_ORDER_WITH_ID: 'update_order_with_id',
     REMOVE_FIRST_ITEM_FROM_SALES_QUEUE: 'remove_item_from_sales_queue',
+    SUBMIT_COMMISSION: 'submit_commission',
+    REMOVE_COMMISSION_FROM_QUEUE: 'remove_commission_from_queue',
 };

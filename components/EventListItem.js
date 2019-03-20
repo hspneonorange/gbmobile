@@ -28,7 +28,7 @@ const mapStateToProps = (state) => {
     return {
         sessionToken: state.sessionToken,
         userId: state.userId,
-    }; //none yet? ówò
+    };
 }
 
 const mapDispatchToProps = (dispatch) => {

@@ -5,6 +5,7 @@ import Keyword from '@screens/Keyword';
 import IdSearch from '@screens/IdSearch';
 import Category from '@screens/Category';
 import TopSellers from '@screens/TopSellers';
+import LowStock from '@screens/LowStock';
 import ShoppingCartScreen from '@screens/ShoppingCartScreen';
 import ProductInfoScreen from '@components/ProductInfoScreen';
 import NavigationService from '@components/NavigationService';
@@ -13,9 +14,10 @@ import SalesQueueSynch from '@components/SalesQueueSynch';
 
 export const SearchTabNavigator = createBottomTabNavigator({
     Keyword,
-    IdSearch,
+    "ID": IdSearch,
     Category,
-    TopSellers
+    "Top Sellers": TopSellers,
+    "Low Stock": LowStock,
   },{
     navigationOptions:({navigation})=>{
         const {routeName} = navigation.state.routes[navigation.state.index];

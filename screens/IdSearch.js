@@ -15,12 +15,12 @@ const IdSearch = (props) => {
     return (
           <ScrollView style={styles.scroll} removeClippedSubviews={true}>
               <View>
-                  <TextInput selectTextOnFocus={true} onSubmitEditing={() => {props.searchPressed(props.sessionToken, props.searchText, props.appConfig.hostAddress)}} style={styles.textInput} placeholder="Enter item ID"  onChangeText={(text) => {props.textChanged(text)}}/>
+                  <TextInput keyboardType='decimal-pad' selectTextOnFocus={true} onSubmitEditing={() => {props.searchPressed(props.sessionToken, props.searchText, props.appConfig.hostAddress)}} style={styles.textInput} placeholder="Enter item ID"  onChangeText={(text) => {props.textChanged(text)}}/>
               </View>
               <Button title="Search" color="#979797" onPress={() => {props.searchPressed(props.sessionToken, props.searchText, props.appConfig.hostAddress)}}/>
               <View style={styles.searchResults}>
                 <FlatList 
-                  data = {props.searchItems}
+                  data = {props.idSearchItems}
                   keyExtractor = {item => 'list-item-$'+item.id}
                   renderItem = {({item}) => <SearchProductListItem item={item} />}
                 />
@@ -33,7 +33,7 @@ const IdSearch = (props) => {
       return {
           sessionToken: state.sessionToken,
           searchText: state.searchText,
-          searchItems: state.searchItems,
+          idSearchItems: state.idSearchItems,
           appConfig: state.appConfig,
       };
   }
@@ -46,7 +46,7 @@ const IdSearch = (props) => {
           searchPressed: (sessionToken, searchText, hostAddress) => {
               console.log('searchPressed');
               console.log('Bearer ', sessionToken);
-              fetch(hostAddress + '/products/id_search?search=' + searchText, {
+              fetch(hostAddress + '/api/products/id_search?search=' + searchText, {
                   method: 'GET',
                   headers: {
                       Authorization: "Bearer " + sessionToken
@@ -55,7 +55,7 @@ const IdSearch = (props) => {
               .then((response) => response.json())
               .then(async (responseJson) => {
                   console.log(responseJson);
-                  dispatch({type: actionType.RETURN_SEARCH_ITEMS, searchItems: responseJson.items})
+                  dispatch({type: actionType.RETURN_ID_SEARCH_ITEMS, searchItems: responseJson.items})
               })
               .catch((error) => {
                   console.error(error);

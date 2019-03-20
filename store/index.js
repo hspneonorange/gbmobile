@@ -7,7 +7,9 @@ const initialState = {
     userId: '',
     searchText: '',
     searchItems: [],
+    idSearchItems: [],
     events: [],
+    lowStockProducts: [],
     productDiscount: 0,
     productCart: [],
     salesQueue: [],
@@ -28,8 +30,13 @@ const reducer = (state = initialState, action) => {
             return Object.assign({}, state, {searchText: action.text});
         case actionType.RETURN_SEARCH_ITEMS:
             return Object.assign({}, state, {searchItems: action.searchItems});
+        case actionType.RETURN_ID_SEARCH_ITEMS:
+            return Object.assign({}, state, {idSearchItems: action.searchItems});
         case actionType.RETURN_EVENTS:
             return Object.assign({}, state, {events: action.events});
+        case actionType.RETURN_LOW_STOCK_PRODUCTS:
+            console.log('in RETURN_LOW_STOCK_PRODUCTS; lowStockProducts: ' + action.lowStockProducts);
+            return Object.assign({}, state, {lowStockProducts: action.lowStockProducts});
         case actionType.USERNAME_TEXT_CHANGED:
             return Object.assign({}, state, {username: action.text});
         case actionType.PASSWORD_TEXT_CHANGED:
@@ -83,6 +90,7 @@ const reducer = (state = initialState, action) => {
             });
         case actionType.CHECKOUT:
             state.salesQueue = state.salesQueue.concat({
+                type: 'product_sale',
                 timeStamp: new Date(),
                 userId: state.userId,
                 eventId: state.eventId,
@@ -130,28 +138,34 @@ const reducer = (state = initialState, action) => {
             return Object.assign({}, state, {
                 salesQueue: state.salesQueue.concat(updateOrder).slice(),
             })
-        case actionType.COMMISSIONER_NAME_TEXT_CHANGED:
-            return Object.assign({}, state, {commissionerName: action.commissionerName});
-        case actionType.COMMISSIONER_EMAIL_TEXT_CHANGED:
-            return Object.assign({}, state, {commissionerEmail: action.commissionerEmail});
-        case actionType.COMMISSIONER_PHONE_TEXT_CHANGED:
-            return Object.assign({}, state, {commissionerPhone: action.commissionerPhone});
-        case actionType.COMMISSIONER_STREET_ADDRESS_TEXT_CHANGED:
-            return Object.assign({}, state, {commissionerStreetAddress: action.streetAddress});
-        case actionType.COMMISSIONER_CITY_TEXT_CHANGED:
-            return Object.assign({}, state, {commissionerCity: action.city});
-        case actionType.COMMISSIONER_STATE_ABBR_CHANGED:
-            return Object.assign({}, state, {commissionerStateAbbr: action.stateAbbr});
-        case actionType.COMMISSIONER_ZIP_TEXT_CHANGED:
-            return Object.assign({}, state, {commissionerZip: action.zipCode});
-        case actionType.COMMISSION_DETAILS_TEXT_CHANGED:
-            return Object.assign({}, state, {commissionDetails: action.commissionDetails});
-        case actionType.COMMISSION_PRICE_KEY_PRESS:
-            return Object.assign({}, state, {commissionPrice: action.commissionPrice});
-        case actionType.COMMISSION_COMPLETION_STATUS_CHANGED:
-            return Object.assign({}, state, {commissionCompletionStatus: action.completionStatus});
-        case actionType.COMMISSION_PAYMENT_STATUS_CHANGED:
-            return Object.assign({}, state, {commissionPaymentStatus: action.paymentStatus});
+        case actionType.SUBMIT_COMMISSION:
+            state.salesQueue = state.salesQueue.concat({
+                type: 'commission',
+                timeStamp: new Date(),
+                userId: state.userId,
+                eventId: state.eventId,
+                commissionerName: action.commissionerName,
+                commissionerEmail: action.commissionerEmail,
+                commissionerPhone: action.commissionerPhone,
+                commissionerStreetAddress: action.commissionerStreetAddress,
+                commissionerCity: action.commissionerCity,
+                commissionerStateAbbr: action.commissionerStateAbbr,
+                commissionerZip: action.commissionerZip,
+                commissionDetails: action.commissionDetails,
+                commissionPrice: action.commissionPrice,
+                commissionCompletionStatus: action.commissionCompletionStatus,
+                commissionPaymentStatus: action.commissionPaymentStatus,
+            });
+            newState = Object.assign({}, state, {
+                salesQueue: state.salesQueue.slice(),
+            });
+            console.log('New Sales Queue:', state.salesQueue)
+            return newState;
+        case actionType.REMOVE_COMMISSION_FROM_QUEUE:
+            state.salesQueue.splice(0, 1);
+            return Object.assign({}, state, {
+                salesQueue: state.salesQueue.slice()
+            })
         default:
             console.log('Reducer reached default: -- misspelled action.type?');
             return state;

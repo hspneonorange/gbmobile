@@ -42,7 +42,7 @@ class SalesQueueSynch extends Component{
                     if (response.status === 200) {
                         console.log('synch is not blocking');
                         this.synchFlag = true;
-                        if (!this.props.salesQueue[0].id) {
+                        if (!this.props.salesQueue[0].id & this.props.salesQueue[0].type == 'product_sale') {
                             // Create order, update order.id
                             console.log('no order.id; create order');
                             let responseBody = fetch(this.props.appConfig.hostAddress + '/api/sales', {
@@ -67,7 +67,7 @@ class SalesQueueSynch extends Component{
                             .then(() => {
                                 this.synchFlag = false;
                             })
-                        } else {
+                        } else if (this.props.salesQueue[0].id) {
                             // Create item, remove item from order
                             console.log('order.id exists; create item');
                             responseBody = fetch(this.props.appConfig.hostAddress + '/api/sale_line_items', {
@@ -91,6 +91,60 @@ class SalesQueueSynch extends Component{
                             .then(() => {
                                 this.synchFlag = false;
                             })
+                        } else if (this.props.salesQueue[0].type == 'commission') {
+                            console.log('this is a commission!');
+                            console.log(
+                                JSON.stringify({
+                                event_id: this.props.salesQueue[0].eventId,
+                                user_id: this.props.salesQueue[0].userId,
+                                datetime_recorded: Moment(this.props.salesQueue[0].time).format('YYYY-MM-DD HH:mm:ss'),
+                                commissioner_name: this.props.salesQueue[0].commissionerName,
+                                commissioner_email: this.props.salesQueue[0].commissionerEmail,
+                                commissioner_phone: this.props.salesQueue[0].commissionerPhone,
+                                streetAddress: this.props.salesQueue[0].commissionerStreetAddress,
+                                address_city: this.props.salesQueue[0].commissionerCity,
+                                address_state_abbr: this.props.salesQueue[0].commissionerStateAbbr,
+                                address_zip: this.props.salesQueue[0].commissionerZip,
+                                commission_details: this.props.salesQueue[0].commissionDetails,
+                                price: this.props.salesQueue[0].commissionPrice,
+                                paid: this.props.salesQueue[0].commissionPaymentStatus,
+                                completed: this.props.salesQueue[0].commissionCompletionStatus,
+                            }))
+                            fetch(this.props.appConfig.hostAddress + '/api/commissions', {
+                                method: 'POST',
+                                headers: {
+                                    Authorization: "Bearer " + this.props.sessionToken,
+                                    'Content-Type': 'application/json',
+                                    'Accept': 'application/json',
+                                },
+                                body: JSON.stringify({
+                                    event_id: this.props.salesQueue[0].eventId,
+                                    user_id: this.props.salesQueue[0].userId,
+                                    datetime_recorded: Moment(this.props.salesQueue[0].time).format('YYYY-MM-DD HH:mm:ss'),
+                                    commissioner_name: this.props.salesQueue[0].commissionerName,
+                                    commissioner_email: this.props.salesQueue[0].commissionerEmail,
+                                    commissioner_phone: this.props.salesQueue[0].commissionerPhone,
+                                    streetAddress: this.props.salesQueue[0].commissionerStreetAddress,
+                                    address_city: this.props.salesQueue[0].commissionerCity,
+                                    address_state_abbr: this.props.salesQueue[0].commissionerStateAbbr,
+                                    address_zip: this.props.salesQueue[0].commissionerZip,
+                                    commission_details: this.props.salesQueue[0].commissionDetails,
+                                    price: this.props.salesQueue[0].commissionPrice,
+                                    paid: this.props.salesQueue[0].commissionPaymentStatus,
+                                    completed: this.props.salesQueue[0].commissionCompletionStatus,
+                                })
+                            })
+                            .then((response) => response.json())
+                            .then(async (responseJson) => {
+                                // Remove order from salesQueue (via Redux)
+                                this.props.removeCommissionFromOrder(this.props.salesQueue[0]);
+                                console.log('removed commission from salesQueue!')
+                            })
+                            .then(() => {
+                                this.synchFlag = false;
+                            })
+                        } else {
+                            console.log('hmm we got a bit of a mystery on our hands lads.')
                         }
                     } else {
                         console.log('Cannot connect to gbweeby');
@@ -125,6 +179,9 @@ const mapDispatchToProps = (dispatch) => {
         removeItemFromOrder: (order) => {
             dispatch({type: actionType.REMOVE_FIRST_ITEM_FROM_SALES_QUEUE, order: order});
         },
+        removeCommissionFromOrder: (order) => {
+            dispatch({type: actionType.REMOVE_COMMISSION_FROM_QUEUE, order: order});
+        }
     };
 };
 
