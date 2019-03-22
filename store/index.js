@@ -17,6 +17,8 @@ const initialState = {
     username: '',
     password: '',
     eventId: '',
+    userEventSalesUpdated: false,
+    userEventSales: [],
 }
 
 const reducer = (state = initialState, action) => {
@@ -35,8 +37,13 @@ const reducer = (state = initialState, action) => {
         case actionType.RETURN_EVENTS:
             return Object.assign({}, state, {events: action.events});
         case actionType.RETURN_LOW_STOCK_PRODUCTS:
-            console.log('in RETURN_LOW_STOCK_PRODUCTS; lowStockProducts: ' + action.lowStockProducts);
             return Object.assign({}, state, {lowStockProducts: action.lowStockProducts});
+        case actionType.UPDATE_USER_EVENT_SALES:
+            console.log (action.userEventSales);
+            return Object.assign({}, state, {
+                userEventSales: action.userEventSales,
+                userEventSalesUpdated: true
+            });
         case actionType.USERNAME_TEXT_CHANGED:
             return Object.assign({}, state, {username: action.text});
         case actionType.PASSWORD_TEXT_CHANGED:
@@ -126,6 +133,7 @@ const reducer = (state = initialState, action) => {
                 // If we've just synched the last item in the order, delete the entire order from the queue
                 return Object.assign({}, state, {
                     salesQueue: state.salesQueue.slice(),
+                    userEventSalesUpdated: false,
                 })
             } else {
                 // Otherwise, just delete the just-synched item from the order
@@ -164,7 +172,8 @@ const reducer = (state = initialState, action) => {
         case actionType.REMOVE_COMMISSION_FROM_QUEUE:
             state.salesQueue.splice(0, 1);
             return Object.assign({}, state, {
-                salesQueue: state.salesQueue.slice()
+                salesQueue: state.salesQueue.slice(),
+                userEventSalesUpdated: false,
             })
         default:
             console.log('Reducer reached default: -- misspelled action.type?');

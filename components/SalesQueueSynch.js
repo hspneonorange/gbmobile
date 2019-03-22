@@ -168,6 +168,7 @@ const mapStateToProps = (state) => {
         salesQueue: state.salesQueue,
         appConfig: state.appConfig,
         synchFlag: state.synchFlag,
+        userEventSalesUpdated: state.userEventSalesUpdated,
     };
 }
 
@@ -181,7 +182,7 @@ const mapDispatchToProps = (dispatch) => {
         },
         removeCommissionFromOrder: (order) => {
             dispatch({type: actionType.REMOVE_COMMISSION_FROM_QUEUE, order: order});
-        }
+        },
     };
 };
 

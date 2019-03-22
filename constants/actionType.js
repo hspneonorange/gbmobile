@@ -21,4 +21,5 @@ export default actionType = {
     REMOVE_FIRST_ITEM_FROM_SALES_QUEUE: 'remove_item_from_sales_queue',
     SUBMIT_COMMISSION: 'submit_commission',
     REMOVE_COMMISSION_FROM_QUEUE: 'remove_commission_from_queue',
+    UPDATE_USER_EVENT_SALES: 'update_user_event_sales', //every time you sync a new order, makes your sales tab re-render (??)
 };
