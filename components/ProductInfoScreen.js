@@ -26,11 +26,11 @@ export class ProductInfoScreen extends React.Component {
             minimumFractionDigits: 2
         })
     
-        if (this.props.item.image_link) {
+        if (this.props.item.gb_image_link) {
             DisplayImage =
             <Image
                 style={{width: 200, height: 200, marginLeft: 'auto', marginRight: 'auto'}}
-                source={{uri:(""+this.props.item.image_link).replace('https://drive.google.com/open?id=', 'http://drive.google.com/uc?export=view&id=')}}
+                source={{uri:(""+this.props.item.gb_image_link).replace('https://drive.google.com/open?id=', 'http://drive.google.com/uc?export=view&id=')}}
                 resizeMethod="auto"
             />
         } else { //only display this if there is no given product picture for an item

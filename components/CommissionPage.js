@@ -23,17 +23,16 @@ export class CommissionPage extends React.Component {
             commissionerZip: '',
             commissionDetails: '',
             commissionPrice: '',
-            commissionPaymentStatus: '',
+            commissionAmountPaid: '',
             commissionCompletionStatus: '',
         }
     }
 
     render() {
-        console.log(this.state);
         return (
             <ScrollView style={styles.scroll}>
-                <View style={{paddingBottom: 120}}>
-                    <Text style={styles.nameDisplay}>Commissioner Contact Information</Text>
+                <View style={{paddingBottom: 200}}>
+                    <Text style={{fontWeight:'bold', fontSize: 20,}}>Commissioner Contact Information</Text>
                     <View style={styles.span} />
                     
                     <Text>Name (Required):</Text>
@@ -52,7 +51,7 @@ export class CommissionPage extends React.Component {
                     <View style={styles.span} />
                     <View style={styles.span} />
 
-                    <Text style={styles.nameDisplay}>Shipping Information</Text>
+                    <Text style={{fontWeight:'bold', fontSize: 20,}}>Shipping Information</Text>
                     <View style={styles.span} />
                     
                     <Text>Street Address:</Text>
@@ -131,7 +130,7 @@ export class CommissionPage extends React.Component {
                     <View style={styles.span} />
                     <View style={styles.span} />
 
-                    <Text style={styles.nameDisplay}>Commission Information</Text>
+                    <Text style={{fontWeight:'bold', fontSize: 20,}}>Commission Information</Text>
                     <View style={styles.span} />
                     
                     <Text>Commission Details (Required):</Text>
@@ -142,16 +141,8 @@ export class CommissionPage extends React.Component {
                     <TextInput style={styles.textInput} keyboardType='decimal-pad' placeholder="Enter price" onChangeText={(text) => this.setState({commissionPrice: text})} />
                     <View style={styles.span} />
                     
-                    <Text>Paid? (Required):</Text>
-                    <Picker
-                        selectedValue={this.state.commissionPaymentStatus}
-                        onValueChange={(paymentValue) =>
-                            this.setState({commissionPaymentStatus: paymentValue})
-                        }>
-                        <Picker.Item label="Select one" value='' />
-                        <Picker.Item label="No" value={false} />
-                        <Picker.Item label="Yes" value={true} />
-                    </Picker>
+                    <Text>Amount Paid (Required):</Text>
+                    <TextInput style={styles.textInput} keyboardType='decimal-pad' placeholder="Enter total amount paid" onChangeText={(text) => this.setState({commissionAmountPaid: text})} />
                     <View style={styles.span} />
                     
                     <Text>Completed? (Required):</Text>
@@ -177,7 +168,7 @@ export class CommissionPage extends React.Component {
                         this.state.commissionerZip,
                         this.state.commissionDetails,
                         this.state.commissionPrice,
-                        this.state.commissionPaymentStatus,
+                        this.state.commissionAmountPaid,
                         this.state.commissionCompletionStatus,
                     )}}/>
                 </View>
@@ -207,7 +198,7 @@ const mapDispatchToProps = (dispatch) => {
             commissionerZip,
             commissionDetails,
             commissionPrice,
-            commissionPaymentStatus,
+            commissionAmountPaid,
             commissionCompletionStatus,
         ) => {
             dispatch({type: actionType.SUBMIT_COMMISSION,
@@ -220,7 +211,7 @@ const mapDispatchToProps = (dispatch) => {
                 commissionerZip: commissionerZip,
                 commissionDetails: commissionDetails,
                 commissionPrice: commissionPrice,
-                commissionPaymentStatus: commissionPaymentStatus,
+                commissionAmountPaid: commissionAmountPaid,
                 commissionCompletionStatus: commissionCompletionStatus,
             })
         },

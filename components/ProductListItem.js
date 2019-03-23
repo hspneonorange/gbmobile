@@ -21,11 +21,11 @@ const ListItem = (props) => {
         minimumFractionDigits: 2
     })
     
-    if (props.item.image_link) {
+    if (props.item.gb_image_link) {
         DisplayImage =
         <Image
             style={{width: 60, height: 60, alignContent: 'center'}}
-            source={{uri:(""+props.item.image_link).replace('https://drive.google.com/open?id=', 'http://drive.google.com/uc?export=view&id=')}}
+            source={{uri:(""+props.item.gb_image_link).replace('https://drive.google.com/open?id=', 'http://drive.google.com/uc?export=view&id=')}}
             resizeMethod="auto"
         />
     } else { //only display this if there is no given product picture for an item

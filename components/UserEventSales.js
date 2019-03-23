@@ -20,7 +20,7 @@ export const UserEventSales = (props) => {
     )
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state) => {
     return {
         sessionToken: state.sessionToken,
         appConfig: state.appConfig,

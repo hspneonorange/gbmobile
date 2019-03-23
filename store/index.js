@@ -162,7 +162,7 @@ const reducer = (state = initialState, action) => {
                 commissionDetails: action.commissionDetails,
                 commissionPrice: action.commissionPrice,
                 commissionCompletionStatus: action.commissionCompletionStatus,
-                commissionPaymentStatus: action.commissionPaymentStatus,
+                commissionAmountPaid: action.commissionAmountPaid,
             });
             newState = Object.assign({}, state, {
                 salesQueue: state.salesQueue.slice(),
