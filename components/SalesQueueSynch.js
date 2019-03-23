@@ -35,9 +35,7 @@ class SalesQueueSynch extends Component{
         // afresh another bite.
 
         if (!this.synchFlag) {
-            console.log('SalesQueueSynch::synch is not blocking');
             if (this.props.salesQueue.length) {
-                console.log('SalesQueueSynch::non-zero queue length iteration');
                 if (!this.props.salesQueue[0].id & this.props.salesQueue[0].type == 'product_sale') {
                     // Create order, update order.id
                     console.log('no order.id; create order');
@@ -71,7 +69,6 @@ class SalesQueueSynch extends Component{
                     })
                 } else if (this.props.salesQueue[0].id) {
                     // Create item, remove item from order
-                    console.log('order.id exists; create item');
                     this.synchFlag = true;
                     responseBody = fetch(this.props.appConfig.hostAddress + '/api/sale_line_items', {
                         method: 'POST',
@@ -100,7 +97,6 @@ class SalesQueueSynch extends Component{
                         throw e;
                     })
                 } else if (this.props.salesQueue[0].type == 'commission') {
-                    console.log('this is a commission!');
                     this.synchFlag = true;
                     fetch(this.props.appConfig.hostAddress + '/api/commissions', {
                         method: 'POST',
@@ -130,7 +126,6 @@ class SalesQueueSynch extends Component{
                     .then(async (responseJson) => {
                         // Remove order from salesQueue (via Redux)
                         this.props.removeCommissionFromOrder(this.props.salesQueue[0]);
-                        console.log('removed commission from salesQueue!')
                     })
                     .then(() => {
                         this.synchFlag = false;

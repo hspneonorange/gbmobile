@@ -11,6 +11,7 @@ const Keyword = (props) => {
             <View>
                 <TextInput selectTextOnFocus={true} onSubmitEditing={() => {props.searchPressed(props.sessionToken, props.searchText, props.appConfig.hostAddress)}} style={styles.textInput} placeholder="Enter search term"  onChangeText={(text) => {props.textChanged(text)}}/>
             </View>
+            <View style={{borderBottomColor: 'black', borderBottomWidth: 1, marginTop: 15, marginBottom: 15}} />
             <Button title="Search" color="#979797" onPress={() => {props.searchPressed(props.sessionToken, props.searchText, props.appConfig.hostAddress)}}/>
             <View style={styles.searchResults}>
               <FlatList 

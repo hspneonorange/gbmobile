@@ -3,7 +3,6 @@ import {
   Image,
   Button,
   ScrollView,
-  StyleSheet,
   View,
   AsyncStorage, // token persistence
   Text,
@@ -13,6 +12,7 @@ import {connect} from 'react-redux';
 import NavigationService from '../components/NavigationService';
 import base64 from 'react-native-base64';
 import actionType from '@constants/actionType';
+import HorizontalDivider from '@components/HorizontalDivider';
 
 class LoginScreen extends Component {
     componentDidMount = () => {
@@ -90,6 +90,7 @@ class LoginScreen extends Component {
                     <Text>Password:</Text>
                     <TextInput ref={(input) => {this.passwordField = input}} style={styles.textInput} placeholder="Password" secureTextEntry={true} onChangeText={(text) => {this.props.passwordTextChanged(text)}} onSubmitEditing={() => {this.props.loginPressed(this.props.username, this.props.password, this.props.appConfig.hostAddress)}}/>
                     <View style={styles.span} />
+                    <HorizontalDivider/>
                     <Button title="Log Me In! :^)" color="#979797" onPress={() => {this.props.loginPressed(this.props.username, this.props.password, this.props.appConfig.hostAddress)}}/>
                 </View>
                 <View style={styles.span}/>

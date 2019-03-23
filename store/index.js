@@ -101,7 +101,7 @@ const reducer = (state = initialState, action) => {
                 timeStamp: new Date(),
                 userId: state.userId,
                 eventId: state.eventId,
-                discount: state.discount ? state.discount : 0,
+                discount: action.discount ? action.discount : 0,
                 items: state.productCart.slice(),
             });
             newState = Object.assign({}, state, {

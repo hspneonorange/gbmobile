@@ -144,4 +144,7 @@ export default styles = StyleSheet.create({
       flex: 1,
       backgroundColor: '#FFF',
     },
+    button: {
+        color: '#979797',
+    }
 });
