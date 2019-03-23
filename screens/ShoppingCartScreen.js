@@ -14,15 +14,16 @@ import actionType from '@constants/actionType';
 const ShoppingCartScreen = (props) => {
     return (
         <ScrollView style={{backgroundColor:'#c8e0e4', flexGrow:1, padding:5}}>
-            <View style={{flex: 1, flexDirection: 'row'}}>
-                <Text>Discount</Text><TextInput onChangeText={(text) => props.discountKeyPress(text)} keyboardType='decimal-pad' style={{backgroundColor: 'white'}}/>
-            </View>
             <FlatList
                 data = {props.productCart}
                 keyExtractor = {item => 'list-item-$'+item.id}
                 renderItem = {({item}) => <CartProductListItem item={item} />}
             />
-            <View style={{flex: 1, flexDirection: 'row'}}>
+            <View style={{flex: 1, flexDirection: 'row' }}>
+                <Text style={{fontSize: 32, fontWeight: 'bold'}}>Discount: $</Text>
+                <TextInput style={{backgroundColor: 'white', fontSize: 32, borderWidth: 1, width: 100, justifyContent: 'right'}} placeholder={'0.00'} onChangeText={(text) => props.discountKeyPress(text)} keyboardType='decimal-pad' />
+            </View>
+            <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
                 <Button title="Empty Cart" onPress={() => props.emptyCart()}/><Text> </Text><Button title="Checkout" onPress={() => props.checkout(props.productCart)}/>
             </View>
         </ScrollView>

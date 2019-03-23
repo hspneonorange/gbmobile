@@ -8,9 +8,7 @@ import {
   Picker,
 } from 'react-native';
 import {connect} from 'react-redux';
-import SearchProductListItem from '@components/SearchProductListItem';
 import actionType from '../constants/actionType';
-import Moment from 'moment';
 
 export class CommissionPage extends React.Component {
     constructor(props) {

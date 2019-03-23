@@ -13,7 +13,8 @@ import SelectEventScreen from '@screens/SelectEventScreen';
 import {SearchStack} from '@screens/Search';
 import {CommissionStack} from '@screens/Commission';
 import {SalesStack} from '@screens/Sales';
-import {SettingsStack} from '@screens/Settings';
+//import {SettingsStack} from '@screens/SettingsScreen';
+import SettingsScreen from '@screens/SettingsScreen';
 import NavigationService from '@components/NavigationService';
 import store from './store/';
 import {Provider} from 'react-redux';
@@ -53,10 +54,10 @@ export default class App extends React.Component {
 }
 
 const SalesTabNavigator = createBottomTabNavigator({
-    Search:SearchStack,
-    Sales:SalesStack,
-    Commission:CommissionStack,
-    Settings:SettingsStack
+    Search: SearchStack,
+    Sales: SalesStack,
+    Commission: CommissionStack,
+//    Settings: SettingsStack
 },{
     navigationOptions:({navigation})=>{
         const {routeName} = navigation.state.routes[navigation.state.index];
@@ -68,21 +69,36 @@ const SalesTabNavigator = createBottomTabNavigator({
 });
 
 const SalesStackNavigator = createStackNavigator({
-  SalesTabNavigator:SalesTabNavigator
+  SalesTabNavigator: SalesTabNavigator
 });
 
-const AppDrawerNavigator = createDrawerNavigator({
-  Sales:{
-    screen:SalesStackNavigator
-  }
-});
+const SettingsStackNavigator = createStackNavigator({
+    Settings: {screen: SettingsScreen},
+})
+
+const LoginTabNavigator = createBottomTabNavigator({
+    Login: {screen: LoginScreen},
+    Settings: SettingsStackNavigator//{screen: SettingsScreen},
+})
+
+// const AppDrawerNavigator = createDrawerNavigator({
+//   Sales:{
+//     screen: SalesStackNavigator
+//   }
+// });
+
+// const AppSwitchNavigator = createSwitchNavigator({
+//   Login: { screen: LoginScreen },
+//   Sales: { screen: AppDrawerNavigator },
+//   Event: { screen: SelectEventScreen },
+// });
 
 const AppSwitchNavigator = createSwitchNavigator({
-  Login: { screen:LoginScreen },
-  Sales: { screen:AppDrawerNavigator },
-  Event: { screen:SelectEventScreen },
+    Login: LoginTabNavigator, // { screen: LoginScreen },
+    Sales: { screen: SalesStackNavigator },
+    Event: { screen: SelectEventScreen },
 });
-
+  
 const AppContainer = createAppContainer(AppSwitchNavigator);
 
 const styles = StyleSheet.create({

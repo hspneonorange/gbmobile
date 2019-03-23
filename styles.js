@@ -36,6 +36,7 @@ export default styles = StyleSheet.create({
         fontSize: 20,
         flex: 1,
         backgroundColor: '#FFF',
+        textAlignVertical: 'top',
     },
     sectionHeader: {
         paddingTop: 2,

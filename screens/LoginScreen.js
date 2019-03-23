@@ -17,6 +17,8 @@ import actionType from '@constants/actionType';
 class LoginScreen extends Component {
     componentDidMount = () => {
         if (this.props.navigation.getParam("logout")) {
+            // TODO: Logout seems to be broken. :-(
+            console.log('logout: true');
             // Log out at server (most important part)
             fetch(this.props.appConfig.hostAddress + '/api/tokens', {
                 method: 'DELETE',
@@ -30,6 +32,7 @@ class LoginScreen extends Component {
             // Wipe Redux state
             this.props.clearStateOnLogout();
         } else {
+            console.log('logout: untrue');
             this.retrieveAndTestExistingSession();
         }
     }
@@ -96,11 +99,13 @@ class LoginScreen extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
+    console.log('ownProps', ownProps);
     return {
         appConfig: state.appConfig,
         username: state.username,
         password: state.password,
         sessionToken: state.sessionToken,
+        navigation: ownProps.navigation,
     };
 }
 
