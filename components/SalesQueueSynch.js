@@ -63,7 +63,7 @@ class SalesQueueSynch extends Component{
                         this.synchFlag = false;
                     })
                     .catch((e) => {
-                        console.write(e);
+                        console.log(e);
                         this.synchFlag = false;
                         throw e;
                     })
@@ -92,7 +92,7 @@ class SalesQueueSynch extends Component{
                         this.synchFlag = false;
                     })
                     .catch((e) => {
-                        console.write(e);
+                        console.log(e);
                         this.synchFlag = false;
                         throw e;
                     })
@@ -131,7 +131,7 @@ class SalesQueueSynch extends Component{
                         this.synchFlag = false;
                     })
                     .catch((e) => {
-                        console.write(e);
+                        console.log(e);
                         this.synchFlag = false;
                         throw e;
                     })

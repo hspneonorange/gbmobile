@@ -16,8 +16,9 @@ import {SalesStack} from '@screens/Sales';
 //import {SettingsStack} from '@screens/SettingsScreen';
 import SettingsScreen from '@screens/SettingsScreen';
 import NavigationService from '@components/NavigationService';
-import store from './store/';
+import {persistor, store} from './store/';
 import {Provider} from 'react-redux';
+import {PersistGate} from 'redux-persist/integration/react';
 
 export default class App extends React.Component {
     state = {
@@ -29,7 +30,9 @@ export default class App extends React.Component {
             <View style={styles.container}>
                 {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
                 <Provider store={store}>
-                    <AppContainer ref={(navigatorRef) => {NavigationService.setTopLevelNavigator(navigatorRef);}}/>
+                    <PersistGate persistor={persistor}>
+                        <AppContainer ref={(navigatorRef) => {NavigationService.setTopLevelNavigator(navigatorRef);}}/>
+                    </PersistGate>
                 </Provider>
             </View>
         );
