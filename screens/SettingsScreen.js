@@ -1,5 +1,7 @@
-import React, { Component } from 'react';
-import { ScrollView, TextInput, View, Button, Text } from 'react-native';
+import React, {Component} from 'react';
+import {ScrollView, TextInput, View, Button, Text, AsyncStorage} from 'react-native';
+import HorizontalDivider from '@components/HorizontalDivider';
+import {purgeStoredState} from 'redux-persist';
 import {connect} from 'react-redux';
 
 class SettingsScreen extends Component {
@@ -28,6 +30,10 @@ class SettingsScreen extends Component {
                     <Text>URL</Text>
                     <TextInput style={styles.textInput} placeholder='e.g.: http://192.168.4.1:5000' />
                     <Button title="Save" color="#979797" onPress={() => {this.props.savePressed(this.props.username, this.props.password, this.props.appConfig.hostAddress)}}/>
+               </View>
+               <HorizontalDivider/>
+               <View>
+                    <Button title="OwO Purge Stored State OwO" color="#979797" onPress={()=>{ purgeStoredState({storage: AsyncStorage})}}/>
                </View>
             </ScrollView>
         );

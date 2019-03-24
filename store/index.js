@@ -1,7 +1,7 @@
 import {createStore} from 'redux';
 import {persistStore, persistReducer} from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
-import appConfig from '../appconfig.json';
+//import appConfig from '../appconfig.json';
 import actionType from '@constants/actionType';
 
 const initialState = {
@@ -15,7 +15,9 @@ const initialState = {
     productDiscount: 0,
     productCart: [],
     salesQueue: [],
-    appConfig: appConfig,
+    appConfig: {
+        hostAddress: 'http://192.168.4.1:5000',
+    },
     username: '',
     password: '',
     eventId: '',

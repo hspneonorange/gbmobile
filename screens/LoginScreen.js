@@ -16,6 +16,7 @@ import HorizontalDivider from '@components/HorizontalDivider';
 
 class LoginScreen extends Component {
     componentDidMount = () => {
+        console.log('this.props.navigation', this.props.navigation.getParam());
         if (this.props.navigation.getParam("logout")) {
             // TODO: Logout seems to be broken. :-(
             console.log('logout: true');
