@@ -7,7 +7,6 @@ import {
     TextInput,
     Button,
 } from 'react-native';
-import NavigationService from '../components/NavigationService';
 import {connect} from 'react-redux';
 import 'intl';
 import 'intl/locale-data/jsonp/en';
@@ -80,13 +79,15 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onPressListItem: (item) => {
-            NavigationService.navigate('ProductInfo', {
-                item: item
-            });
-        },
-        updateStock: (sessionToken, hostAddress, id, stock_update, navigation) => {
+        // onPressListItem: (item, navigation) => {
+        //     navigation.navigate('ProductInfo', {
+        //         item: item
+        //     });
+        // },
+        updateStock: (sessionToken, hostAddress, id, stock_update) => {
             if (stock_update > 0) {
+                // TODO: We should make these more "RESTful" - e.g.: /api/products/12/incrementStock?amount=3
+                // Also we should return the new stock amount in the body and use it to update the quanity for the existing item, since it's not updating on the details screen
                 fetch(hostAddress + '/api/products/stock/' + id + '/' + stock_update + '?action=increment', { //TODO: replace with stock update var here
                     method: 'PUT',
                     headers: {
@@ -106,6 +107,8 @@ const mapDispatchToProps = (dispatch) => {
                     console.error(error);
                 });
             } else if (stock_update < 0) {
+                // TODO: We should make these more "RESTful" - e.g.: /api/products/12/incrementStock?amount=3
+                // Also we should return the new stock amount in the body and use it to update the quanity for the existing item, since it's not updating on the details screen
                 fetch(hostAddress + '/api/products/stock/' + id + '/' + Math.abs(stock_update) + '?action=decrement', { //TODO: replace with stock update var here
                     method: 'PUT',
                     headers: {

@@ -3,6 +3,7 @@ import {ScrollView, TextInput, View, Button, Text, AsyncStorage} from 'react-nat
 import HorizontalDivider from '@components/HorizontalDivider';
 import {purgeStoredState} from 'redux-persist';
 import {connect} from 'react-redux';
+import actionType from '@constants/actionType';
 
 class SettingsScreen extends Component {
     
@@ -28,8 +29,14 @@ class SettingsScreen extends Component {
             <ScrollView style={styles.scroll}>
                 <View>
                     <Text>URL</Text>
-                    <TextInput style={styles.textInput} placeholder='e.g.: http://192.168.4.1:5000' />
-                    <Button title="Save" color="#979797" onPress={() => {this.props.savePressed(this.props.username, this.props.password, this.props.appConfig.hostAddress)}}/>
+                    <TextInput defaultValue={this.state.hostAddress} style={styles.textInput} placeholder='e.g.: http://192.168.4.1:5000' onChangeText={(text) => {this.setState({hostAddress: text})}} />
+                    <Button title="Save URL" color="#979797" onPress={() => {this.props.savePressed(this.state.hostAddress)}}/>
+               </View>
+               <View>
+                   <Button title="gbweeby" color="#979797" onPress={() => {this.setState({hostAddress: 'http://192.168.4.1:5000'})}} />
+                   <Button title="gbwebby AP" color="#979797" onPress={() => {this.setState({hostAddress: 'http://192.168.0.127:5000'})}} />
+                   <Button title="coleowen" color="#979797" onPress={() => {this.setState({hostAddress: 'http://192.168.0.108:5000'})}} />
+                   <Button title="dad" color="#979797" onPress={() => {this.setState({hostAddress: 'http://192.168.0.129:5000'})}} />
                </View>
                <HorizontalDivider/>
                <View>
@@ -43,8 +50,6 @@ class SettingsScreen extends Component {
 const mapStateToProps = (state, ownProps) => {
     return {
         appConfig: state.appConfig,
-        username: state.username,
-        password: state.password,
         sessionToken: state.sessionToken,
         navigation: ownProps.navigation,
     };
@@ -53,27 +58,7 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         savePressed: (username, password, hostAddress) => {
-            fetch(hostAddress + '/api/tokens' ,{
-                method: 'POST',
-                headers: {
-                    Authorization: "Basic " + encodedCredentials
-                }
-            })
-            .then((response) => response.json())
-            .then(async (responseJson) => {
-                // Valid response looks like this: {"token": "GMoErE4JIwZv7QkZuhzn1MD7hPGOm3tt"}
-                const sessionToken = responseJson.token;
-                const userId = responseJson.id;
-                if (sessionToken) {
-                    dispatch({type: actionType.HANDLE_AUTHN, token: sessionToken, userId: userId});
-                    NavigationService.navigate('Event');
-                } else {
-                    alert('Login failed');
-                }
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+            dispatch({action: actionType.UPDATE_HOST_ADDRESS, hostAddress: this.state.hostAddress});
         },
     };
 };

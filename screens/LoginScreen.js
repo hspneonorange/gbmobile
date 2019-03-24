@@ -4,12 +4,10 @@ import {
   Button,
   ScrollView,
   View,
-  AsyncStorage, // token persistence
   Text,
   TextInput,
 } from 'react-native';
 import {connect} from 'react-redux';
-import NavigationService from '../components/NavigationService';
 import base64 from 'react-native-base64';
 import actionType from '@constants/actionType';
 import HorizontalDivider from '@components/HorizontalDivider';
@@ -24,9 +22,7 @@ class LoginScreen extends Component {
     }
 
     componentDidMount = () => {
-        console.log('this.props.navigation', this.props.navigation.getParam());
-        if (this.props.navigation.getParam("logout")) {
-            // TODO: Logout seems to be broken. :-(
+        if (this.props.navigation.dangerouslyGetParent().getParam("logout")) {
             console.log('logout: true');
             // Log out at server (most important part)
             fetch(this.props.appConfig.hostAddress + '/api/tokens', {
@@ -38,7 +34,7 @@ class LoginScreen extends Component {
             .catch((error) => {
                 console.error(error);
             });
-            // Wipe Redux state
+            // Log out at client (i.e.: wipe Redux state)
             this.props.clearStateOnLogout();
         } else {
             console.log('logout: untrue');
@@ -47,40 +43,34 @@ class LoginScreen extends Component {
     }
 
     retrieveAndTestExistingSession = async () => {
-        await AsyncStorage.getItem('@Authentication:access-token')
-        .then(async (sessionToken) => {
-            if (sessionToken !== null) {
-                await fetch(this.props.appConfig.hostAddress + '/api/tokens', {
-                    method: 'GET',
-                    headers: {
-                        Authorization: "Bearer " + sessionToken
-                    }
-                })
-                .then((response) => {
-                    if (response.ok) {
-                        AsyncStorage.getItem('@Authentication:userId')
-                        .then(async(userId) => {
-                            this.props.updateUserId(userId);
-                        })
-                        .catch((error) => {/* TODO: error handling? */});
-                        AsyncStorage.getItem('@Event:eventId')
-                        .then(async(eventId) => {
-                            this.props.updateEventId(eventId);
-                        })
-                        .catch((error) => {/* TODO: error handling? */});
-                        this.props.updateSessionToken(sessionToken);
-                        NavigationService.navigate('Sales');
-                    } else {
-                        console.log('Session token expired or invalid');
-                    }
-                })
-                .catch((error) => {
-                    console.error(error);
-                })
-            } else {
-                console.log('Session token not found in AsyncStorage');
-            }
-        });
+        if (this.props.sessionToken !== null) {
+            await fetch(this.props.appConfig.hostAddress + '/api/tokens', {
+                method: 'GET',
+                headers: {
+                    Authorization: "Bearer " + this.props.sessionToken
+                }
+            })
+            .then((response) => {
+                if (response.ok) {
+                    // If event id null, navigate to Event
+                    // Otherwise navitate to Sales
+                    if (this.props.eventId == null) {
+                        this.props.navigation.navigate('Event');
+                    } else if (this.props.userId != null) {
+                        this.props.navigation.navigate('Sales');
+                    } // else stay on LoginForm
+                } else {
+                    console.log('Session token expired or invalid');
+                    // stay on LoginForm
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            })
+        } else {
+            console.log('Session token not found in persisted storage');
+            // Stay on LoginForm
+        }
     }
     
     render() {
@@ -107,14 +97,14 @@ class LoginScreen extends Component {
                         placeholder="Password"
                         secureTextEntry={true}
                         onChangeText={(text) => {this.setState({passwordText: text})}}
-                        onSubmitEditing={() => {this.props.loginPressed(this.state.usernameText, this.state.passwordText, this.props.appConfig.hostAddress)}}
+                        onSubmitEditing={() => {this.props.loginPressed(this.state.usernameText, this.state.passwordText, this.props.appConfig.hostAddress, this.props.navigation)}}
                     />
                     <View style={styles.span} />
                     <HorizontalDivider/>
                     <Button
                         title="Log Me In! :^)"
                         color="#979797"
-                        onPress={() => {this.props.loginPressed(this.state.usernameText, this.state.passwordText, this.props.appConfig.hostAddress)}}
+                        onPress={() => {this.props.loginPressed(this.state.usernameText, this.state.passwordText, this.props.appConfig.hostAddress, this.props.navigation)}}
                     />
                 </View>
                 <View style={styles.span}/>
@@ -129,14 +119,14 @@ const mapStateToProps = (state, ownProps) => {
         appConfig: state.appConfig,
         sessionToken: state.sessionToken,
         navigation: ownProps.navigation,
+        userId: state.userId,
+        eventId: state.eventId,
     };
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        loginPressed: (username, password, hostAddress) => {
-            console.log('hostAddress: ', hostAddress);
-            //const value = this.loginForm.getValue();
+        loginPressed: (username, password, hostAddress, navigation) => {
             let encodedCredentials = base64.encode(username + ":" + password);
             fetch(hostAddress + '/api/tokens' ,{
                 method: 'POST',
@@ -151,7 +141,7 @@ const mapDispatchToProps = (dispatch) => {
                 const userId = responseJson.id;
                 if (sessionToken) {
                     dispatch({type: actionType.HANDLE_AUTHN, token: sessionToken, userId: userId});
-                    NavigationService.navigate('Event');
+                    navigation.navigate('Event');
                 } else {
                     alert('Login failed');
                 }

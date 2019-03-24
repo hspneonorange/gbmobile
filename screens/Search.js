@@ -8,7 +8,6 @@ import TopSellers from '@screens/TopSellers';
 import LowStock from '@screens/LowStock';
 import ShoppingCartScreen from '@screens/ShoppingCartScreen';
 import ProductInfoScreen from '@components/ProductInfoScreen';
-import NavigationService from '@components/NavigationService';
 import {Ionicons} from '@expo/vector-icons';
 import SalesQueueSynch from '@components/SalesQueueSynch';
 
@@ -37,10 +36,10 @@ export const SearchStack = createStackNavigator({
                 headerRight: (
                     <View style={{flexDirection: 'row', flex: 1}}>
                         <SalesQueueSynch/>
-                        <TouchableOpacity onPress={() => NavigationService.navigate('Cart')}>
+                        <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
                             <Ionicons style={{margin: 10}} name="md-cart" size={32}/>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => NavigationService.navigate('Login', {logout: true})}>
+                        <TouchableOpacity onPress={() => navigation.navigate('Login', {message: 'bryan', logout: true})}>
                             <Ionicons style={{margin: 10}} name="md-close-circle-outline" size={32}/>
                         </TouchableOpacity>
                     </View>

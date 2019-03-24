@@ -38,7 +38,6 @@ class SalesQueueSynch extends Component{
             if (this.props.salesQueue.length) {
                 if (!this.props.salesQueue[0].id & this.props.salesQueue[0].type == 'product_sale') {
                     // Create order, update order.id
-                    console.log('no order.id; create order');
                     this.synchFlag = true;
                     let responseBody = fetch(this.props.appConfig.hostAddress + '/api/sales', {
                         method: 'POST',
@@ -56,7 +55,6 @@ class SalesQueueSynch extends Component{
                     })
                     .then((responseBody) => responseBody.json())
                     .then((responseJson) => {
-                        console.log(responseJson.id);
                         this.props.updateSaleId(this.props.salesQueue[0], responseJson.id);
                     })
                     .then(() => {

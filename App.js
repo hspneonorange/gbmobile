@@ -13,9 +13,7 @@ import SelectEventScreen from '@screens/SelectEventScreen';
 import {SearchStack} from '@screens/Search';
 import {CommissionStack} from '@screens/Commission';
 import {SalesStack} from '@screens/Sales';
-//import {SettingsStack} from '@screens/SettingsScreen';
 import SettingsScreen from '@screens/SettingsScreen';
-import NavigationService from '@components/NavigationService';
 import {persistor, store} from './store/';
 import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
@@ -31,7 +29,7 @@ export default class App extends React.Component {
                 {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
                 <Provider store={store}>
                     <PersistGate persistor={persistor}>
-                        <AppContainer ref={(navigatorRef) => {NavigationService.setTopLevelNavigator(navigatorRef);}}/>
+                        <AppContainer />
                     </PersistGate>
                 </Provider>
             </View>

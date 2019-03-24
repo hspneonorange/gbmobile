@@ -49,8 +49,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         searchPressed: (sessionToken, searchText, hostAddress) => {
-            console.log('searchPressed');
-            console.log('Bearer ', sessionToken);
             fetch(hostAddress + '/api/products/id_search?search=' + searchText, {
                 method: 'GET',
                 headers: {
@@ -59,7 +57,6 @@ const mapDispatchToProps = (dispatch) => {
             })
             .then((response) => response.json())
             .then(async (responseJson) => {
-                console.log(responseJson);
                 dispatch({type: actionType.RETURN_ID_SEARCH_ITEMS, searchItems: responseJson.items})
             })
             .catch((error) => {

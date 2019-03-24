@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import 'intl';
 import 'intl/locale-data/jsonp/en';
-import NavigationService from '../components/NavigationService';
 import {connect} from 'react-redux';
 import style from '../styles';
 
@@ -42,7 +41,7 @@ const ListItem = (props) => {
         <View style={style.listItemBox}>
             <TouchableOpacity
 	            style={styles.listItemBox}
-	            onPress={()=>props.onPressListItem(props.item)}
+	            onPress={()=>props.onPressListItem(props.item, props.navigtation)}
 	        >
                 {DisplayImage}
                 <View style={styles.listItemText}>
@@ -57,15 +56,16 @@ const ListItem = (props) => {
     );
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
     return {
-    }; //none yet ôwô
+        navigation: ownProps.navigation,
+    };
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onPressListItem: (item) => {
-            NavigationService.navigate('ProductInfo', {
+        onPressListItem: (item, navigation) => {
+            navigation.navigate('ProductInfo', {
                 item: item
             });
         }

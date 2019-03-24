@@ -11,7 +11,6 @@ import {connect} from 'react-redux';
 import CartProductListItem from '@components/CartProductListItem';
 import actionType from '@constants/actionType';
 import HorizontalDivider from '@components/HorizontalDivider';
-import NavigationService from '../components/NavigationService';
 
 class ShoppingCartScreen extends React.Component {
     constructor(props) {
@@ -43,7 +42,7 @@ class ShoppingCartScreen extends React.Component {
                 <HorizontalDivider />
                 <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
                     <Button color="#979797" title="Empty Cart" onPress={() => {this.props.emptyCart(); this.setState({discount: 0.0});}} disabled={this.props.productCart.length == 0}/>
-                    <Button color="#979797" title="Checkout" onPress={() => {this.props.checkout(this.props.productCart, this.state.discount); this.setState({discount: 0.0}); NavigationService.navigate('Keyword');}} disabled={this.props.productCart.length == 0}/>
+                    <Button color="#979797" title="Checkout" onPress={() => {this.props.checkout(this.props.productCart, this.state.discount); this.setState({discount: 0.0}); this.props.navigation.navigate('Keyword');}} disabled={this.props.productCart.length == 0}/>
                 </View>
             </ScrollView>
         );
@@ -65,9 +64,10 @@ const cartTotal = (cart, discount) => {
     return total;
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
     return {
         productCart: state.productCart,
+        navigation: ownProps.navigation,
     };
 }
 

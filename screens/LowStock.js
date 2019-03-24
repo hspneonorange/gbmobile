@@ -44,8 +44,6 @@ const mapDispatchToProps = (dispatch) => {
             })
             .then((response) => response.json())
             .then((responseJson) => {
-                console.log('in queryLowStockProducts');
-                console.log(responseJson.items);
                 dispatch({type: actionType.RETURN_LOW_STOCK_PRODUCTS, lowStockProducts: responseJson.items})
             })
             .catch((error) => {

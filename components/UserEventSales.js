@@ -20,7 +20,7 @@ export const UserEventSales = (props) => {
     )
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
     return {
         sessionToken: state.sessionToken,
         appConfig: state.appConfig,
@@ -28,13 +28,14 @@ const mapStateToProps = (state) => {
         userId: state.userId,
         userEventSalesUpdated: state.userEventSalesUpdated,
         userEventSales: state.userEventSales,
+        navigation: ownProps.navigation,
     };
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onPressListItem: (item) => {
-            NavigationService.navigate('ProductInfo', {
+        onPressListItem: (item, navigation) => {
+            navigation.navigate('ProductInfo', {
                 item: item
             });
         },

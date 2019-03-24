@@ -45,7 +45,6 @@ const reducer = (state = initialState, action) => {
                 lowStockProductsUpdated: true,
             });
         case actionType.UPDATE_USER_EVENT_SALES:
-            console.log (action.userEventSales);
             return Object.assign({}, state, {
                 userEventSales: action.userEventSales,
                 userEventSalesUpdated: true,
@@ -93,10 +92,6 @@ const reducer = (state = initialState, action) => {
             return Object.assign({}, state, {
                 productCart: [],
             });
-        case actionType.DISCOUNT_KEY_PRESS:
-            return Object.assign({}, state, {
-                productDiscount: action.discount,
-            });
         case actionType.CHECKOUT:
             state.salesQueue = state.salesQueue.concat({
                 type: 'product_sale',
@@ -111,7 +106,6 @@ const reducer = (state = initialState, action) => {
                 productCart: [],
                 salesQueue: state.salesQueue.slice(),
             });
-            console.log('New Sales Queue:', state.salesQueue)
             return newState;
         case actionType.CLEAR_STATE_ON_LOGOUT:
             // Wipe everything but salesQueue
@@ -166,7 +160,6 @@ const reducer = (state = initialState, action) => {
             newState = Object.assign({}, state, {
                 salesQueue: state.salesQueue.slice(),
             });
-            console.log('New Sales Queue:', state.salesQueue)
             return newState;
         case actionType.REMOVE_COMMISSION_FROM_QUEUE:
             state.salesQueue.splice(0, 1);
@@ -176,8 +169,13 @@ const reducer = (state = initialState, action) => {
             })
         case actionType.SET_LOW_STOCK_PRODUCTS_UPDATED:
             return Object.assign({}, state, {lowStockProductsUpdated: false});
+        case actionType.UPDATE_HOST_ADDRESS:
+            return Object.assign({}, state, {
+                appConfig: {
+                    hostAddresS: action.hostAddress,
+                }
+            });
         default:
-            console.log('Reducer reached default: -- misspelled action.type?');
             return state;
     }
 }
