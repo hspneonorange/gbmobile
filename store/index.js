@@ -32,8 +32,6 @@ const reducer = (state = initialState, action) => {
             return Object.assign({}, state, {sessionToken: action.token, userId: action.userId});
         case actionType.LOGOUT:
             return Object.assign({}, state, {sessionToken: ''});
-        case actionType.SEARCH_TEXT_CHANGED:
-            return Object.assign({}, state, {searchText: action.text});
         case actionType.RETURN_SEARCH_ITEMS:
             return Object.assign({}, state, {searchItems: action.searchItems});
         case actionType.RETURN_ID_SEARCH_ITEMS:
@@ -48,10 +46,6 @@ const reducer = (state = initialState, action) => {
                 userEventSales: action.userEventSales,
                 userEventSalesUpdated: true
             });
-        case actionType.USERNAME_TEXT_CHANGED:
-            return Object.assign({}, state, {username: action.text});
-        case actionType.PASSWORD_TEXT_CHANGED:
-            return Object.assign({}, state, {password: action.text});
         case actionType.SET_EVENT:
             return Object.assign({}, state, {eventId: action.eventId});
         case actionType.UPDATE_USERID:
@@ -146,10 +140,6 @@ const reducer = (state = initialState, action) => {
                     salesQueue: state.salesQueue.concat(updateOrder).slice(),
                 })
             }
-        case actionType.SET_SYNCH_FLAG:
-            return Object.assign({}, state, {
-                salesQueue: state.salesQueue.concat(updateOrder).slice(),
-            })
         case actionType.SUBMIT_COMMISSION:
             state.salesQueue = state.salesQueue.concat({
                 type: 'commission',

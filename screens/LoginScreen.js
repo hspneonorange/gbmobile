@@ -15,6 +15,14 @@ import actionType from '@constants/actionType';
 import HorizontalDivider from '@components/HorizontalDivider';
 
 class LoginScreen extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            usernameText: '',
+            passwordText: '',
+        }
+    }
+
     componentDidMount = () => {
         console.log('this.props.navigation', this.props.navigation.getParam());
         if (this.props.navigation.getParam("logout")) {
@@ -86,13 +94,28 @@ class LoginScreen extends Component {
                 </View>
                 <View>
                     <Text>Username:</Text>
-                    <TextInput style={styles.textInput} placeholder="Username" onSubmitEditing={() => this.passwordField.focus()} onChangeText={(text) => {this.props.usernameTextChanged(text)}}/>
+                    <TextInput
+                        style={styles.textInput}
+                        placeholder="Username"
+                        onChangeText={(text) => this.setState({usernameText: text})}
+                        onSubmitEditing={() => this.passwordField.focus()}
+                    />
                     <View style={styles.span} />
                     <Text>Password:</Text>
-                    <TextInput ref={(input) => {this.passwordField = input}} style={styles.textInput} placeholder="Password" secureTextEntry={true} onChangeText={(text) => {this.props.passwordTextChanged(text)}} onSubmitEditing={() => {this.props.loginPressed(this.props.username, this.props.password, this.props.appConfig.hostAddress)}}/>
+                    <TextInput ref={(input) => {this.passwordField = input}}
+                        style={styles.textInput}
+                        placeholder="Password"
+                        secureTextEntry={true}
+                        onChangeText={(text) => {this.setState({passwordText: text})}}
+                        onSubmitEditing={() => {this.props.loginPressed(this.state.usernameText, this.state.passwordText, this.props.appConfig.hostAddress)}}
+                    />
                     <View style={styles.span} />
                     <HorizontalDivider/>
-                    <Button title="Log Me In! :^)" color="#979797" onPress={() => {this.props.loginPressed(this.props.username, this.props.password, this.props.appConfig.hostAddress)}}/>
+                    <Button
+                        title="Log Me In! :^)"
+                        color="#979797"
+                        onPress={() => {this.props.loginPressed(this.state.usernameText, this.state.passwordText, this.props.appConfig.hostAddress)}}
+                    />
                 </View>
                 <View style={styles.span}/>
             </ScrollView>
@@ -104,8 +127,6 @@ const mapStateToProps = (state, ownProps) => {
     console.log('ownProps', ownProps);
     return {
         appConfig: state.appConfig,
-        username: state.username,
-        password: state.password,
         sessionToken: state.sessionToken,
         navigation: ownProps.navigation,
     };
@@ -113,13 +134,8 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        usernameTextChanged: (text) => {
-            dispatch({type: actionType.USERNAME_TEXT_CHANGED, text: text});
-        },
-        passwordTextChanged: (text) => {
-            dispatch({type: actionType.PASSWORD_TEXT_CHANGED, text: text});
-        },
         loginPressed: (username, password, hostAddress) => {
+            console.log('creds', username, password);
             //const value = this.loginForm.getValue();
             let encodedCredentials = base64.encode(username + ":" + password);
             fetch(hostAddress + '/api/tokens' ,{

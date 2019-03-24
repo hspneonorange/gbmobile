@@ -5,29 +5,37 @@ import {connect} from 'react-redux';
 import SearchProductListItem from '@components/SearchProductListItem';
 import actionType from '@constants/actionType';
 
-const Keyword = (props) => {
-  return (
-        <ScrollView style={styles.scroll} removeClippedSubviews={true}>
-            <View>
-                <TextInput selectTextOnFocus={true} onSubmitEditing={() => {props.searchPressed(props.sessionToken, props.searchText, props.appConfig.hostAddress)}} style={styles.textInput} placeholder="Enter search term"  onChangeText={(text) => {props.textChanged(text)}}/>
-            </View>
-            <View style={{borderBottomColor: 'black', borderBottomWidth: 1, marginTop: 15, marginBottom: 15}} />
-            <Button title="Search" color="#979797" onPress={() => {props.searchPressed(props.sessionToken, props.searchText, props.appConfig.hostAddress)}}/>
-            <View style={styles.searchResults}>
-              <FlatList 
-                data = {props.searchItems}
-                keyExtractor = {item => 'list-item-$'+item.id}
-                renderItem = {({item}) => <SearchProductListItem item={item} />}
-              />
-            </View>
-        </ScrollView>
-    );
+class Keyword extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            searchText: ''
+        };
+    }
+
+    render() {
+        return (
+            <ScrollView style={styles.scroll} removeClippedSubviews={true}>
+                <View>
+                    <TextInput selectTextOnFocus={true} onSubmitEditing={() => {this.props.searchPressed(this.props.sessionToken, this.state.searchText, this.props.appConfig.hostAddress)}} style={styles.textInput} placeholder="Enter search term"  onChangeText={(text) => {this.setState({searchText: text})}}/>
+                </View>
+                <View style={{borderBottomColor: 'black', borderBottomWidth: 1, marginTop: 15, marginBottom: 15}} />
+                <Button title="Search" color="#979797" onPress={() => {this.props.searchPressed(this.props.sessionToken, this.state.searchText, this.props.appConfig.hostAddress)}}/>
+                <View style={styles.searchResults}>
+                  <FlatList 
+                    data = {this.props.searchItems}
+                    keyExtractor = {item => 'list-item-$'+item.id}
+                    renderItem = {({item}) => <SearchProductListItem item={item} />}
+                  />
+                </View>
+            </ScrollView>
+        );
+    }
 }
 
 const mapStateToProps = (state) => {
     return {
         sessionToken: state.sessionToken,
-        searchText: state.searchText,
         searchItems: state.searchItems,
         appConfig: state.appConfig,
     };
@@ -35,9 +43,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        textChanged: (text) => {
-            dispatch({type: actionType.SEARCH_TEXT_CHANGED, text: text});
-        },
         searchPressed: (sessionToken, searchText, hostAddress) => {
             fetch(hostAddress + '/api/products?search=' + searchText, {
                 method: 'GET',
