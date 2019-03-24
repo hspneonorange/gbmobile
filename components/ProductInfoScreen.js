@@ -61,8 +61,8 @@ export class ProductInfoScreen extends React.Component {
                     <View style={styles.span} />
                     <View style={styles.span} />
                     <Text style={styles.nameDisplay}>Stock Adjustment Amount:</Text>
-                    <TextInput keyboardType='numeric' style={styles.textInput} placeholder="Adjust by how much?" onChangeText={(text) => this.setState({stock_update: text})} />
-                    <Button title="Update" color="#979797" onPress={() => {this.props.updateStock(this.props.sessionToken, this.props.appConfig.hostAddress, this.props.item.id, this.state.stock_update, this.props.navigation)}}/>
+                    <TextInput keyboardType='numeric' style={styles.textInput} placeholder="Adjust by how much?" onChangeText={(text) => this.setState({stock_update: text})}/>
+                    <Button title="Update" color="#979797" onPress={() => {this.props.updateStock(this.props.sessionToken, this.props.appConfig.hostAddress, this.props.item.id, this.state.stock_update, this.props.navigation)}} disabled={this.state.stock_update == 0}/>
                 </View>
             </ScrollView>
         )

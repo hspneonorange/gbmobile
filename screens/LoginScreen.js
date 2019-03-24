@@ -135,11 +135,7 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         loginPressed: (username, password, hostAddress) => {
-<<<<<<< HEAD
             console.log('hostAddress: ', hostAddress);
-=======
-            console.log('creds', username, password);
->>>>>>> 0c3aca7019d6f3acc3d074ed058849d68c20c993
             //const value = this.loginForm.getValue();
             let encodedCredentials = base64.encode(username + ":" + password);
             fetch(hostAddress + '/api/tokens' ,{
