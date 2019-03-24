@@ -11,18 +11,19 @@ const initialState = {
     searchItems: [],
     idSearchItems: [],
     events: [],
-    lowStockProducts: [],
     productDiscount: 0,
     productCart: [],
     salesQueue: [],
     appConfig: {
-        hostAddress: 'http://192.168.4.1:5000',
+        hostAddress: 'http://192.168.0.106:5000',
     },
     username: '',
     password: '',
     eventId: '',
     userEventSalesUpdated: false,
     userEventSales: [],
+    lowStockProductsUpdated: false,
+    lowStockProducts: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -41,12 +42,15 @@ const reducer = (state = initialState, action) => {
         case actionType.RETURN_EVENTS:
             return Object.assign({}, state, {events: action.events});
         case actionType.RETURN_LOW_STOCK_PRODUCTS:
-            return Object.assign({}, state, {lowStockProducts: action.lowStockProducts});
+            return Object.assign({}, state, {
+                lowStockProducts: action.lowStockProducts,
+                lowStockProductsUpdated: true,
+            });
         case actionType.UPDATE_USER_EVENT_SALES:
             console.log (action.userEventSales);
             return Object.assign({}, state, {
                 userEventSales: action.userEventSales,
-                userEventSalesUpdated: true
+                userEventSalesUpdated: true,
             });
         case actionType.USERNAME_TEXT_CHANGED:
             return Object.assign({}, state, {username: action.text});
@@ -138,6 +142,7 @@ const reducer = (state = initialState, action) => {
                 return Object.assign({}, state, {
                     salesQueue: state.salesQueue.slice(),
                     userEventSalesUpdated: false,
+                    lowStockProducts: false,
                 })
             } else {
                 // Otherwise, just delete the just-synched item from the order
@@ -179,6 +184,8 @@ const reducer = (state = initialState, action) => {
                 salesQueue: state.salesQueue.slice(),
                 userEventSalesUpdated: false,
             })
+        case actionType.SET_LOW_STOCK_PRODUCTS_UPDATED:
+            return Object.assign({}, state, {lowStockProductsUpdated: false});
         default:
             console.log('Reducer reached default: -- misspelled action.type?');
             return state;

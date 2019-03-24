@@ -120,6 +120,7 @@ const mapDispatchToProps = (dispatch) => {
             dispatch({type: actionType.PASSWORD_TEXT_CHANGED, text: text});
         },
         loginPressed: (username, password, hostAddress) => {
+            console.log('hostAddress: ', hostAddress);
             //const value = this.loginForm.getValue();
             let encodedCredentials = base64.encode(username + ":" + password);
             fetch(hostAddress + '/api/tokens' ,{

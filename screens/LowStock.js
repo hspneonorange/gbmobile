@@ -8,19 +8,17 @@ import {connect} from 'react-redux';
 import actionType from '@constants/actionType';
 import ProductListItem from '@components/ProductListItem'
 
-const LowStock = (props) => {
-    console.log(props.appConfig);
-    console.log(props.lowStockProducts);
-    if (props.lowStockProducts.length == 0) props.queryLowStockProducts(props.sessionToken, props.appConfig.hostAddress);
+export const LowStock =(props) => {
+    if (!props.lowStockProductsUpdated) props.queryLowStockProducts(props.sessionToken, props.appConfig.hostAddress);
     return (
         <ScrollView style={styles.scroll}>
             <View style={styles.searchResults}>
-              <FlatList 
+            <FlatList 
                 data = {props.lowStockProducts}
                 keyExtractor = {item => 'list-item-$'+item.id}
                 renderItem = {({item}) => <ProductListItem item={item} />}
-              />
-              <View style={styles.span} />
+            />
+            <View style={styles.span} />
             </View>
         </ScrollView>
     )
@@ -31,6 +29,7 @@ const mapStateToProps = (state) => {
         sessionToken: state.sessionToken,
         lowStockProducts: state.lowStockProducts,
         appConfig: state.appConfig,
+        lowStockProductsUpdated: state.lowStockProductsUpdated,
     };
 }
 

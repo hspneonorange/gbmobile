@@ -11,6 +11,7 @@ import NavigationService from '../components/NavigationService';
 import {connect} from 'react-redux';
 import 'intl';
 import 'intl/locale-data/jsonp/en';
+import actionType from '../constants/actionType';
 
 export class ProductInfoScreen extends React.Component {
     constructor(props) {
@@ -61,7 +62,7 @@ export class ProductInfoScreen extends React.Component {
                     <View style={styles.span} />
                     <Text style={styles.nameDisplay}>Stock Adjustment Amount:</Text>
                     <TextInput keyboardType='numeric' style={styles.textInput} placeholder="Adjust by how much?" onChangeText={(text) => this.setState({stock_update: text})} />
-                    <Button title="Update" color="#979797" onPress={() => {this.props.updateStock(this.props.sessionToken, this.props.appConfig.hostAddress, this.props.item.id, this.state.stock_update)}}/>
+                    <Button title="Update" color="#979797" onPress={() => {this.props.updateStock(this.props.sessionToken, this.props.appConfig.hostAddress, this.props.item.id, this.state.stock_update, this.props.navigation)}}/>
                 </View>
             </ScrollView>
         )
@@ -73,6 +74,7 @@ const mapStateToProps = (state, ownProps) => {
         item: ownProps.navigation.getParam("item"),
         sessionToken: state.sessionToken,
         appConfig: state.appConfig,
+        navigation: ownProps.navigation,
     };
 }
 
@@ -83,7 +85,7 @@ const mapDispatchToProps = (dispatch) => {
                 item: item
             });
         },
-        updateStock: (sessionToken, hostAddress, id, stock_update) => {
+        updateStock: (sessionToken, hostAddress, id, stock_update, navigation) => {
             if (stock_update > 0) {
                 fetch(hostAddress + '/api/products/stock/' + id + '/' + stock_update + '?action=increment', { //TODO: replace with stock update var here
                     method: 'PUT',
@@ -96,6 +98,9 @@ const mapDispatchToProps = (dispatch) => {
                 .then((responseBody) => responseBody.json())
                 .then((responseJson) => {
                     console.log(responseJson);
+                    dispatch({type: actionType.SET_LOW_STOCK_PRODUCTS_UPDATED});
+                    //NavigationService.navigate('Low Stock');
+                    navigation.goBack();
                 })
                 .catch((error) => {
                     console.error(error);
@@ -112,6 +117,9 @@ const mapDispatchToProps = (dispatch) => {
                 .then((responseBody) => responseBody.json())
                 .then((responseJson) => {
                     console.log(responseJson);
+                    dispatch({type: actionType.SET_LOW_STOCK_PRODUCTS_UPDATED});
+                    //NavigationService.navigate('Keyword');
+                    navigation.goBack();
                 })
                 .catch((error) => {
                     console.error(error);
