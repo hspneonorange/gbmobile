@@ -9,14 +9,14 @@ import EventListItem from '@components/EventListItem';
 import actionType from '@constants/actionType';
 
 const SelectEventScreen = (props) => {
-    if (props.events.length == 0) props.queryEvents(props.sessionToken, props.appConfig.hostAddress);
+    if (!props.events || props.events.length == 0) props.queryEvents(props.sessionToken, props.appConfig.hostAddress);
     return (
         <ScrollView style={styles.scroll}>
             <View style={styles.searchResults}>
               <FlatList 
                 data = {props.events}
                 keyExtractor = {item => 'list-item-$'+item.id}
-                renderItem = {({item}) => <EventListItem item={item} />}
+                renderItem = {({item}) => <EventListItem item={item} navigation={props.navigation} />}
               />
               <View style={styles.span} />
             </View>

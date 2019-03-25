@@ -98,9 +98,7 @@ const mapDispatchToProps = (dispatch) => {
                 })
                 .then((responseBody) => responseBody.json())
                 .then((responseJson) => {
-                    console.log(responseJson);
                     dispatch({type: actionType.SET_LOW_STOCK_PRODUCTS_UPDATED});
-                    //NavigationService.navigate('Low Stock');
                     navigation.goBack();
                 })
                 .catch((error) => {
@@ -119,9 +117,7 @@ const mapDispatchToProps = (dispatch) => {
                 })
                 .then((responseBody) => responseBody.json())
                 .then((responseJson) => {
-                    console.log(responseJson);
                     dispatch({type: actionType.SET_LOW_STOCK_PRODUCTS_UPDATED});
-                    //NavigationService.navigate('Keyword');
                     navigation.goBack();
                 })
                 .catch((error) => {

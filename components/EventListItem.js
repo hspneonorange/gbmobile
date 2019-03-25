@@ -9,6 +9,7 @@ import {connect} from 'react-redux';
 import actionType from '@constants/actionType';
 
 const EventListItem = (props) => {
+    console.log('navigation', props.navigation);
     return (
         <TouchableOpacity
             style={styles.listItemBox}

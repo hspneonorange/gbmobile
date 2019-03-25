@@ -23,7 +23,6 @@ class LoginScreen extends Component {
 
     componentDidMount = () => {
         if (this.props.navigation.dangerouslyGetParent().getParam("logout")) {
-            console.log('logout: true');
             // Log out at server (most important part)
             fetch(this.props.appConfig.hostAddress + '/api/tokens', {
                 method: 'DELETE',
@@ -37,7 +36,6 @@ class LoginScreen extends Component {
             // Log out at client (i.e.: wipe Redux state)
             this.props.clearStateOnLogout();
         } else {
-            console.log('logout: untrue');
             this.retrieveAndTestExistingSession();
         }
     }
@@ -114,7 +112,6 @@ class LoginScreen extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-    console.log('ownProps', ownProps);
     return {
         appConfig: state.appConfig,
         sessionToken: state.sessionToken,

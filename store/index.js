@@ -27,6 +27,7 @@ const initialState = {
 };
 
 const reducer = (state = initialState, action) => {
+    console.log('state', state)
     console.log('reducer', action);
     switch(action.type) {
         case actionType.HANDLE_AUTHN:
@@ -54,6 +55,7 @@ const reducer = (state = initialState, action) => {
         case actionType.UPDATE_USERID:
             return Object.assign({}, state, {userId: action.userId});
         case actionType.ADD_TO_CART:
+            console.log('state: ', state);
             let existingItem = state.productCart.find(i => i.id == action.item.id);
             if (existingItem) {
                 existingItem.quantity += 1;
@@ -110,9 +112,10 @@ const reducer = (state = initialState, action) => {
         case actionType.CLEAR_STATE_ON_LOGOUT:
             // Wipe everything but salesQueue
             return Object.assign({}, {
+                productCart: [],
+                
                 salesQueue: state.salesQueue.slice(),
                 appConfig: state.appConfig,
-                events: state.events,
             });
         case actionType.UPDATE_SALESQUEUE_ORDER_WITH_ID:
             updateOrder = state.salesQueue.splice(state.salesQueue.findIndex(o => o.timeStamp == action.order.timeStamp), 1)[0];
@@ -172,7 +175,7 @@ const reducer = (state = initialState, action) => {
         case actionType.UPDATE_HOST_ADDRESS:
             return Object.assign({}, state, {
                 appConfig: {
-                    hostAddresS: action.hostAddress,
+                    hostAddress: action.hostAddress,
                 }
             });
         default:

@@ -20,19 +20,22 @@ const ListItem = (props) => {
         minimumFractionDigits: 2
     })
     
-    if (props.item.gb_image_link) {
-        DisplayImage =
+    console.log()
+    if (props.item.local_image_link) {
+        DisplayImage = (
         <Image
             style={{width: 60, height: 60, alignContent: 'center'}}
-            source={{uri:(""+props.item.gb_image_link).replace('https://drive.google.com/open?id=', 'http://drive.google.com/uc?export=view&id=')}}
+//            source={{uri:(""+props.item.gb_image_link).replace('https://drive.google.com/open?id=', 'http://drive.google.com/uc?export=view&id=')}}
+            source={{uri:(props.appConfig.hostAddress + '/' + props.item.local_image_link)}}
             resizeMethod="auto"
-        />
+        />);
+        console.log(props.appConfig.hostAddress + '/' + props.item.local_image_link);
     } else { //only display this if there is no given product picture for an item
         //https://drive.google.com/file/d/1Faj2B7ftTti8QzMxN--GveGuAtfaou58/view?usp=sharing
         DisplayImage = 
         <Image
             style={{width: 60, height: 60, alignContent: 'center'}}
-            source={{uri:'http://drive.google.com/uc?export=view&id=1Faj2B7ftTti8QzMxN--GveGuAtfaou58'}} //link to "image not available"
+            source={{uri:(props.appConfig.hostAddress + '/iamges/unavailable.png')}} //link to "image not available"
             resizeMethod="auto"
         />
     }
@@ -59,6 +62,7 @@ const ListItem = (props) => {
 const mapStateToProps = (state, ownProps) => {
     return {
         navigation: ownProps.navigation,
+        appConfig: state.appConfig,
     };
 }
 
