@@ -27,7 +27,6 @@ const initialState = {
 };
 
 const reducer = (state = initialState, action) => {
-    console.log('state', state)
     console.log('reducer', action);
     switch(action.type) {
         case actionType.HANDLE_AUTHN:
@@ -55,7 +54,6 @@ const reducer = (state = initialState, action) => {
         case actionType.UPDATE_USERID:
             return Object.assign({}, state, {userId: action.userId});
         case actionType.ADD_TO_CART:
-            console.log('state: ', state);
             let existingItem = state.productCart.find(i => i.id == action.item.id);
             if (existingItem) {
                 existingItem.quantity += 1;
@@ -101,6 +99,7 @@ const reducer = (state = initialState, action) => {
                 userId: state.userId,
                 eventId: state.eventId,
                 discount: action.discount ? action.discount : 0,
+                notes: action.notes,
                 items: state.productCart.slice(),
             });
             newState = Object.assign({}, state, {
@@ -178,6 +177,13 @@ const reducer = (state = initialState, action) => {
                     hostAddress: action.hostAddress,
                 }
             });
+        case actionType.EMPTY_SALES_QUEUE:
+            return Object.assign({}, state, {
+                salesQueue: []
+            });
+        case actionType.DUMP_ALL_STATE:
+            console.log(state);
+            return state;
         default:
             return state;
     }

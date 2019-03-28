@@ -17,20 +17,25 @@ class ShoppingCartScreen extends React.Component {
         super(props);
         this.state = {
             discount: 0.0,
+            notes: '',
         }
     }
 
     render() {
         return (
-            <ScrollView style={{backgroundColor:'#c8e0e4', flexGrow:1, padding:5}}>
-                <FlatList
-                    data = {this.props.productCart}
-                    keyExtractor = {item => 'list-item-$'+item.id}
-                    renderItem = {({item}) => <CartProductListItem item={item} />}
-                    ListEmptyComponent = {() => {
-                        return <Text style={{fontSize: 28}}>The cart is empty.</Text>
-                    }}
-                />
+            <ScrollView style={{backgroundColor:'#c8e0e4', flexGrow: 1, padding: 5}}>
+                <View style={{paddingBottom: 5}}>
+                    <FlatList
+                        data = {this.props.productCart}
+                        keyExtractor = {item => 'list-item-$'+item.id}
+                        renderItem = {({item}) => <CartProductListItem item={item} navigation={this.props.navigation}/>}
+                        ListEmptyComponent = {() => {
+                            return <Text style={{fontSize: 28}}>The cart is empty.</Text>
+                        }}
+                    />
+                </View>
+                <HorizontalDivider />
+                <TextInput style={styles.textInput} multiline={true} minHeight={100} placeholder="Enter sale notes here" onChangeText={(text) => this.setState({notes: text})}/>
                 <HorizontalDivider />
                 <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-end'}}>
                     <Text style={{fontSize: 32, fontWeight: 'bold'}}>Discount: $</Text>
@@ -40,9 +45,9 @@ class ShoppingCartScreen extends React.Component {
                     <Text style={{fontSize: 32, fontWeight: 'bold'}}>Total: ${cartTotal(this.props.productCart, this.state.discount)}</Text>
                 </View>
                 <HorizontalDivider />
-                <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
-                    <Button color="#979797" title="Empty Cart" onPress={() => {this.props.emptyCart(); this.setState({discount: 0.0});}} disabled={this.props.productCart.length == 0}/>
-                    <Button color="#979797" title="Checkout" onPress={() => {this.props.checkout(this.props.productCart, this.state.discount); this.setState({discount: 0.0}); this.props.navigation.navigate('Keyword');}} disabled={this.props.productCart.length == 0}/>
+                <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between', paddingBottom: 70}}>
+                    <Button color="#979797" title="Empty Cart" onPress={() => {this.props.emptyCart(); this.setState({discount: 0.0, notes: ''});}} disabled={this.props.productCart.length == 0}/>
+                    <Button color="#979797" title="Checkout" onPress={() => {this.props.checkout(this.props.productCart, this.state.discount, this.state.notes); this.setState({discount: 0.0, notes: ''}); this.props.navigation.navigate('Keyword');}} disabled={this.props.productCart.length == 0}/>
                 </View>
             </ScrollView>
         );
@@ -64,10 +69,9 @@ const cartTotal = (cart, discount) => {
     return total;
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state) => {
     return {
         productCart: state.productCart,
-        navigation: ownProps.navigation,
     };
 }
 
@@ -76,9 +80,9 @@ const mapDispatchToProps = (dispatch) => {
         emptyCart: () => {
             dispatch({type: actionType.EMPTY_CART});
         },
-        checkout: (productCart, discount) => {
+        checkout: (productCart, discount, notes) => {
             if (productCart.length > 0) {
-                dispatch({type: actionType.CHECKOUT, discount: discount});
+                dispatch({type: actionType.CHECKOUT, discount: discount, notes: notes});
             } else {
                 // toast: Cart is empty
             }

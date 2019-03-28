@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {TouchableOpacity} from 'react-native';
+import {TouchableOpacity, Image,} from 'react-native';
 import {Ionicons} from '@expo/vector-icons';
 import Moment from 'moment';
 import {withBadge, Icon} from 'react-native-elements';
@@ -16,13 +16,13 @@ class SalesQueueSynch extends Component{
 
     render() {
         if (this.props.salesQueue.length) {
-            BadgedIcon = withBadge(this.props.salesQueue.length)(Icon)
+            BadgedIcon = withBadge(this.props.salesQueue.length)(Image)
         } else {
-            BadgedIcon = Icon
+            BadgedIcon = Image
         }
         return (
-            <TouchableOpacity style={{margin: 10}}onPress={() => this.run()}>
-                <BadgedIcon type='ionicon' name="md-sync" size={32}/>
+            <TouchableOpacity style={{margin: 10, marginRight: 30, height: 10, width:10}}onPress={() => this.run()}>
+                <BadgedIcon type='image' style={{height: 35, width: 35}} source={{uri:(this.props.appConfig.hostAddress + '/images/app/sync.png')}} /*size={32}*//>
             </TouchableOpacity>
         );
     }
@@ -51,6 +51,7 @@ class SalesQueueSynch extends Component{
                             user_id: this.props.salesQueue[0].userId,
                             date: Moment(this.props.salesQueue[0].time).format('YYYY-MM-DD HH:mm:ss'),
                             discount: this.props.salesQueue[0].discount,
+                            notes: this.props.salesQueue[0].notes,
                         })
                     })
                     .then((responseBody) => responseBody.json())

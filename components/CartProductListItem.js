@@ -9,7 +9,7 @@ const CartProductListItem = (props) => {
     // TODO: Show quantity that are in the cart
     return (
         <TouchableOpacity style={styles.listItemBorderBox}>
-            <ProductListItem item={props.item}/>
+            <ProductListItem item={props.item} navigation={props.navigation}/>
             <TouchableOpacity style={styles.addToCart} onPress={() => props.decrementCart(props.item)}>
                 <Text style={styles.addProductText}>-</Text>
             </TouchableOpacity>
@@ -26,9 +26,8 @@ const CartProductListItem = (props) => {
     )
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state) => {
     return {
-        item: ownProps.item
     };
 }
 

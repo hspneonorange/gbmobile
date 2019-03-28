@@ -20,7 +20,7 @@ export const UserEventSales = (props) => {
     )
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state) => {
     return {
         sessionToken: state.sessionToken,
         appConfig: state.appConfig,
@@ -28,17 +28,17 @@ const mapStateToProps = (state, ownProps) => {
         userId: state.userId,
         userEventSalesUpdated: state.userEventSalesUpdated,
         userEventSales: state.userEventSales,
-        navigation: ownProps.navigation,
     };
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onPressListItem: (item, navigation) => {
-            navigation.navigate('ProductInfo', {
-                item: item
-            });
-        },
+        // TODO: Uncomment if we want to use this for items showing in the sales FlatList above
+        // onPressListItem: (item, navigation) => {
+        //     navigation.navigate('ProductInfo', {
+        //         item: item
+        //     });
+        // },
         queryUserEventSales: (sessionToken, hostAddress, userId, eventId) => {
             fetch(hostAddress + '/api/sales/' + userId + '/' + eventId, {
                 method: 'GET',

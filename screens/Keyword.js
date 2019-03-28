@@ -22,11 +22,13 @@ class Keyword extends React.Component {
                 <View style={{borderBottomColor: 'black', borderBottomWidth: 1, marginTop: 15, marginBottom: 15}} />
                 <Button title="Search" color="#979797" onPress={() => {this.props.searchPressed(this.props.sessionToken, this.state.searchText, this.props.appConfig.hostAddress)}}/>
                 <View style={styles.searchResults}>
-                  <FlatList 
-                    data = {this.props.searchItems}
-                    keyExtractor = {item => 'list-item-$'+item.id}
-                    renderItem = {({item}) => <SearchProductListItem item={item} />}
-                  />
+                    <FlatList 
+                        data = {this.props.searchItems}
+                        keyExtractor = {item => 'list-item-$'+item.id}
+                        renderItem = {({item}) => (
+                            <SearchProductListItem item={item} navigation={this.props.navigation} />
+                        )}
+                    />
                 </View>
             </ScrollView>
         );

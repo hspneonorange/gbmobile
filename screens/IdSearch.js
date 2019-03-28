@@ -30,7 +30,7 @@ class IdSearch extends React.Component {
                   <FlatList 
                     data = {this.props.idSearchItems}
                     keyExtractor = {item => 'list-item-$'+item.id}
-                    renderItem = {({item}) => <SearchProductListItem item={item} />}
+                    renderItem = {({item}) => <SearchProductListItem item={item} navigation={this.props.navigation}/>}
                   />
                 </View>
             </ScrollView>

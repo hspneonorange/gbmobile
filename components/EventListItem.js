@@ -9,7 +9,6 @@ import {connect} from 'react-redux';
 import actionType from '@constants/actionType';
 
 const EventListItem = (props) => {
-    console.log('navigation', props.navigation);
     return (
         <TouchableOpacity
             style={styles.listItemBox}
@@ -23,11 +22,10 @@ const EventListItem = (props) => {
     );
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state) => {
     return {
         sessionToken: state.sessionToken,
         userId: state.userId,
-        navigation: ownProps.navigation,
     };
 }
 

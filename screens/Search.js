@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {TouchableOpacity, View} from 'react-native';
+import {TouchableOpacity, View, Image, Text,} from 'react-native';
 import {createBottomTabNavigator, createStackNavigator} from 'react-navigation';
 import Keyword from '@screens/Keyword';
 import IdSearch from '@screens/IdSearch';
@@ -37,10 +37,10 @@ export const SearchStack = createStackNavigator({
                     <View style={{flexDirection: 'row', flex: 1}}>
                         <SalesQueueSynch/>
                         <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
-                            <Ionicons style={{margin: 10}} name="md-cart" size={32}/>
+                            <Image style={{margin: 10, height: 35, width: 35}} source={{uri:/*props.appConfig.hostAddress + */'http://192.168.0.129:5000/images/app/cart.png'}} size={32}/>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => navigation.navigate('Login', {message: 'bryan', logout: true})}>
-                            <Ionicons style={{margin: 10}} name="md-close-circle-outline" size={32}/>
+                            <Image style={{margin: 10, height: 35, width: 35}} source={{uri:/*props.appConfig.hostAddress + */'http://192.168.0.129:5000/images/app/logout.png'}} size={32}/>
                         </TouchableOpacity>
                     </View>
                 )
@@ -48,7 +48,7 @@ export const SearchStack = createStackNavigator({
         }
     },
     ProductInfo: {
-        screen:ProductInfoScreen,
+        screen: ProductInfoScreen,
         navigationOptions: ({navigation}) => {
             return {
                 headerTitle: 'Product Info'

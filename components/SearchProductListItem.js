@@ -3,7 +3,7 @@ import {
     TouchableOpacity,
     Text,
 } from 'react-native';
-import ProductInfoListItem from '@components/ProductListItem';
+import ProductListItem from '@components/ProductListItem';
 import {connect} from 'react-redux';
 import styles from '../styles';
 import actionType from '@constants/actionType';
@@ -12,7 +12,7 @@ const SearchProductListItem = (props) => {
     // TODO: May want to add some indication whether this item is already in the cart (and how many)
     return (
         <TouchableOpacity style={styles.listItemBorderBox}>
-            <ProductInfoListItem item={props.item}/>
+            <ProductListItem item={props.item} navigation={props.navigation}/>
             <TouchableOpacity style={styles.addToCart} onPress={() => props.addToCart(props.item)}>
                 <Text style={styles.addProductText}>+</Text>
             </TouchableOpacity>
@@ -20,9 +20,8 @@ const SearchProductListItem = (props) => {
     )
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state) => {
     return {
-        item: ownProps.item,
     };
 }
 

@@ -111,11 +111,10 @@ class LoginScreen extends Component {
     }
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state) => {
     return {
         appConfig: state.appConfig,
         sessionToken: state.sessionToken,
-        navigation: ownProps.navigation,
         userId: state.userId,
         eventId: state.eventId,
     };

@@ -16,7 +16,7 @@ export const LowStock =(props) => {
             <FlatList 
                 data = {props.lowStockProducts}
                 keyExtractor = {item => 'list-item-$'+item.id}
-                renderItem = {({item}) => <ProductListItem item={item} />}
+                renderItem = {({item}) => <ProductListItem item={item} navigation={props.navigation}/>}
             />
             <View style={styles.span} />
             </View>

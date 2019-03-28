@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {ScrollView, TextInput, View, Button, Text, AsyncStorage} from 'react-native';
+import {ScrollView, TextInput, View, Button, Text, AsyncStorage, Clipboard} from 'react-native';
 import HorizontalDivider from '@components/HorizontalDivider';
 import {purgeStoredState} from 'redux-persist';
 import {connect} from 'react-redux';
@@ -10,7 +10,7 @@ class SettingsScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            hostAddress: '',
+            hostAddress: this.props.appConfig.hostAddress,
         }
     }
 
@@ -32,28 +32,29 @@ class SettingsScreen extends Component {
                     <Text>URL</Text>
                     <TextInput ref={(c) => {this.hostAddressTextInput = c}} value={this.state.hostAddress} style={styles.textInput} placeholder='e.g.: http://192.168.4.1:5000' onChangeText={(text) => {this.setState({hostAddress: text})}} />
                     <Button title="Save URL" color="#979797" onPress={() => {this.props.savePressed(this.state.hostAddress)}}/>
-               </View>
-               <HorizontalDivider />
-               <View>
-                   <Button title="gbweeby AP" color="#979797" onPress={() => {this.setState({hostAddress: 'http://192.168.4.1:5000'});}} />
-                   <Button title="gbweeby" color="#979797" onPress={() => {this.setState({hostAddress: 'http://192.168.0.127:5000'});}} />
-                   <Button title="coleowen" color="#979797" onPress={() => {this.setState({hostAddress: 'http://192.168.0.108:5000'});}} />
-                   <Button title="dad" color="#979797" onPress={() => {this.setState({hostAddress: 'http://192.168.0.129:5000'});}} />
-               </View>
-               <HorizontalDivider/>
-               <View>
-                    <Button title="OwO Purge Stored State OwO" color="#979797" onPress={()=>{ purgeStoredState({storage: AsyncStorage})}}/>
-               </View>
+                </View>
+                <HorizontalDivider />
+                <View>
+                    <Button title="gbweeby AP" color="#979797" onPress={() => {this.setState({hostAddress: 'http://192.168.4.1:5000'});}} />
+                    <Button title="gbweeby" color="#979797" onPress={() => {this.setState({hostAddress: 'http://192.168.0.127:5000'});}} />
+                    <Button title="coleowen" color="#979797" onPress={() => {this.setState({hostAddress: 'http://192.168.0.108:5000'});}} />
+                    <Button title="dad" color="#979797" onPress={() => {this.setState({hostAddress: 'http://192.168.0.129:5000'});}} />
+                    <HorizontalDivider/>
+                    <Button title="OwO Purge Stored State OwO" color="#979797" onPress={()=>{purgeStoredState({storage: AsyncStorage})}}/>
+                    <Button title="Copy salesQueue to clipboard" color="#979797" onPress={() => Clipboard.setString(this.props.salesQueue)}/>
+                    <HorizontalDivider/>
+                    <Button title="Empty Sales Queue" color="#979797" onPress={() => this.props.emptySalesQueue()}/>
+                </View>
             </ScrollView>
         );
     }
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state) => {
     return {
         appConfig: state.appConfig,
         sessionToken: state.sessionToken,
-        navigation: ownProps.navigation,
+        salesQueue: JSON.stringify(state.salesQueue),
     };
 }
 
@@ -62,6 +63,12 @@ const mapDispatchToProps = (dispatch) => {
         savePressed: (hostAddress) => {
             dispatch({type: actionType.UPDATE_HOST_ADDRESS, hostAddress: hostAddress});
         },
+        dumpReduxState: () => {
+            dispatch({type: actionType.DUMP_ALL_STATE});
+        },
+        emptySalesQueue: () => {
+            dispatch({type: actionType.EMPTY_SALES_QUEUE});
+        }
     };
 };
 

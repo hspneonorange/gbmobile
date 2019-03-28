@@ -20,4 +20,6 @@ export default actionType = {
     UPDATE_USER_EVENT_SALES: 'update_user_event_sales', //every time you sync a new order, makes your sales tab re-render (??)
     SET_LOW_STOCK_PRODUCTS_UPDATED: 'set_low_stock_products_updated',
     UPDATE_HOST_ADDRESS: 'update_host_address',
+    DUMP_ALL_STATE: 'dump_all_state',
+    EMPTY_SALES_QUEUE: 'empty_sales_queue',
 };
