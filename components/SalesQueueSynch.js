@@ -117,7 +117,7 @@ class SalesQueueSynch extends Component{
                             address_zip: this.props.salesQueue[0].commissionerZip,
                             commission_details: this.props.salesQueue[0].commissionDetails,
                             price: this.props.salesQueue[0].commissionPrice,
-                            paid: this.props.salesQueue[0].commissionPaymentStatus,
+                            amt_paid: this.props.salesQueue[0].commissionAmountPaid,
                             completed: this.props.salesQueue[0].commissionCompletionStatus,
                         })
                     })
