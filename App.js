@@ -12,6 +12,7 @@ import LoginScreen from '@screens/LoginScreen';
 import SelectEventScreen from '@screens/SelectEventScreen';
 import {SearchStack} from '@screens/Search';
 import {CommissionStack} from '@screens/Commission';
+import {AnalyticsStack} from '@screens/AnalyticsScreen';
 import {SalesStack} from '@screens/Sales';
 import SettingsScreen from '@screens/SettingsScreen';
 import {ExpenseStack} from '@screens/Expenses';
@@ -57,6 +58,7 @@ export default class App extends React.Component {
 
 const SalesTabNavigator = createBottomTabNavigator({
     Search: SearchStack,
+    Analytics: AnalyticsStack,
     Sales: SalesStack,
     Commission: CommissionStack,
     Expenses: ExpenseStack,
