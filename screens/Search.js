@@ -8,8 +8,8 @@ import TopSellers from '@screens/TopSellers';
 import LowStock from '@screens/LowStock';
 import ShoppingCartScreen from '@screens/ShoppingCartScreen';
 import ProductInfoScreen from '@components/ProductInfoScreen';
-import {Ionicons} from '@expo/vector-icons';
-import SalesQueueSynch from '@components/SalesQueueSynch';
+import ImageBar from '@components/ImageBar';
+import {connect} from 'react-redux';
 
 export const SearchTabNavigator = createBottomTabNavigator({
     Keyword,
@@ -34,15 +34,7 @@ export const SearchStack = createStackNavigator({
             return {
                 headerTitle: 'Search',
                 headerRight: (
-                    <View style={{flexDirection: 'row', flex: 1}}>
-                        <SalesQueueSynch/>
-                        <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
-                            <Image style={{margin: 10, height: 35, width: 35}} source={{uri:/*props.appConfig.hostAddress + */'http://192.168.0.129:5000/images/app/cart.png'}} size={32}/>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => navigation.navigate('Login', {message: 'bryan', logout: true})}>
-                            <Image style={{margin: 10, height: 35, width: 35}} source={{uri:/*props.appConfig.hostAddress + */'http://192.168.0.129:5000/images/app/logout.png'}} size={32}/>
-                        </TouchableOpacity>
-                    </View>
+                    <ImageBar />
                 )
             }
         }
@@ -66,3 +58,16 @@ export const SearchStack = createStackNavigator({
 
 })
 
+const mapStateToProps = (state) => {
+    return {
+        sessionToken: state.sessionToken,
+        appConfig: state.appConfig,
+    };
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchStack);

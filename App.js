@@ -14,6 +14,7 @@ import {SearchStack} from '@screens/Search';
 import {CommissionStack} from '@screens/Commission';
 import {SalesStack} from '@screens/Sales';
 import SettingsScreen from '@screens/SettingsScreen';
+import {ExpenseStack} from '@screens/Expenses';
 import {persistor, store} from './store/';
 import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
@@ -58,6 +59,7 @@ const SalesTabNavigator = createBottomTabNavigator({
     Search: SearchStack,
     Sales: SalesStack,
     Commission: CommissionStack,
+    Expenses: ExpenseStack,
 //    Settings: SettingsStack
 },{
     navigationOptions:({navigation})=>{

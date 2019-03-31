@@ -22,7 +22,7 @@ class SalesQueueSynch extends Component{
         }
         return (
             <TouchableOpacity style={{margin: 10, marginRight: 30, height: 10, width:10}}onPress={() => this.run()}>
-                <BadgedIcon type='image' style={{height: 35, width: 35}} source={{uri:(this.props.appConfig.hostAddress + '/images/app/sync.png')}} /*size={32}*//>
+                <BadgedIcon type='image' style={{height: 35, width: 35}} source={{uri:(this.props.appConfig.hostAddress + '/images/app/sync.png')}}/>
             </TouchableOpacity>
         );
     }
