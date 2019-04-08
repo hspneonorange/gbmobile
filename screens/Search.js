@@ -34,7 +34,7 @@ export const SearchStack = createStackNavigator({
             return {
                 headerTitle: 'Search',
                 headerRight: (
-                    <ImageBar />
+                    <ImageBar navigation={navigation} />
                 )
             }
         }
